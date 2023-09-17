@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "665733485891",
+    "project_id": "reclaimify",
+    "storage_bucket": "reclaimify.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665733485891:android:7aafdbfd16e8e4eb268bf6",
+        "android_client_info": {
+          "package_name": "io.yaksh.reclaimify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPw5459inrWN7E9Kno7ffPr_vL9cLg3K8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
