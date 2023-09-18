@@ -53,7 +53,7 @@ class PlusButtonCard extends StatelessWidget {
             ),
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               BigText(
                 text: heading,

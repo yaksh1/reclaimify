@@ -26,8 +26,18 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SmallText(text: "/Reclaimify"),
-        centerTitle: true,
+        title: SvgPicture.asset('assets/images/profile.svg',height: height10*4,),
+        actions: [
+          // Padding(
+          //   padding:EdgeInsets.only(left: 100),
+          //   child: SmallText(text: "/Reclaimify")),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: width10),
+            child: Icon(Icons.search_sharp,size:height10*3.5),
+            ),
+        ],
+        // centerTitle: true,
+
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -42,6 +52,7 @@ class _LandingPageState extends State<LandingPage> {
                 Row(
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SmallText(
                           text: "Hello,",
@@ -51,7 +62,7 @@ class _LandingPageState extends State<LandingPage> {
                         SmallText(
                           text: "Yaksh",
                           color: AppColors.darkGrey,
-                          // size: width10 * 2,
+                          size: width10 * 3,
                           alignment: TextAlign.start,
                         ),
                       ],
