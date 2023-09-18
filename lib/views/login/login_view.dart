@@ -18,6 +18,7 @@ import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
 import 'package:reclaimify/utils/routes.dart';
 import 'package:reclaimify/views/forget_password/forgot_pass_option.dart';
+import 'package:reclaimify/views/landing%20page/landing_page.dart';
 import 'package:reclaimify/views/register/register_view.dart';
 import 'package:reclaimify/views/verify%20email/verify_email_view.dart';
 
@@ -92,7 +93,7 @@ class _LoginViewState extends State<LoginView> {
                       ),
                     ),
                   ),
-                  //! ---- enter your information ---- //
+                  //! ---- enter your credentials ---- //
                   Container(
                     alignment: Alignment.centerLeft,
                     child: FittedBox(
@@ -104,7 +105,7 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(height: height10),
                   //! ---- email field ---- //
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical:height10),
+                    padding: EdgeInsets.symmetric(vertical: height10),
                     child: TextForm(
                       hintText: "Enter your email",
                       label: Text("E-mail"),
@@ -119,12 +120,12 @@ class _LoginViewState extends State<LoginView> {
 
                   //! ---- password field ---- //
                   Padding(
-                    padding: EdgeInsets.only(top:height10),
+                    padding: EdgeInsets.only(top: height10),
                     child: TextForm(
                       hintText: "Enter your password",
                       label: Text("Password"),
                       obscureText: true,
-                      enabledSuggestions: false,
+                      enabledSuggestions: true,
                       autocorrect: false,
                       controller: _password,
                       icon: Icons.key_rounded,
@@ -144,7 +145,7 @@ class _LoginViewState extends State<LoginView> {
                             fit: BoxFit.scaleDown,
                             child: SmallText(
                               text: "Forgot password?",
-                              size: width10*1.2,
+                              size: width10 * 1.2,
                               weight: FontWeight.w400,
                             )),
                       )
@@ -152,54 +153,55 @@ class _LoginViewState extends State<LoginView> {
                   ),
 
                   //! ---- white spaces ---- //
-                  SizedBox(height: height10*4),
+                  SizedBox(height: height10 * 4),
 
-                  // --- log in button ---- //
+                  //! --- log in button ---- //
                   MaterialButton(
-                      onPressed: () async {
-                        final email = _email!.text;
-                        final password = _password!.text;
-                        try {
-                          // AuthService.firebase()
-                          //     .logIn(email: email, password: password);
-                          await AuthService.firebase()
-                              .logIn(email: email, password: password);
-                          final user = AuthService.firebase().currentUser;
-                          if (user?.isEmailVerified ?? false) {
-                            // user's email is verified
-                            Get.to(() => Scaffold());
-                          } else {
-                            // user's email is not verified
-                            Get.to(() => VerifyEmailView());
-                          }
-                        } on UserNotFoundAuthException {
-                          showErrorDialog(context,
-                              'User not found. Please double-check your entered details');
-                        } on WrongPasswordAuthException {
-                          showErrorDialog(
-                              context, 'Wrong Password. Please check again.');
-                        } on GenericAuthException {
-                          showErrorDialog(context, "Authentication error");
-                        }
-                      },
+                    onPressed: () async {
+                      final email = _email!.text;
+                      final password = _password!.text;
+                      try {
+                        // AuthService.firebase()
+                        //     .logIn(email: email, password: password);
+                        await AuthService.firebase()
+                            .logIn(email: email, password: password);
+                        final user = AuthService.firebase().currentUser;
+                        if (user?.isEmailVerified ?? false) {
+                          // user's email is verified
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              landingPageRoute, (route) => false);
+                        } else {
+                          // user's email is not verified
 
-                      //* styles of button
-                      textColor: AppColors.grey,
-                      color: AppColors.mainColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(radius10 * 0.8)),
-                      height: height10 * 6,
-                      minWidth: double.infinity,
-                      child: Text("Login",
-                          style: TextStyle(
-                              // fontFamily: 'Poppins',
-                              fontWeight: FontWeight.bold,
-                              fontSize: width10 * 2.2)),
-                    ),
-                  
+                          Get.to(() => VerifyEmailView());
+                        }
+                      } on UserNotFoundAuthException {
+                        showErrorDialog(context,
+                            'User not found. Please double-check your entered details');
+                      } on WrongPasswordAuthException {
+                        showErrorDialog(
+                            context, 'Wrong Password. Please check again.');
+                      } on GenericAuthException {
+                        showErrorDialog(context, "Authentication error");
+                      }
+                    },
+
+                    //* styles of button
+                    textColor: AppColors.grey,
+                    color: AppColors.mainColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(radius10 * 0.8)),
+                    height: height10 * 6,
+                    minWidth: double.infinity,
+                    child: Text("Login",
+                        style: TextStyle(
+                            // fontFamily: 'Poppins',
+                            fontWeight: FontWeight.bold,
+                            fontSize: width10 * 2.2)),
+                  ),
 
                   //! ---- white spaces ---- //
-                  SizedBox(height: height10*4),
+                  SizedBox(height: height10 * 4),
 
                   //! ---- or continue with --- //
                   const Padding(
@@ -251,9 +253,9 @@ class _LoginViewState extends State<LoginView> {
                   ),
 
                   // white spaces
-                  SizedBox(height: height10*3),
+                  SizedBox(height: height10 * 3),
 
-                  // dont have an account?
+                  //! dont have an account?
                   InkWell(
                     onTap: () {
                       Navigator.of(context).pushNamedAndRemoveUntil(

@@ -2,13 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/dual_color_text.dart';
 import 'package:reclaimify/components/error_dialog.dart';
 import 'package:reclaimify/components/small_grey_text.dart';
-import 'package:reclaimify/components/square_tile.dart';
-import 'package:reclaimify/components/text_fields.dart';
+
 import 'package:reclaimify/components/text_form.dart';
 import 'package:reclaimify/services/auth/auth_exceptions.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
@@ -16,9 +14,7 @@ import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
 import 'package:reclaimify/utils/routes.dart';
-import 'package:reclaimify/views/login/login_view.dart';
-import 'package:reclaimify/views/verify%20email/verify_email_view.dart';
-import 'package:vector_graphics/vector_graphics_compat.dart';
+
 
 class Register extends StatefulWidget {
   const Register({super.key});

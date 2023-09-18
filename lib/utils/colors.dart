@@ -5,7 +5,13 @@ class AppColors {
   static const Color grey = Color(0xFFECF0F1);
   static const Color mainColor = Color(0xFF3498DB);
   static const Color lightMainColor = Color(0xFF5FA2DD);
+  static const Color lightMainColor2 = Color(0xFFB0CBF5);
+  static const Color smallText = Color(0xFF546175);
+  static Color lightYellow = Colors.yellow.shade100;
+  static Color mapColor = Colors.green.shade100;
 
+
+  
   static const Color slateGrey = Color(0xFF95A5A6);
   static const Color primaryBlack = Color(0xFF1B1A17);
   static const Color darkGrey = Color(0xFF3A4855);

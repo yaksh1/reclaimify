@@ -3,6 +3,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/routes.dart';
+import 'package:reclaimify/views/landing%20page/landing_page.dart';
 import 'package:reclaimify/views/login/login_view.dart';
 import 'package:reclaimify/views/register/register_view.dart';
 import 'package:reclaimify/views/verify%20email/verify_email_view.dart';
@@ -25,6 +26,7 @@ void main() async {
           registerRoute: (context) => const Register(),
           loginRoute: (context) => const LoginView(),
           verifyEmailRoute: (context) => const VerifyEmailView(),
+          landingPageRoute:(context) => const LandingPage(),
         }
         ),
   );
@@ -44,7 +46,7 @@ class HomePage extends StatelessWidget {
               final user = AuthService.firebase().currentUser;
               if (user != null) {
                 if (user.isEmailVerified) {
-                  return const Scaffold();
+                  return const LandingPage();
                 } else {
                   return const VerifyEmailView();
                 }

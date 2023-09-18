@@ -15,7 +15,7 @@ class ForgotPasswordScreen {
   static Future<dynamic> ForgotPasswordBottomSheet(BuildContext context) {
   double width10 = Dimensions.width10;
   double height10 = Dimensions.height10;
-  double radius10 = Dimensions.radius10;
+  // double radius10 = Dimensions.radius10;
     return showModalBottomSheet(
       context: context,
       builder: (context) => Container(

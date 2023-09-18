@@ -43,8 +43,9 @@ class TextForm extends StatelessWidget {
           color: AppColors.mainColor,
         ),
         label: label,
-        labelStyle: TextStyle(color: AppColors.primaryBlack),
+        labelStyle: TextStyle(color: AppColors.textBoxPlaceholder),
         hintText: hintText,
+        hintStyle: TextStyle(color: AppColors.textBoxPlaceholder),
         fillColor: AppColors.grey,
         filled: true,
         border: OutlineInputBorder(
