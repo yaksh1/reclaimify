@@ -2,14 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/card.dart';
 import 'package:reclaimify/components/plus_button_card.dart';
 import 'package:reclaimify/components/small_text.dart';
+import 'package:reclaimify/enum/menu_actions.dart';
+import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
+import 'package:reclaimify/views/login/login_view.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -35,6 +39,27 @@ class _LandingPageState extends State<LandingPage> {
             padding: EdgeInsets.symmetric(horizontal: width10),
             child: Icon(Icons.search_sharp,size:height10*3.5),
             ),
+            PopupMenuButton<MenuAction>(
+            onSelected: (value) async {
+              switch (value) {
+                case MenuAction.logout:
+                  final shouldLogout = await showLogOutDiaglog(context);
+                  if (shouldLogout) {
+                    await AuthService.firebase().logOut();
+                    // ignore: use_build_context_synchronously
+                    Get.to(() => LoginView());
+                  }
+              }
+            },
+            itemBuilder: (context) {
+              return [
+                const PopupMenuItem(
+                    value: MenuAction.logout, child: Text("Logout")),
+                // const PopupMenuItem(
+                //     value: MenuAction.favorites, child: Text("Favorites")),
+              ];
+            },
+          ),
         ],
         // centerTitle: true,
 
@@ -46,7 +71,7 @@ class _LandingPageState extends State<LandingPage> {
             margin: EdgeInsets.symmetric(horizontal: width10 * 2.5),
             child: Wrap(
               // mainAxisAlignment: MainAxisAlignment.center,
-              runSpacing: height10 * 2.5,
+              runSpacing: height10 * 2,
               children: [
                 //! hello user
                 Row(
@@ -62,7 +87,7 @@ class _LandingPageState extends State<LandingPage> {
                         SmallText(
                           text: "Yaksh",
                           color: AppColors.darkGrey,
-                          size: width10 * 3,
+                          size: width10 * 2.5,
                           alignment: TextAlign.start,
                         ),
                       ],
@@ -133,4 +158,28 @@ class _LandingPageState extends State<LandingPage> {
       ),
     );
   }
+}
+
+Future<bool> showLogOutDiaglog(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("Sign Out"),
+        content: const Text("Are you sure you want to log out?"),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text("cancel")),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text("yes")),
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
 }
