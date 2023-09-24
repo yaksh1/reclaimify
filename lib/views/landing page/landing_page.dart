@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/card.dart';
+import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/components/plus_button_card.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/enum/menu_actions.dart';
@@ -30,23 +31,31 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SvgPicture.asset('assets/images/profile.svg',height: height10*4,),
+        title: SvgPicture.asset(
+          'assets/images/profile.svg',
+          height: height10 * 4,
+        ),
         actions: [
           // Padding(
           //   padding:EdgeInsets.only(left: 100),
           //   child: SmallText(text: "/Reclaimify")),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: width10),
-            child: Icon(Icons.search_sharp,size:height10*3.5),
-            ),
-            PopupMenuButton<MenuAction>(
+            child: Icon(Icons.search_sharp, size: height10 * 3.5),
+          ),
+          PopupMenuButton<MenuAction>(
             onSelected: (value) async {
               switch (value) {
                 case MenuAction.logout:
                   final shouldLogout = await showLogOutDiaglog(context);
                   if (shouldLogout) {
                     await AuthService.firebase().logOut();
-                    // ignore: use_build_context_synchronously
+                    final snackbar = MySnackBar();
+                    snackbar.mySnackBar(
+                        header: "Logged out!",
+                        content: "see you soon",
+                        bgColor: Colors.green.shade100,
+                        borderColor: Colors.green);
                     Get.to(() => LoginView());
                   }
               }
@@ -62,7 +71,6 @@ class _LandingPageState extends State<LandingPage> {
           ),
         ],
         // centerTitle: true,
-
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -116,7 +124,7 @@ class _LandingPageState extends State<LandingPage> {
                 ),
 
                 GestureDetector(
-                  onTap: () {},//!
+                  onTap: () {}, //!
                   child: Container(
                     padding: EdgeInsets.symmetric(
                         vertical: height10 * 1.7, horizontal: width10 * 1.5),

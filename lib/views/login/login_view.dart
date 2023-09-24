@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/dual_color_text.dart';
 import 'package:reclaimify/components/error_dialog.dart';
+import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/components/small_grey_text.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/components/square_tile.dart';
@@ -37,6 +39,7 @@ class _LoginViewState extends State<LoginView> {
   TextEditingController? _email;
   TextEditingController? _password;
   var logger = Logger();
+  final mySnackbar = MySnackBar();
 
   double height10 = Dimensions.height10;
   double width10 = Dimensions.width10;
@@ -112,7 +115,7 @@ class _LoginViewState extends State<LoginView> {
                       hintText: "Enter your email",
                       label: Text("E-mail"),
                       obscureText: false,
-                      enabledSuggestions: true,
+                      enabledSuggestions: false,
                       keyboardType: TextInputType.emailAddress,
                       autocorrect: false,
                       controller: _email,
@@ -168,8 +171,13 @@ class _LoginViewState extends State<LoginView> {
                         final user = AuthService.firebase().currentUser;
                         if (user?.isEmailVerified ?? false) {
                           // user's email is verified
-                          Logger().d("signed in using $email");
 
+                          mySnackbar.mySnackBar(
+                              header: "Hello!",
+                              content: "Logged in as ${email}",
+                              bgColor: Colors.green.shade100,
+                              borderColor: Colors.green);
+                          Logger().d("Normal signed in using $email");
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               landingPageRoute, (route) => false);
                         } else {
@@ -177,13 +185,27 @@ class _LoginViewState extends State<LoginView> {
                           Get.to(() => VerifyEmailView());
                         }
                       } on UserNotFoundAuthException {
-                        showErrorDialog(context,
-                            'User not found. Please double-check your entered details');
+                        mySnackbar.mySnackBar(
+                          header: "User not found",
+                          content: "Please double-check your entered details",
+                          bgColor: Colors.red.shade100,
+                            borderColor: Colors.red
+                          );
+                        // showErrorDialog(context,
+                        //     'User not found. Please double-check your entered details');
                       } on WrongPasswordAuthException {
-                        showErrorDialog(
-                            context, 'Wrong Password. Please check again.');
+                        mySnackbar.mySnackBar(
+                            header: "Wrong Password",
+                            content: "Please double-check your entered details",
+                            bgColor: Colors.red.shade100,
+                            borderColor: Colors.red);
                       } on GenericAuthException {
-                        showErrorDialog(context, "Authentication error");
+                        mySnackbar.mySnackBar(
+                          header: "Error Occurred",
+                          content: "Authentication Error",
+                          bgColor: Colors.red.shade100,
+                          borderColor: Colors.red
+                        );
                       }
                     },
 
@@ -249,15 +271,7 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       SquareTile(
                         imagePath: googleLogo,
-                        onTap: () async {
-                          User? user;
-                          user =
-                              await AuthService.firebase().signInWithGoogle();
-                          if (user != null) {
-                            Logger().d("signed in " + user.displayName!);
-                            Get.offAll(() => LandingPage());
-                          }
-                        },
+                        onTap: _googleLogIn,
                         height: height10 * 4,
                       ),
                     ],
@@ -289,5 +303,21 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
     );
+  }
+
+  void _googleLogIn() async {
+    User? user;
+    user = await AuthService.firebase().signInWithGoogle();
+    if (user != null) {
+      mySnackbar.mySnackBar(
+          header: "Hello!",
+          content: "Logged in as ${user.email}",
+          bgColor: Colors.green.shade100,
+          borderColor: Colors.green);
+      Logger().d("Google signed in as " + user.displayName!);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(landingPageRoute, (route) => false);
+    }
+    ;
   }
 }

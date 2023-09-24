@@ -7,6 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/dual_color_text.dart';
 import 'package:reclaimify/components/error_dialog.dart';
+import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/components/small_grey_text.dart';
 import 'package:reclaimify/components/square_tile.dart';
 
@@ -34,7 +35,7 @@ class _RegisterState extends State<Register> {
   double height10 = Dimensions.height10;
   double width10 = Dimensions.width10;
   double radius10 = Dimensions.radius10;
-
+  final mySnackbar = MySnackBar();
   @override
   void initState() {
     _email = TextEditingController();
@@ -152,23 +153,47 @@ class _RegisterState extends State<Register> {
                         AuthService.firebase().sendEmailVerification();
 
                         //$ --- DEBUG --- //
+
                         Logger().d("Registered using $email");
-                        
+
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             verifyEmailRoute, (route) => false);
                       } on WeakPasswordAuthException {
-                        showErrorDialog(
-                            context, 'Weak-password, please modify it.');
+                        mySnackbar.mySnackBar(
+                            header: "Weak-password",
+                            content: "Please enter a strong password.",
+                            bgColor: Colors.red.shade200,
+                            borderColor: Colors.red);
                       } on EmptyFieldAuthException {
-                        showErrorDialog(context,
-                            'Email or password is empty, kindly check again.');
+                        mySnackbar.mySnackBar(
+                            header: "Empty Field",
+                            content: "Email or password is empty, kindly check again.",
+                            bgColor: Colors.red.shade200,
+                            borderColor: Colors.red);
+                        
                       } on EmailAlreadyInUseAuthException {
-                        showErrorDialog(context, 'Email already in use.');
+                        mySnackbar.mySnackBar(
+                            header: "Email already in use",
+                            content:
+                                "This email is already in use",
+                            bgColor: Colors.red.shade200,
+                            borderColor: Colors.red);
+                      
                       } on InvalidEmailAuthException {
-                        showErrorDialog(
-                            context, 'Invalid email, please check again.');
+                        mySnackbar.mySnackBar(
+                            header: "Invalid email",
+                            content:
+                                "Please enter a valid email id",
+                            bgColor: Colors.red.shade200,
+                            borderColor: Colors.red);
+
                       } on GenericAuthException {
-                        showErrorDialog(context, "Failed to register");
+                        mySnackbar.mySnackBar(
+                            header: "Error Occurred",
+                            content:
+                                "Failed to register.",
+                            bgColor: Colors.red.shade200,
+                            borderColor: Colors.red);
                       }
                     },
                     //* styles of button

@@ -17,6 +17,7 @@ class AuthGate extends StatelessWidget {
             if (user == null) {
               return LoginView();
             }
+            
             return LandingPage();
           } else {
             return Scaffold(
