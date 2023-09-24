@@ -23,3 +23,6 @@ class GenericAuthException implements Exception {}
 
 // User not logged in
 class UserNotLoggedInAuthException implements Exception {}
+
+// invalid phone number
+class InvalidPhoneNumberAuthException implements Exception {}

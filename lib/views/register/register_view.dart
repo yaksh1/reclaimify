@@ -2,10 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/dual_color_text.dart';
 import 'package:reclaimify/components/error_dialog.dart';
 import 'package:reclaimify/components/small_grey_text.dart';
+import 'package:reclaimify/components/square_tile.dart';
 
 import 'package:reclaimify/components/text_form.dart';
 import 'package:reclaimify/services/auth/auth_exceptions.dart';
@@ -14,7 +17,7 @@ import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
 import 'package:reclaimify/utils/routes.dart';
-
+import 'package:reclaimify/views/landing%20page/landing_page.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -147,7 +150,12 @@ class _RegisterState extends State<Register> {
 
                         // ---- when clicked on sign up button ---- //
                         AuthService.firebase().sendEmailVerification();
-                        Navigator.of(context).pushNamedAndRemoveUntil(verifyEmailRoute, (route) => false);
+
+                        //$ --- DEBUG --- //
+                        Logger().d("Registered using $email");
+                        
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            verifyEmailRoute, (route) => false);
                       } on WeakPasswordAuthException {
                         showErrorDialog(
                             context, 'Weak-password, please modify it.');
@@ -215,15 +223,20 @@ class _RegisterState extends State<Register> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(
-                        facebookLogo,
+                      SquareTile(
+                        imagePath: facebookLogo,
+                        onTap: () {},
                         height: height10 * 4,
                       ),
                       SizedBox(
                         width: width10 * 2,
                       ),
-                      SvgPicture.asset(
-                        googleLogo,
+                      SquareTile(
+                        imagePath: googleLogo,
+                        onTap: () {
+                          AuthService.firebase().signInWithGoogle();
+                          // Get.offAll(() => LandingPage());
+                        },
                         height: height10 * 4,
                       ),
                     ],

@@ -79,7 +79,7 @@ flutter:
         - asset: assets/fonts/Inter-ExtraBold.ttf
           weight: 800
         - asset: assets/fonts/Inter-Bold.ttf
-          weight: 700
+          weight: 700 
 
 
   #   - family: Trajan Pro

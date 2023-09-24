@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '665733485891',
     projectId: 'reclaimify',
     storageBucket: 'reclaimify.appspot.com',
+    androidClientId: '665733485891-vamt1qaehrg178vrqjuhhmhn6a91137u.apps.googleusercontent.com',
+    iosClientId: '665733485891-p8rblf5rdidg947fn25nup8gn8l2irv0.apps.googleusercontent.com',
     iosBundleId: 'io.yaksh.reclaimify',
   );
 }

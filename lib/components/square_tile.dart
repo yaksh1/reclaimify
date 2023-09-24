@@ -2,18 +2,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:reclaimify/utils/dimensions.dart';
 
 class SquareTile extends StatelessWidget {
+  final void Function()? onTap;
   final String imagePath;
-  final double? height;
-  const SquareTile({super.key, required this.imagePath, this.height = 60});
-
+  final double height;
+  const SquareTile(
+      {super.key, required this.imagePath, required this.onTap, required this.height});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // padding: EdgeInsets.all(15),
-      height: height,
-      child: SvgPicture.asset(imagePath),
+    return GestureDetector(
+      onTap: onTap,
+      child:SvgPicture.asset(
+          imagePath,
+          height: height,
+        ),
     );
   }
 }

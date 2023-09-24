@@ -36,76 +36,76 @@ class _ForgotPasswordMailOptionState extends State<ForgotPasswordMailOption> {
     double width10 = Dimensions.width10;
     double radius10 = Dimensions.radius10;
 
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: height10*2,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical:height10*3.5),
-                  child: SquareTile(
-                    imagePath: emailSvg, //!
-                    height: height10 * 15,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: height10*2,
                   ),
-                ),
-                BigText(
-                  text: "E-mail Verification",
-                  color: AppColors.primaryBlack,
-                  weight: FontWeight.w800,
-                  size: width10 * 2.5,
-                ),
-                SizedBox(
-                  height: height10,
-                ),
-                SmallText(
-                  text: "Enter your email to reset the password.",
-                  size: width10 * 1.5,
-                  weight: FontWeight.w400,
-                ),
-                SizedBox(
-                  height: height10 * 2.5,
-                ),
-                Form(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: height10),
-                        child: TextForm(
-                          hintText: "Enter your email",
-                          label: Text("E-mail"),
-                          obscureText: false,
-                          enabledSuggestions: true,
-                          keyboardType: TextInputType.emailAddress,
-                          autocorrect: false,
-                          controller: _email,
-                          icon: Icons.mail_outline_rounded,
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical:height10*3.5),
+                    child: SquareTile(
+                      imagePath: emailSvg, //!
+                      height: height10 * 15, onTap: () {  },
+                    ),
+                  ),
+                  BigText(
+                    text: "E-mail Verification",
+                    color: AppColors.primaryBlack,
+                    weight: FontWeight.w800,
+                    size: width10 * 2.5,
+                  ),
+                  SizedBox(
+                    height: height10,
+                  ),
+                  SmallText(
+                    text: "Enter your email to reset the password.",
+                    size: width10 * 1.5,
+                    weight: FontWeight.w400,
+                  ),
+                  SizedBox(
+                    height: height10 * 2.5,
+                  ),
+                  Form(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: height10),
+                          child: TextForm(
+                            hintText: "Enter your email",
+                            label: Text("E-mail"),
+                            obscureText: false,
+                            enabledSuggestions: true,
+                            keyboardType: TextInputType.emailAddress,
+                            autocorrect: false,
+                            controller: _email,
+                            icon: Icons.mail_outline_rounded,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      blueButton(
-                        onPressed: () {
-                          Get.to(() => ForgotPasswordOtp());
-                          //TODO: send verification code
-                        },
-                        text: 'Next',
-                      ),
-                    ],
+                        SizedBox(
+                          height: 20,
+                        ),
+                        blueButton(
+                          onPressed: () {
+                            Get.to(() => ForgotPasswordOtp());
+                            //TODO: send verification code
+                          },
+                          text: 'Next',
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
     );
   }
 }

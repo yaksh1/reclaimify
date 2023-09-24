@@ -1,14 +1,24 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:reclaimify/firebase_options.dart';
+import 'package:reclaimify/services/auth/auth_gate.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/routes.dart';
+import 'package:reclaimify/views/forget_password/forgot_password_otp/forgot_password_otp.dart';
 import 'package:reclaimify/views/landing%20page/landing_page.dart';
 import 'package:reclaimify/views/login/login_view.dart';
 import 'package:reclaimify/views/register/register_view.dart';
 import 'package:reclaimify/views/verify%20email/verify_email_view.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(
     GetMaterialApp(
         debugShowCheckedModeBanner: false,
@@ -20,13 +30,14 @@ void main() async {
         defaultTransition: Transition.leftToRight,
         transitionDuration: const Duration(milliseconds: 500),
         // home: isViewed!=0? OnBoardingView() : const HomePage(),
-        home: const HomePage(),
+        home: const AuthGate(),
         // home: const Gallery(),
         routes: {
           registerRoute: (context) => const Register(),
           loginRoute: (context) => const LoginView(),
           verifyEmailRoute: (context) => const VerifyEmailView(),
           landingPageRoute:(context) => const LandingPage(),
+          otpScreenRoute:(context)=>const ForgotPasswordOtp(),
         }
         ),
   );
@@ -38,7 +49,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: AuthService.firebase().initialize(),
+        future:AuthService.firebase().initialize(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:

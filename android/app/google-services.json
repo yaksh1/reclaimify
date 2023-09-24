@@ -12,7 +12,20 @@
           "package_name": "io.yaksh.reclaimify"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "665733485891-vamt1qaehrg178vrqjuhhmhn6a91137u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.yaksh.reclaimify",
+            "certificate_hash": "911a38917138292d6784e99a45c694124ee2354f"
+          }
+        },
+        {
+          "client_id": "665733485891-kspbu8gks481a8nhbhd0g20diseoblpb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDPw5459inrWN7E9Kno7ffPr_vL9cLg3K8"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665733485891-kspbu8gks481a8nhbhd0g20diseoblpb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "665733485891-p8rblf5rdidg947fn25nup8gn8l2irv0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.yaksh.reclaimify"
+              }
+            }
+          ]
         }
       }
     }

@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,7 @@ import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/icon_and_text.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/components/square_tile.dart';
+import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
@@ -18,13 +21,14 @@ class ForgotPasswordOtp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var otp;
     double height10 = Dimensions.height10;
     double width10 = Dimensions.width10;
     double radius10 = Dimensions.radius10;
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(),
-        body: SingleChildScrollView(
+        body: SafeArea(
+        child: SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.all(30),
@@ -37,7 +41,7 @@ class ForgotPasswordOtp extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: height10 * 2),
                   child: SquareTile(
                     imagePath: otpSvg, //!
-                    height: height10 * 18,
+                    height: height10 * 18, onTap: () {  },
                   ),
                 ),
                 //! heading
@@ -68,6 +72,12 @@ class ForgotPasswordOtp extends StatelessWidget {
                   fillColor: Colors.black.withOpacity(0.1),
                   cursorColor: AppColors.primaryBlack,
                   focusedBorderColor: AppColors.mainColor,
+                  onCodeChanged: (value) => log(value),
+                  onSubmit: (code) => {
+                    otp = code,
+                    log(code),
+                    AuthService.firebase().verifyOtp(otp),
+                  },
                 ),
 
                 //! white spaces
@@ -76,12 +86,10 @@ class ForgotPasswordOtp extends StatelessWidget {
                 ),
                 //! next button
                 blueButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Get.to(() => ResetPassword());
-                      //TODO: verify code
+                    onPressed: () async {
+                      var isVerified = await AuthService.firebase().verifyOtp(otp);
+                      isVerified ? Get.offAll(ResetPassword()) : Get.back();
                     },
-
                     text: "Verify Now"),
                 //! white spaces
                 SizedBox(

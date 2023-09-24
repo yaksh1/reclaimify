@@ -28,10 +28,10 @@ class _ResetPasswordState extends State<ResetPassword> {
   double radius10 = Dimensions.radius10;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(),
-        body: SingleChildScrollView(
+        body: SafeArea(
+        child: SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.all(30),
@@ -44,7 +44,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   padding: EdgeInsets.symmetric(vertical: height10*2 ),
                   child: SquareTile(
                     imagePath: resetPassword,
-                    height: height10 * 17,
+                    height: height10 * 17, onTap: () {  },
                   ),
                 ),
                 //! heading

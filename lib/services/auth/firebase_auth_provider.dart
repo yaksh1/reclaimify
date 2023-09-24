@@ -1,12 +1,23 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuth, FirebaseAuthException;
+    show FirebaseAuth, FirebaseAuthException, PhoneAuthProvider;
+import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
+import 'package:reclaimify/components/error_dialog.dart';
 import 'package:reclaimify/firebase_options.dart';
 import 'package:reclaimify/services/auth/auth_exceptions.dart';
 import 'package:reclaimify/services/auth/auth_provider.dart';
 import 'package:reclaimify/services/auth/auth_user.dart';
 
 class FirebaseAuthProvider implements AuthProvider {
+  final GoogleSignIn googleSignIn = new GoogleSignIn();
+  final auth = FirebaseAuth.instance;
+  User? userForGoogle;
+  var verificationId = ''.obs;
   @override
   Future<AuthUser> createUser({
     required String email,
@@ -79,12 +90,21 @@ class FirebaseAuthProvider implements AuthProvider {
   @override
   Future<void> logOut() async {
     // implement logOut
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      await FirebaseAuth.instance.signOut();
-    } else {
-      throw UserNotLoggedInAuthException();
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (googleSignIn.currentUser != null) {
+      Logger().d("Sign out using google");
+      await googleSignIn.signOut();
     }
+    if(currentUser != null){
+      Logger().d("Sign out using firebaseAuth");
+      await FirebaseAuth.instance.signOut();
+    }
+    try {
+      await googleSignIn.disconnect();
+    } catch (e) {
+      Logger().d("failed to disconnect on signout");
+    }
+    
   }
 
   @override
@@ -103,5 +123,89 @@ class FirebaseAuthProvider implements AuthProvider {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+  }
+
+  @override
+  Future<void> phoneAuthentication(String phoneNo) async {
+    await auth.verifyPhoneNumber(
+      phoneNumber: phoneNo,
+      verificationCompleted: (credential) async {
+        await auth.signInWithCredential(credential);
+      },
+      codeSent: (verificationId, resendToken) {
+        this.verificationId.value = verificationId;
+      },
+      codeAutoRetrievalTimeout: (verificationId) {
+        this.verificationId.value = verificationId;
+      },
+      verificationFailed: (e) {
+        if (e.code == 'invalid-phone-number') {
+          throw InvalidPhoneNumberAuthException();
+        } else {
+          throw GenericAuthException();
+        }
+      },
+    );
+  }
+
+  @override
+  Future<bool> verifyOtp(String otp) async {
+    log("OTP:$otp");
+    var credentials = await auth.signInWithCredential(
+        PhoneAuthProvider.credential(
+            verificationId: verificationId.value, smsCode: otp));
+    return credentials.user != null ? true : false;
+  }
+
+  @override
+  Future<User?> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+    // if user canceled the operation
+    if (googleUser == null) {
+      Logger().d("Operation Canceled");
+    }
+
+    // Obtain the auth details from the request
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    try {
+      // Once signed in, return the UserCredential
+      final UserCredential userCredential =
+          await auth.signInWithCredential(credential);
+      userForGoogle = userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        Get.showSnackbar(const GetSnackBar(
+          message:
+              "You already have an account with this email. Use other login method.",
+          duration: Duration(seconds: 3),
+        ));
+      } else if (e.code == 'invalid-credential') {
+        Get.showSnackbar(const GetSnackBar(
+          message: "Invalid Credential!",
+          duration: Duration(seconds: 3),
+        ));
+      } else if (e.code == 'wrong-password') {
+        Get.showSnackbar(const GetSnackBar(
+          message: "Wrong password!",
+          duration: Duration(seconds: 3),
+        ));
+      }
+    } catch (e) {
+      Get.showSnackbar(const GetSnackBar(
+        message: "Unknown Error. Try again later",
+        duration: Duration(seconds: 3),
+      ));
+    }
+    return userForGoogle;
   }
 }

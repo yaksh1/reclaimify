@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:reclaimify/components/dual_color_text.dart';
 import 'package:reclaimify/components/error_dialog.dart';
 import 'package:reclaimify/components/small_grey_text.dart';
 import 'package:reclaimify/components/small_text.dart';
+import 'package:reclaimify/components/square_tile.dart';
 
 import 'package:reclaimify/components/text_form.dart';
 import 'package:reclaimify/services/auth/auth_exceptions.dart';
@@ -161,18 +163,17 @@ class _LoginViewState extends State<LoginView> {
                       final email = _email!.text;
                       final password = _password!.text;
                       try {
-                        // AuthService.firebase()
-                        //     .logIn(email: email, password: password);
                         await AuthService.firebase()
                             .logIn(email: email, password: password);
                         final user = AuthService.firebase().currentUser;
                         if (user?.isEmailVerified ?? false) {
                           // user's email is verified
+                          Logger().d("signed in using $email");
+
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               landingPageRoute, (route) => false);
                         } else {
                           // user's email is not verified
-
                           Get.to(() => VerifyEmailView());
                         }
                       } on UserNotFoundAuthException {
@@ -238,15 +239,25 @@ class _LoginViewState extends State<LoginView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(
-                        facebookLogo,
+                      SquareTile(
+                        imagePath: facebookLogo,
+                        onTap: () {},
                         height: height10 * 4,
                       ),
                       SizedBox(
                         width: width10 * 2,
                       ),
-                      SvgPicture.asset(
-                        googleLogo,
+                      SquareTile(
+                        imagePath: googleLogo,
+                        onTap: () async {
+                          User? user;
+                          user =
+                              await AuthService.firebase().signInWithGoogle();
+                          if (user != null) {
+                            Logger().d("signed in " + user.displayName!);
+                            Get.offAll(() => LandingPage());
+                          }
+                        },
                         height: height10 * 4,
                       ),
                     ],
