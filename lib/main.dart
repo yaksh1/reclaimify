@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:reclaimify/firebase_options.dart';
@@ -20,26 +21,29 @@ void main() async {
   );
 
   runApp(
-    GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-            useMaterial3: true,
-            fontFamily: 'Inter'),
-        defaultTransition: Transition.leftToRight,
-        transitionDuration: const Duration(milliseconds: 500),
-        // home: isViewed!=0? OnBoardingView() : const HomePage(),
-        home: const AuthGate(),
-        // home: const Gallery(),
-        routes: {
-          registerRoute: (context) => const Register(),
-          loginRoute: (context) => const LoginView(),
-          verifyEmailRoute: (context) => const VerifyEmailView(),
-          landingPageRoute:(context) => const LandingPage(),
-          otpScreenRoute:(context)=>const ForgotPasswordOtp(),
-        }
-        ),
+    ScreenUtilInit(
+      designSize: Size(360, 780),
+      builder: (context, child) => GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+              useMaterial3: true,
+              fontFamily: 'Inter'),
+          defaultTransition: Transition.leftToRight,
+          transitionDuration: const Duration(milliseconds: 500),
+          // home: isViewed!=0? OnBoardingView() : const HomePage(),
+          home: const AuthGate(),
+          // home: const Gallery(),
+          routes: {
+            registerRoute: (context) => const Register(),
+            loginRoute: (context) => const LoginView(),
+            verifyEmailRoute: (context) => const VerifyEmailView(),
+            landingPageRoute:(context) => const LandingPage(),
+            otpScreenRoute:(context)=>const ForgotPasswordOtp(),
+          }
+          ),
+    ),
   );
 }
 

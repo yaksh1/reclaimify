@@ -9,6 +9,8 @@ class AppColors {
   static const Color smallText = Color(0xFF546175);
   static Color lightYellow = Colors.yellow.shade100;
   static Color mapColor = Colors.green.shade100;
+  static Color buttonGrey = Color(0xffD9D9D9);
+  static Color lightRed = Color(0xffEF8A80);
 
 
   

@@ -306,15 +306,15 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void _googleLogIn() async {
-    User? user;
-    user = await AuthService.firebase().signInWithGoogle();
-    if (user != null) {
+    User? googleUser;
+    googleUser = await AuthService.firebase().signInWithGoogle();
+    if (googleUser != null) {
       mySnackbar.mySnackBar(
           header: "Hello!",
-          content: "Logged in as ${user.email}",
+          content: "Logged in as ${googleUser.email}",
           bgColor: Colors.green.shade100,
           borderColor: Colors.green);
-      Logger().d("Google signed in as " + user.displayName!);
+      Logger().d("Google signed in as " + googleUser.displayName!);
       Navigator.of(context)
           .pushNamedAndRemoveUntil(landingPageRoute, (route) => false);
     }

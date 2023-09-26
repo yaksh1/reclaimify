@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart'
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
-import 'package:reclaimify/components/error_dialog.dart';
 import 'package:reclaimify/firebase_options.dart';
 import 'package:reclaimify/services/auth/auth_exceptions.dart';
 import 'package:reclaimify/services/auth/auth_provider.dart';

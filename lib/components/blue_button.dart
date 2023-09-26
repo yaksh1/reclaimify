@@ -7,7 +7,11 @@ class blueButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.text,
-    this.width = double.infinity, this.borderRadius = 8,
+    this.width = double.infinity,
+    this.borderRadius = 8,
+    this.color = AppColors.mainColor,
+    this.fontweight = FontWeight.bold,
+    this.fontSize = 18,  this.height = 60,  this.textColor = AppColors.grey,
   });
 
   final double radius10 = Dimensions.radius10;
@@ -17,21 +21,27 @@ class blueButton extends StatelessWidget {
   final String text;
   final double width;
   final double borderRadius;
+  final Color color;
+  final Color textColor;
+  final FontWeight fontweight;
+  final double fontSize;
+  final double height;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+
       width: width,
       child: MaterialButton(
+        
         onPressed: onPressed,
-        textColor: AppColors.grey,
-        color: AppColors.mainColor,
+        textColor: textColor,
+        color: color,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius)),
-        height: height10 * 6,
+        height: height,
         child: Text(
           text,
-          style:
-              TextStyle(fontWeight: FontWeight.bold, fontSize: width10 * 1.8),
+          style: TextStyle(fontWeight: fontweight, fontSize: fontSize),
         ),
       ),
     );

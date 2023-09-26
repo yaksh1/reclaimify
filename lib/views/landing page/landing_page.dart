@@ -14,6 +14,7 @@ import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
+import 'package:reclaimify/views/advert_view/advert_view.dart';
 import 'package:reclaimify/views/login/login_view.dart';
 
 class LandingPage extends StatefulWidget {
@@ -112,7 +113,9 @@ class _LandingPageState extends State<LandingPage> {
                     PhosphorIcons.bold.plus,
                     size: height10 * 4,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => AdvertView());
+                  },
                 ),
                 //
                 card(
