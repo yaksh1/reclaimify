@@ -14,6 +14,7 @@ abstract class AuthProvider {
   Future<AuthUser> createUser({
     required String email,
     required String password,
+    required String username
   });
 
   Future<void> logOut();

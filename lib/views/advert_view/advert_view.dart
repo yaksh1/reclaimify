@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/my_text_field.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:reclaimify/views/take%20image%20view/image_option_view.dart';
 
 class AdvertView extends StatefulWidget {
   const AdvertView({super.key});
@@ -162,7 +164,7 @@ class _AdvertViewState extends State<AdvertView> {
                       blueButton(
                           onPressed: () {
                             //TODO: selection
-                            // Get.to(()=> )
+                            Get.off(() => ImageOptions());
                           },
                           text: "Continue ->",
                           width: 150.w,

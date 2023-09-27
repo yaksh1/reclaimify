@@ -36,8 +36,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   // TextEditingController? _phone;
   // TextEditingController? _name;
-  TextEditingController? _email;
-  TextEditingController? _password;
+   TextEditingController _email = TextEditingController();
+   TextEditingController _password = TextEditingController();
   var logger = Logger();
   final mySnackbar = MySnackBar();
 
@@ -54,14 +54,12 @@ class _LoginViewState extends State<LoginView> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   _email?.dispose();
-  //   _password?.dispose();
-  //   _name?.dispose();
-  //   _phone?.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

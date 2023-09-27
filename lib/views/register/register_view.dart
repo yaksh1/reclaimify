@@ -28,9 +28,9 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  TextEditingController? _name;
-  TextEditingController? _email;
-  TextEditingController? _password;
+  TextEditingController _name = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
 
   double height10 = Dimensions.height10;
   double width10 = Dimensions.width10;
@@ -44,14 +44,13 @@ class _RegisterState extends State<Register> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   _email?.dispose();
-  //   _password?.dispose();
-  //   _name?.dispose();
-  //   _phone?.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    _name.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,11 +142,12 @@ class _RegisterState extends State<Register> {
                   //! ---- sign up button ---- //
                   MaterialButton(
                     onPressed: () async {
-                      final email = _email!.text;
-                      final password = _password!.text;
+                      final email = _email.text.trim();
+                      final password = _password.text.trim();
+                      final name = _name.text.trim();
                       try {
-                        await AuthService.firebase()
-                            .createUser(email: email, password: password);
+                        await AuthService.firebase().createUser(
+                            email: email, password: password, username: name);
 
                         // ---- when clicked on sign up button ---- //
                         AuthService.firebase().sendEmailVerification();
@@ -167,31 +167,26 @@ class _RegisterState extends State<Register> {
                       } on EmptyFieldAuthException {
                         mySnackbar.mySnackBar(
                             header: "Empty Field",
-                            content: "Email or password is empty, kindly check again.",
+                            content:
+                                "Email or password is empty, kindly check again.",
                             bgColor: Colors.red.shade200,
                             borderColor: Colors.red);
-                        
                       } on EmailAlreadyInUseAuthException {
                         mySnackbar.mySnackBar(
                             header: "Email already in use",
-                            content:
-                                "This email is already in use",
+                            content: "This email is already in use",
                             bgColor: Colors.red.shade200,
                             borderColor: Colors.red);
-                      
                       } on InvalidEmailAuthException {
                         mySnackbar.mySnackBar(
                             header: "Invalid email",
-                            content:
-                                "Please enter a valid email id",
+                            content: "Please enter a valid email id",
                             bgColor: Colors.red.shade200,
                             borderColor: Colors.red);
-
                       } on GenericAuthException {
                         mySnackbar.mySnackBar(
                             header: "Error Occurred",
-                            content:
-                                "Failed to register.",
+                            content: "Failed to register.",
                             bgColor: Colors.red.shade200,
                             borderColor: Colors.red);
                       }

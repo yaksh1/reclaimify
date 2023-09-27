@@ -58,7 +58,7 @@ class PlusButtonCard extends StatelessWidget {
               BigText(
                 text: heading,
                 color: AppColors.darkGrey,
-                size: width10 * 2.5,
+                size: width10 * 2.5,  
               ),
               SmallText(
                 text: subHeading,
