@@ -23,7 +23,7 @@ dependencies:
   firebase_auth: ^4.9.0
   firebase_analytics: ^10.4.5
   cloud_firestore: ^4.9.1
-  google_fonts: ^5.1.0
+  google_fonts: ^6.1.0
   logger: ^2.0.2
   google_sign_in: ^6.1.5
   flutter_native_splash: ^2.3.2
@@ -39,6 +39,9 @@ dependencies:
   flutter_screenutil: ^5.9.0
   flutter_facebook_auth: ^6.0.2
   firebase_storage: ^11.2.7
+  pinput: ^3.0.1
+  firebase_messaging: ^14.6.8
+
 
 dev_dependencies:
   flutter_test:
