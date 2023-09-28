@@ -36,7 +36,7 @@ class AuthService implements AuthProvider {
       provider.phoneAuthentication(phoneNo);
 
   @override
-  Future<bool> verifyOtp(String otp) => provider.verifyOtp(otp);
+  Future<bool> verifyOtp(var otp) => provider.verifyOtp(otp);
 
   @override
   Future<User?> signInWithGoogle() => provider.signInWithGoogle();

@@ -8,16 +8,19 @@ import 'package:firebase_auth/firebase_auth.dart'
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
+import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/firebase_options.dart';
 import 'package:reclaimify/services/auth/auth_exceptions.dart';
 import 'package:reclaimify/services/auth/auth_provider.dart';
 import 'package:reclaimify/services/auth/auth_user.dart';
 
 class FirebaseAuthProvider implements AuthProvider {
+  //! <---- variables -----> //
   final GoogleSignIn googleSignIn = new GoogleSignIn();
   final auth = FirebaseAuth.instance;
   User? userForGoogle;
   var verificationId = ''.obs;
+  //! <---- create user -----> //
   @override
   Future<AuthUser> createUser({
     required String email,
@@ -28,8 +31,8 @@ class FirebaseAuthProvider implements AuthProvider {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      //! save user to database
-      await saveUSerEmailPass(email,username);
+      //$ save user to database
+      await saveUSerEmailPass(email, username);
       final user = currentUser;
       if (user != null) {
         return user;
@@ -53,6 +56,7 @@ class FirebaseAuthProvider implements AuthProvider {
     }
   }
 
+  //! <---- get current user -----> //
   @override
   // implement currentUser
   AuthUser? get currentUser {
@@ -64,6 +68,7 @@ class FirebaseAuthProvider implements AuthProvider {
     }
   }
 
+  //! <---- get current user -----> //
   @override
   Future<AuthUser?> logIn(
       {required String email, required String password}) async {
@@ -90,6 +95,7 @@ class FirebaseAuthProvider implements AuthProvider {
     }
   }
 
+  //! <---- logout -----> //
   @override
   Future<void> logOut() async {
     // implement logOut
@@ -109,6 +115,7 @@ class FirebaseAuthProvider implements AuthProvider {
     }
   }
 
+  //! <---- send email verification -----> //
   @override
   Future<void> sendEmailVerification() async {
     // implement sendEmailVerification
@@ -120,6 +127,7 @@ class FirebaseAuthProvider implements AuthProvider {
     }
   }
 
+  //! <---- initialize app -----> //
   @override
   Future<void> initialize() async {
     await Firebase.initializeApp(
@@ -127,8 +135,11 @@ class FirebaseAuthProvider implements AuthProvider {
     );
   }
 
+  //! <---- phone auth -----> //
+
   @override
   Future<void> phoneAuthentication(String phoneNo) async {
+    Logger().d(phoneNo);
     await auth.verifyPhoneNumber(
       phoneNumber: phoneNo,
       verificationCompleted: (credential) async {
@@ -142,7 +153,9 @@ class FirebaseAuthProvider implements AuthProvider {
       },
       verificationFailed: (e) {
         if (e.code == 'invalid-phone-number') {
-          throw InvalidPhoneNumberAuthException();
+          MySnackBar().mySnackBar(
+              content: "Please enter a valid phone number",
+              header: "Invalid phone number format");
         } else {
           throw GenericAuthException();
         }
@@ -151,14 +164,15 @@ class FirebaseAuthProvider implements AuthProvider {
   }
 
   @override
-  Future<bool> verifyOtp(String otp) async {
-    log("OTP:$otp");
+  Future<bool> verifyOtp(var otp) async {
+    Logger().d("OTP:$otp");
     var credentials = await auth.signInWithCredential(
         PhoneAuthProvider.credential(
-            verificationId: verificationId.value, smsCode: otp));
+            verificationId: verificationId.value, smsCode: otp!));
     return credentials.user != null ? true : false;
   }
 
+  //! <---- google sign in -----> //
   @override
   Future<User?> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -166,7 +180,7 @@ class FirebaseAuthProvider implements AuthProvider {
 
     // if user canceled the operation
     if (googleUser == null) {
-      Logger().d("Operation Canceled");
+      return null;
     }
 
     // Obtain the auth details from the request
@@ -183,7 +197,7 @@ class FirebaseAuthProvider implements AuthProvider {
       // Once signed in, return the UserCredential
       final UserCredential userCredential =
           await auth.signInWithCredential(credential);
-      //! save user in data collection
+      //$ save user in data collection
       await saveUser(googleUser);
 
       userForGoogle = userCredential.user;
@@ -214,6 +228,7 @@ class FirebaseAuthProvider implements AuthProvider {
     return userForGoogle;
   }
 
+  //! <---- save google user data -----> //
   saveUser(GoogleSignInAccount? googleUser) {
     FirebaseFirestore.instance.collection("users").doc(googleUser!.email).set({
       "email": googleUser.email,
@@ -224,12 +239,11 @@ class FirebaseAuthProvider implements AuthProvider {
     Logger().d("Saved user data");
   }
 
-  saveUSerEmailPass(String email,String username) {
-    FirebaseFirestore.instance.collection("users")
-    .doc(email)
-    .set({
+  //! <---- save email pass data -----> //
+  saveUSerEmailPass(String email, String username) {
+    FirebaseFirestore.instance.collection("users").doc(email).set({
       'email': email,
-      'name':username,
+      'name': username,
     });
   }
 }

@@ -21,7 +21,7 @@ abstract class AuthProvider {
   Future<void> sendEmailVerification();
 
   Future<void> phoneAuthentication(String phoneNo);
-  Future<bool> verifyOtp(String otp);
+  Future<bool> verifyOtp(var otp);
 
   Future<User?> signInWithGoogle();
 }
