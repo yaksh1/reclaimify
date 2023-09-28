@@ -22,6 +22,7 @@ import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
 import 'package:reclaimify/utils/routes.dart';
 import 'package:reclaimify/views/forget_password/forgot_pass_option.dart';
+import 'package:reclaimify/views/forget_password/forgot_password_mail/forgot_password_mail.dart';
 import 'package:reclaimify/views/landing%20page/landing_page.dart';
 import 'package:reclaimify/views/register/register_view.dart';
 import 'package:reclaimify/views/verify%20email/verify_email_view.dart';
@@ -36,8 +37,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   // TextEditingController? _phone;
   // TextEditingController? _name;
-   TextEditingController _email = TextEditingController();
-   TextEditingController _password = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
   var logger = Logger();
   final mySnackbar = MySnackBar();
 
@@ -141,8 +142,7 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          ForgotPasswordScreen.ForgotPasswordBottomSheet(
-                              context);
+                          Get.to(() => ForgotPasswordMailOption());
                         },
                         child: FittedBox(
                             fit: BoxFit.scaleDown,
@@ -161,8 +161,8 @@ class _LoginViewState extends State<LoginView> {
                   //! --- log in button ---- //
                   MaterialButton(
                     onPressed: () async {
-                      final email = _email!.text;
-                      final password = _password!.text;
+                      final email = _email.text;
+                      final password = _password.text;
                       try {
                         await AuthService.firebase()
                             .logIn(email: email, password: password);
@@ -184,11 +184,10 @@ class _LoginViewState extends State<LoginView> {
                         }
                       } on UserNotFoundAuthException {
                         mySnackbar.mySnackBar(
-                          header: "User not found",
-                          content: "Please double-check your entered details",
-                          bgColor: Colors.red.shade100,
-                            borderColor: Colors.red
-                          );
+                            header: "User not found",
+                            content: "Please double-check your entered details",
+                            bgColor: Colors.red.shade100,
+                            borderColor: Colors.red);
                         // showErrorDialog(context,
                         //     'User not found. Please double-check your entered details');
                       } on WrongPasswordAuthException {
@@ -199,11 +198,10 @@ class _LoginViewState extends State<LoginView> {
                             borderColor: Colors.red);
                       } on GenericAuthException {
                         mySnackbar.mySnackBar(
-                          header: "Error Occurred",
-                          content: "Authentication Error",
-                          bgColor: Colors.red.shade100,
-                          borderColor: Colors.red
-                        );
+                            header: "Error Occurred",
+                            content: "Authentication Error",
+                            bgColor: Colors.red.shade100,
+                            borderColor: Colors.red);
                       }
                     },
 
