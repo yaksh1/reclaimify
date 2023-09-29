@@ -3,7 +3,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/input_decoration.dart';
 
 class PasswordTextField extends StatelessWidget {
-  PasswordTextField({super.key, required this.controller, required this.labelText, required this.hintText});
+  PasswordTextField({super.key, required this.controller, this.labelText = "Password", this.hintText ="Enter your password"});
 
   final TextEditingController controller;
   final MyDecoration decor = MyDecoration();

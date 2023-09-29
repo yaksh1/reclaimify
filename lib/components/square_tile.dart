@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:reclaimify/utils/dimensions.dart';
 
 class SquareTile extends StatelessWidget {
   final void Function()? onTap;

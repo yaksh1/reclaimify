@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:reclaimify/components/responsive_text.dart';
 import 'package:reclaimify/utils/colors.dart';
 

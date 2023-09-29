@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuth, FirebaseAuthException, PhoneAuthProvider;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
@@ -12,14 +9,18 @@ import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/firebase_options.dart';
 import 'package:reclaimify/services/auth/auth_exceptions.dart';
 import 'package:reclaimify/services/auth/auth_provider.dart';
+import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/services/auth/auth_user.dart';
+import 'package:reclaimify/views/login/login_view.dart';
 
 class FirebaseAuthProvider implements AuthProvider {
-  //! <---- variables -----> //
+//! <---- variables -----> //
   final GoogleSignIn googleSignIn = new GoogleSignIn();
   final auth = FirebaseAuth.instance;
   User? userForGoogle;
   var verificationId = ''.obs;
+  var newPassword = '';
+  
   //! <---- create user -----> //
   @override
   Future<AuthUser> createUser({
@@ -70,7 +71,7 @@ class FirebaseAuthProvider implements AuthProvider {
 
   //! <---- get current user -----> //
   @override
-  Future<AuthUser?> logIn(
+  Future<AuthUser> logIn(
       {required String email, required String password}) async {
     // implement logIn
     try {
@@ -135,43 +136,6 @@ class FirebaseAuthProvider implements AuthProvider {
     );
   }
 
-  //! <---- phone auth -----> //
-
-  @override
-  Future<void> phoneAuthentication(String phoneNo) async {
-    Logger().d(phoneNo);
-    await auth.verifyPhoneNumber(
-      phoneNumber: phoneNo,
-      verificationCompleted: (credential) async {
-        await auth.signInWithCredential(credential);
-      },
-      codeSent: (verificationId, resendToken) {
-        this.verificationId.value = verificationId;
-      },
-      codeAutoRetrievalTimeout: (verificationId) {
-        this.verificationId.value = verificationId;
-      },
-      verificationFailed: (e) {
-        if (e.code == 'invalid-phone-number') {
-          MySnackBar().mySnackBar(
-              content: "Please enter a valid phone number",
-              header: "Invalid phone number format");
-        } else {
-          throw GenericAuthException();
-        }
-      },
-    );
-  }
-
-  @override
-  Future<bool> verifyOtp(var otp) async {
-    Logger().d("OTP:$otp");
-    var credentials = await auth.signInWithCredential(
-        PhoneAuthProvider.credential(
-            verificationId: verificationId.value, smsCode: otp!));
-    return credentials.user != null ? true : false;
-  }
-
   //! <---- google sign in -----> //
   @override
   Future<User?> signInWithGoogle() async {
@@ -186,7 +150,7 @@ class FirebaseAuthProvider implements AuthProvider {
     // Obtain the auth details from the request
 
     final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+        await googleUser.authentication;
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
@@ -245,5 +209,53 @@ class FirebaseAuthProvider implements AuthProvider {
       'email': email,
       'name': username,
     });
+  }
+
+  //! <---- password reset email -----> //
+  @override
+  Future passwordReset({required String email}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      MySnackBar().mySnackBar(
+          header: "Email Sent",
+          content:
+              "Password reset link sent. Please check your email inbox and spam.",
+          bgColor: Colors.green.shade100,
+          borderColor: Colors.green);
+      Get.to(() => LoginView());
+    } on FirebaseAuthException catch (e) {
+      MySnackBar().mySnackBar(
+          header: "Error",
+          content: e.code,
+          bgColor: Colors.red.shade100,
+          borderColor: Colors.red);
+    } catch (e){
+      MySnackBar().mySnackBar(
+          header: "Error",
+          content: e.toString(),
+          bgColor: Colors.red.shade100,
+          borderColor: Colors.red);
+    }
+  }
+
+  @override
+  Future changePassword() async {
+    final user = auth.currentUser;
+    try {
+      await user!.updatePassword(newPassword);
+      AuthService.firebase().logOut();
+      MySnackBar().mySnackBar(
+        header: "Password Changed",
+        content: "Your Password has been changed, login again!",
+      );
+      Get.to(() => LoginView());
+    } catch (e) {
+      MySnackBar().mySnackBar(
+        header: "Error",
+        content: e.toString(),
+        bgColor: Colors.red.shade100,
+        borderColor: Colors.red,
+      );
+    }
   }
 }

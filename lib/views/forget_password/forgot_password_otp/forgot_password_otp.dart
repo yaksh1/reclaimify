@@ -1,11 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pinput/pinput.dart';
@@ -15,7 +12,6 @@ import 'package:reclaimify/components/icon_and_text.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/components/square_tile.dart';
-import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
@@ -36,7 +32,7 @@ class _ForgotPasswordOtpState extends State<ForgotPasswordOtp> {
     var code = '';
     double height10 = Dimensions.height10;
     double width10 = Dimensions.width10;
-    double radius10 = Dimensions.radius10;
+    // double radius10 = Dimensions.radius10;
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -133,7 +129,7 @@ class _ForgotPasswordOtpState extends State<ForgotPasswordOtp> {
 
                 InkWell(
                   onTap: () async {
-                    //TODO navigate
+                    
                   },
                   child: IconAndTextWidget(
                     icon: Icons.replay_outlined,

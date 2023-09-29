@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -11,12 +11,10 @@ import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/components/password_text_field.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/components/square_tile.dart';
-import 'package:reclaimify/components/text_form.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
-import 'package:reclaimify/views/forget_password/forgot_password_otp/forgot_password_otp.dart';
 import 'package:reclaimify/views/login/login_view.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -27,7 +25,7 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
-    TextEditingController _newPassword = TextEditingController();
+  TextEditingController _newPassword = TextEditingController();
   TextEditingController _confirmPassword = TextEditingController();
 
   @override
@@ -37,7 +35,6 @@ class _ResetPasswordState extends State<ResetPassword> {
     super.initState();
   }
 
-
   @override
   void dispose() {
     _newPassword.dispose();
@@ -45,7 +42,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     super.dispose();
   }
 
-    //! <---- global form key -----> //
+  //! <---- global form key -----> //
   final _formKey = GlobalKey<FormState>();
 
   double height10 = Dimensions.height10;
@@ -56,8 +53,8 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: SafeArea(
+      appBar: AppBar(),
+      body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,
@@ -68,10 +65,11 @@ class _ResetPasswordState extends State<ResetPassword> {
               children: [
                 //! svg image
                 Padding(
-                  padding: EdgeInsets.only(bottom: height10*2 ),
+                  padding: EdgeInsets.only(bottom: height10 * 2),
                   child: SquareTile(
                     imagePath: resetPassword,
-                    height: height10 * 17, onTap: () {  },
+                    height: height10 * 17,
+                    onTap: () {},
                   ),
                 ),
                 //! heading
@@ -118,15 +116,17 @@ class _ResetPasswordState extends State<ResetPassword> {
                         height: 5,
                       ),
                       //! button
-                      blueButton(onPressed: () {
-                        if (_formKey.currentState!.validate() &&
+                      blueButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate() &&
                                 _newPassword.text == _confirmPassword.text) {
                               setState(() {
                                 newPassword = _newPassword.text;
                               });
-                              changePassword();
+                              AuthService.firebase().changePassword();
                             }
-                      }, text: "Change Password"),
+                          },
+                          text: "Change Password"),
 
                       //! white space
                       SizedBox(
@@ -155,23 +155,6 @@ class _ResetPasswordState extends State<ResetPassword> {
       ),
     );
   }
-  final user = FirebaseAuth.instance.currentUser;
-  Future changePassword() async {
-    try {
-      await user!.updatePassword(newPassword);
-      AuthService.firebase().logOut();
-      MySnackBar().mySnackBar(
-        header: "Password Changed",
-        content: "Your Password has been changed, login again!",
-      );
-      Get.to(() => LoginView());
-    } catch (e) {
-      MySnackBar().mySnackBar(
-        header: "Error",
-        content: e.toString(),
-        bgColor: Colors.red.shade100,
-        borderColor: Colors.red,
-      );
-    }
-  }
+
+
 }

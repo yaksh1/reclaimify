@@ -1,21 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/email_text_field.dart';
-import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/components/square_tile.dart';
-import 'package:reclaimify/components/text_form.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
-import 'package:reclaimify/views/forget_password/forgot_password_otp/forgot_password_otp.dart';
-import 'package:reclaimify/views/login/login_view.dart';
 
 class ForgotPasswordMailOption extends StatefulWidget {
   const ForgotPasswordMailOption({super.key});
@@ -41,30 +35,10 @@ class _ForgotPasswordMailOptionState extends State<ForgotPasswordMailOption> {
     super.dispose();
   }
 
-  Future passwordReset() async {
-    try {
-      await FirebaseAuth.instance
-          .sendPasswordResetEmail(email: _email.text.trim());
-      MySnackBar().mySnackBar(
-          header: "Email Sent",
-          content: "Password reset link sent. Please check your email inbox and spam.",
-          bgColor: Colors.green.shade100,
-          borderColor: Colors.green);
-      Get.to(() => LoginView());
-    } on FirebaseAuthException catch (e) {
-      MySnackBar().mySnackBar(
-          header: "Error",
-          content: e.code,
-          bgColor: Colors.red.shade100,
-          borderColor: Colors.red);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     double height10 = Dimensions.height10;
     double width10 = Dimensions.width10;
-    double radius10 = Dimensions.radius10;
 
     return Scaffold(
       appBar: AppBar(),
@@ -111,7 +85,8 @@ class _ForgotPasswordMailOptionState extends State<ForgotPasswordMailOption> {
                       ),
                       blueButton(
                         onPressed: () {
-                          passwordReset();
+                          AuthService.firebase()
+                              .passwordReset(email: _email.text.trim());
                         },
                         text: 'Next',
                       ),

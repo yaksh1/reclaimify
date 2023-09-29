@@ -12,14 +12,16 @@ class AuthService implements AuthProvider {
 
   @override
   Future<AuthUser> createUser(
-          {required String email, required String password,required String username}) =>
-      provider.createUser(email: email, password: password,username:username);
+          {required String email,
+          required String password,
+          required String username}) =>
+      provider.createUser(email: email, password: password, username: username);
 
   @override
   AuthUser? get currentUser => provider.currentUser;
 
   @override
-  Future<AuthUser?> logIn({required String email, required String password}) =>
+  Future<AuthUser> logIn({required String email, required String password}) =>
       provider.logIn(email: email, password: password);
 
   @override
@@ -32,13 +34,12 @@ class AuthService implements AuthProvider {
   Future<void> initialize() => provider.initialize();
 
   @override
-  Future<void> phoneAuthentication(String phoneNo) =>
-      provider.phoneAuthentication(phoneNo);
-
-  @override
-  Future<bool> verifyOtp(var otp) => provider.verifyOtp(otp);
-
-  @override
   Future<User?> signInWithGoogle() => provider.signInWithGoogle();
-  
+
+  @override
+  Future passwordReset({required String email}) =>
+      provider.passwordReset(email: email);
+
+  @override
+  Future changePassword() => provider.changePassword();
 }

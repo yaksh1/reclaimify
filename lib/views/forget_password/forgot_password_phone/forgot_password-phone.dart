@@ -13,11 +13,9 @@ import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/components/square_tile.dart';
 import 'package:reclaimify/components/text_form.dart';
 import 'package:reclaimify/services/auth/auth_exceptions.dart';
-import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
-import 'package:reclaimify/utils/routes.dart';
 import 'package:reclaimify/views/forget_password/forgot_password_otp/forgot_password_otp.dart';
 
 class ForgotPasswordPhoneOption extends StatefulWidget {

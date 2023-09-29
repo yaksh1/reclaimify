@@ -6,22 +6,20 @@ abstract class AuthProvider {
 
   AuthUser? get currentUser;
 
-  Future<AuthUser?> logIn({
+  Future<AuthUser> logIn({
     required String email,
     required String password,
   });
 
-  Future<AuthUser> createUser({
-    required String email,
-    required String password,
-    required String username
-  });
+  Future<AuthUser> createUser(
+      {required String email,
+      required String password,
+      required String username});
 
   Future<void> logOut();
   Future<void> sendEmailVerification();
 
-  Future<void> phoneAuthentication(String phoneNo);
-  Future<bool> verifyOtp(var otp);
-
   Future<User?> signInWithGoogle();
+  Future passwordReset({required String email});
+  Future changePassword();
 }

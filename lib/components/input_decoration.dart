@@ -10,7 +10,7 @@ class MyDecoration {
       prefixIcon: Icon(icon),
       prefixIconColor: AppColors.mainColor,
       label: label,
-      helperText: "",
+      // helperText: "",
       errorStyle: const TextStyle(color: Colors.redAccent, fontSize: 12),
       helperStyle: const TextStyle(color: Colors.black, fontSize: 12),
       labelStyle: const TextStyle(color: AppColors.textBoxPlaceholder),
