@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/small_text.dart';
@@ -13,6 +16,22 @@ class ImageOptions extends StatefulWidget {
 }
 
 class _ImageOptionsState extends State<ImageOptions> {
+  File? _image;
+  final imagePicker = ImagePicker();
+  Future getImageCamera() async {
+    final image = await imagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _image = File(image!.path);
+    });
+  }
+
+  Future getImageGallery() async {
+    final image = await imagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(image!.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,17 +42,20 @@ class _ImageOptionsState extends State<ImageOptions> {
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 130.h),
               child: Column(
-                
                 children: [
                   //! upload an image
                   PlusCard(
-                    title: "Upload an image",
-                    subtitle: "upload image from your local gallery",
+                    onPressed: getImageCamera,
+                    title: "Take an image",
+                    subtitle: "Take image using camera",
                     plusColor: AppColors.mainColor,
                     cardColor: AppColors.lightMainColor2,
                   ),
-                  SizedBox(height: 30.h,),
+                  SizedBox(
+                    height: 30.h,
+                  ),
                   PlusCard(
+                    onPressed: getImageGallery,
                     title: "Upload an image",
                     subtitle: "upload image from your local gallery",
                     plusColor: Colors.red.shade500,
@@ -56,12 +78,14 @@ class PlusCard extends StatelessWidget {
     required this.subtitle,
     required this.plusColor,
     required this.cardColor,
+    required this.onPressed,
   });
 
   final String title;
   final String subtitle;
   final Color plusColor;
   final Color cardColor;
+  final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -74,14 +98,14 @@ class PlusCard extends StatelessWidget {
             color: cardColor, borderRadius: BorderRadius.circular(20)),
         // padding: EdgeInsets.only(bottom: 20.h),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
               height: 165.h,
               width: 70.w,
               child: MaterialButton(
                 elevation: 7,
-                onPressed: () {},
+                onPressed: onPressed,
                 textColor: plusColor,
                 color: AppColors.grey,
                 shape: RoundedRectangleBorder(
@@ -92,6 +116,9 @@ class PlusCard extends StatelessWidget {
                   size: 35,
                 ),
               ),
+            ),
+            SizedBox(
+              width: 10,
             ),
             Column(
               children: [
