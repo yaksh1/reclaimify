@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,8 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/my_text_field.dart';
 import 'package:reclaimify/components/small_text.dart';
+import 'package:reclaimify/services/auth/auth_service.dart';
+import 'package:reclaimify/services/auth/auth_user.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/views/take%20image%20view/image_option_view.dart';
 
@@ -29,6 +33,8 @@ class _AdvertViewState extends State<AdvertView> {
   Color _shadow2 = Colors.transparent;
   Color _shadow3 = Colors.transparent;
   Color _shadow4 = Colors.transparent;
+
+  String postType = "found";
 
   @override
   void initState() {
@@ -163,7 +169,8 @@ class _AdvertViewState extends State<AdvertView> {
                     children: [
                       blueButton(
                           onPressed: () {
-                            //TODO: selection
+                            savePostOfUser(_desc.text, _title.text,
+                                _currentItemSelected, postType, _location.text);
                             Get.off(() => ImageOptions());
                           },
                           text: "Continue ->",
@@ -181,6 +188,21 @@ class _AdvertViewState extends State<AdvertView> {
         ),
       ),
     );
+  }
+
+  //! <---- save post data -----> //
+  savePostOfUser(String desc, String title, String? category, String postType,
+      String location) {
+    final user = AuthService.firebase().getCurrentUser();
+    FirebaseFirestore.instance.collection("Posts").doc(user!.email).set({
+      'email': user.email,
+      'name': user.displayName,
+      'category': category,
+      'post Type': postType,
+      'description': desc,
+      'title': title,
+      'location': location,
+    });
   }
 
   //! <---- build header method -----> //
@@ -260,8 +282,8 @@ class _AdvertViewState extends State<AdvertView> {
                   _shadow2 = AppColors.lightMainColor2;
                   _shadow3 = Colors.transparent;
                   _shadow4 = Colors.transparent;
+                  postType = "Found";
                 });
-                //TODO: selection
               },
               text: "Found",
               width: 85.w,
@@ -293,6 +315,7 @@ class _AdvertViewState extends State<AdvertView> {
                 _shadow4 = AppColors.lightRed;
                 _shadow1 = Colors.transparent;
                 _shadow2 = Colors.transparent;
+                postType = "Lost";
               });
             },
             text: "lost",
