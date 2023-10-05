@@ -1,12 +1,14 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
+import 'package:reclaimify/components/pick_image.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:reclaimify/views/post%20revise%20view/post_revise.dart';
 
 class ImageOptions extends StatefulWidget {
   const ImageOptions({super.key});
@@ -16,21 +18,7 @@ class ImageOptions extends StatefulWidget {
 }
 
 class _ImageOptionsState extends State<ImageOptions> {
-  File? _image;
-  final imagePicker = ImagePicker();
-  Future getImageCamera() async {
-    final image = await imagePicker.pickImage(source: ImageSource.camera);
-    setState(() {
-      _image = File(image!.path);
-    });
-  }
-
-  Future getImageGallery() async {
-    final image = await imagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = File(image!.path);
-    });
-  }
+  Uint8List? _file;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +33,17 @@ class _ImageOptionsState extends State<ImageOptions> {
                 children: [
                   //! upload an image
                   PlusCard(
-                    onPressed: getImageCamera,
+                    onPressed: () async {
+                      Uint8List image = await pickImage(ImageSource.camera);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PostReviseView(file: _file!,)),
+                      );
+                      setState(() {
+                        _file = image;
+                      });
+                    },
                     title: "Take an image",
                     subtitle: "Take image using camera",
                     plusColor: AppColors.mainColor,
@@ -55,7 +53,19 @@ class _ImageOptionsState extends State<ImageOptions> {
                     height: 30.h,
                   ),
                   PlusCard(
-                    onPressed: getImageGallery,
+                    onPressed: () async {
+                      Uint8List image =await  pickImage(ImageSource.gallery);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PostReviseView(
+                                  file: _file!,
+                                )),
+                      );
+                      setState(() {
+                        _file = image;
+                      });
+                    },
                     title: "Upload an image",
                     subtitle: "upload image from your local gallery",
                     plusColor: Colors.red.shade500,
@@ -89,11 +99,11 @@ class PlusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
         width: 350.w,
         padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 17.h),
-        margin: EdgeInsets.only(bottom: 10),
+        margin: EdgeInsets.only(bottom: 10.h),
         decoration: BoxDecoration(
             color: cardColor, borderRadius: BorderRadius.circular(20)),
         // padding: EdgeInsets.only(bottom: 20.h),
@@ -118,18 +128,18 @@ class PlusCard extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 10,
+              width: 20,
             ),
             Column(
               children: [
                 BigText(
                   text: title,
                   color: AppColors.darkGrey,
-                  size: 30,
+                  size: 25,
                 ),
                 SmallText(
                   text: subtitle,
-                  size: 12.sp,
+                  size: 10.sp,
                   color: AppColors.smallText,
                 )
               ],

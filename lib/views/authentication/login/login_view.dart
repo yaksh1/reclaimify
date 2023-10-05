@@ -1,16 +1,17 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/dual_color_text.dart';
 import 'package:reclaimify/components/email_text_field.dart';
 import 'package:reclaimify/components/google_sign_in.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
-import 'package:reclaimify/components/name_text_field.dart';
 import 'package:reclaimify/components/password_text_field.dart';
 import 'package:reclaimify/components/small_grey_text.dart';
+import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/components/square_tile.dart';
 
 import 'package:reclaimify/components/text_form.dart';
@@ -20,31 +21,38 @@ import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
 import 'package:reclaimify/utils/routes.dart';
+import 'package:reclaimify/views/authentication/forget_password/forgot_password_mail/forgot_password_mail.dart';
+import 'package:reclaimify/views/authentication/verify%20email/verify_email_view.dart';
 
-class Register extends StatefulWidget {
-  const Register({super.key});
+
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _RegisterState extends State<Register> {
-  TextEditingController _name = TextEditingController();
+class _LoginViewState extends State<LoginView> {
+  // TextEditingController? _phone;
+  // TextEditingController? _name;
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
+  var logger = Logger();
+  final mySnackbar = MySnackBar();
 
   //! <---- global key -----> //
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   double height10 = Dimensions.height10;
   double width10 = Dimensions.width10;
   double radius10 = Dimensions.radius10;
-  final mySnackbar = MySnackBar();
+
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
-    _name = TextEditingController();
+    // _name = TextEditingController();
+    // _phone = TextEditingController();
     super.initState();
   }
 
@@ -52,7 +60,6 @@ class _RegisterState extends State<Register> {
   void dispose() {
     _email.dispose();
     _password.dispose();
-    _name.dispose();
     super.dispose();
   }
 
@@ -60,6 +67,9 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
+      // appBar: AppBar(
+      //   title:const Text("Login"),
+      // ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -68,12 +78,12 @@ class _RegisterState extends State<Register> {
               // color: AppColors.onBoardingPage2Color,
               margin: EdgeInsets.symmetric(horizontal: width10 * 2),
               child: Form(
-                key: _formkey,
+                key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     //! svg picture //
-                    SvgPicture.asset(registerSvg,
+                    SvgPicture.asset(loginSvg,
                         height: height10 * 15,
                         width: width10 * 15,
                         fit: BoxFit.scaleDown),
@@ -84,98 +94,111 @@ class _RegisterState extends State<Register> {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: BigText(
-                          text: "Register.",
+                          text: "Login",
                           color: AppColors.primaryBlack,
                           size: width10 * 3,
                         ),
                       ),
                     ),
-                    //! ---- enter your information ---- //
+                    //! ---- enter your credentials ---- //
                     Container(
                       alignment: Alignment.centerLeft,
                       child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: SmallGreyText(text: "Enter your information")),
+                          child: SmallGreyText(text: "Enter your credentials")),
                     ),
+
                     // ---- white spaces ---- //
                     SizedBox(height: height10),
-              
-                    //! ---- name field ---- //
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical:10.0),
-                      child: NameTextField(controller: _name),
-                    ),
-              
                     //! ---- email field ---- //
                     Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-
-                      child: EmailTextField(controller: _email),
+                      padding: const EdgeInsets.only(top: 10),
+                      child: EmailTextField(
+                        controller: _email,
+                      ),
                     ),
 
                     //! ---- password field ---- //
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-
-                      child: PasswordTextField(controller: _password,),
+                      padding: const EdgeInsets.only(top: 20),
+                      child: PasswordTextField(
+                          controller: _password,
+                          labelText: "Password",
+                          hintText: "Enter your password"),
                     ),
-              
+
+                    //! ---- forgot password? ---- //
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Get.to(() => ForgotPasswordMailOption());
+                          },
+                          child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: SmallText(
+                                text: "Forgot password?",
+                                size: width10 * 1.2,
+                                weight: FontWeight.w400,
+                              )),
+                        )
+                      ],
+                    ),
+
                     //! ---- white spaces ---- //
                     SizedBox(height: height10 ),
-              
-                    //! ---- sign up button ---- //
+
+                    //! --- log in button ---- //
                     MaterialButton(
                       onPressed: () async {
-                        
-                        final email = _email.text.trim();
-                        final password = _password.text.trim();
-                        final name = _name.text.trim();
-                        try {
-                          await AuthService.firebase().createUser(
-                              email: email, password: password, username: name);
-              
-                          // ---- when clicked on sign up button ---- //
-                          AuthService.firebase().sendEmailVerification();
-              
-                          //$ --- DEBUG --- //
-              
-                          Logger().d("Registered using $email");
-              
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              verifyEmailRoute, (route) => false);
-                        } on WeakPasswordAuthException {
-                          mySnackbar.mySnackBar(
-                              header: "Weak-password",
-                              content: "Please enter a strong password.",
-                              bgColor: Colors.red.shade200,
-                              borderColor: Colors.red);
-                        } on EmptyFieldAuthException {
-                          mySnackbar.mySnackBar(
-                              header: "Empty Field",
-                              content:
-                                  "Email or password is empty, kindly check again.",
-                              bgColor: Colors.red.shade200,
-                              borderColor: Colors.red);
-                        } on EmailAlreadyInUseAuthException {
-                          mySnackbar.mySnackBar(
-                              header: "Email already in use",
-                              content: "This email is already in use",
-                              bgColor: Colors.red.shade200,
-                              borderColor: Colors.red);
-                        } on InvalidEmailAuthException {
-                          mySnackbar.mySnackBar(
-                              header: "Invalid email",
-                              content: "Please enter a valid email id",
-                              bgColor: Colors.red.shade200,
-                              borderColor: Colors.red);
-                        } on GenericAuthException {
-                          mySnackbar.mySnackBar(
-                              header: "Error Occurred",
-                              content: "Failed to register.",
-                              bgColor: Colors.red.shade200,
-                              borderColor: Colors.red);
+                        if (_formKey.currentState!.validate()) {
+                          final email = _email.text;
+                          final password = _password.text;
+                          try {
+                            await AuthService.firebase()
+                                .logIn(email: email, password: password);
+                            final user = AuthService.firebase().currentUser;
+                            if (user?.isEmailVerified ?? false) {
+                              // user's email is verified
+                              mySnackbar.mySnackBar(
+                                  header: "Hello!",
+                                  content: "Logged in as ${email}",
+                                  bgColor: Colors.green.shade100,
+                                  borderColor: Colors.green);
+                              Logger().d("Normal signed in using $email");
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  landingPageRoute, (route) => false);
+                            } else {
+                              // user's email is not verified
+                              Get.to(() => VerifyEmailView());
+                            }
+                          } on UserNotFoundAuthException {
+                            mySnackbar.mySnackBar(
+                                header: "User not found",
+                                content:
+                                    "Please double-check your entered details",
+                                bgColor: Colors.red.shade100,
+                                borderColor: Colors.red);
+                            // showErrorDialog(context,
+                            //     'User not found. Please double-check your entered details');
+                          } on WrongPasswordAuthException {
+                            mySnackbar.mySnackBar(
+                                header: "Wrong Password",
+                                content:
+                                    "Please double-check your entered details",
+                                bgColor: Colors.red.shade100,
+                                borderColor: Colors.red);
+                          } on GenericAuthException {
+                            mySnackbar.mySnackBar(
+                                header: "Error Occurred",
+                                content: "Authentication Error",
+                                bgColor: Colors.red.shade100,
+                                borderColor: Colors.red);
+                          }
                         }
                       },
+
                       //* styles of button
                       textColor: AppColors.grey,
                       color: AppColors.mainColor,
@@ -183,16 +206,16 @@ class _RegisterState extends State<Register> {
                           borderRadius: BorderRadius.circular(radius10 * 0.8)),
                       height: height10 * 6,
                       minWidth: double.infinity,
-                      child: Text("Sign Up",
+                      child: Text("Login",
                           style: TextStyle(
                               // fontFamily: 'Poppins',
                               fontWeight: FontWeight.bold,
                               fontSize: width10 * 2.2)),
                     ),
-              
-                    // ---- white spaces ---- //
+
+                    //! ---- white spaces ---- //
                     SizedBox(height: height10 * 2),
-              
+
                     //! ---- or continue with --- //
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 50.0),
@@ -220,10 +243,10 @@ class _RegisterState extends State<Register> {
                         ],
                       ),
                     ),
-              
+
                     // white spaces
-                    SizedBox(height: height10 * 2),
-              
+                    SizedBox(height: height10 * 3),
+
                     //! ---- log in options ---- //
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -238,27 +261,25 @@ class _RegisterState extends State<Register> {
                         ),
                         SquareTile(
                           imagePath: googleLogo,
-                          onTap: () {
-                            Google().googleLogIn();
-                          },
+                          onTap: Google().googleLogIn,
                           height: height10 * 4,
                         ),
                       ],
                     ),
-              
-                    // ---- white spaces ---- //
-                    SizedBox(height: height10 * 4),
-              
-                    //! ---- already have an account? login route ---- //
+
+                    // white spaces
+                    SizedBox(height: height10 * 3),
+
+                    //! dont have an account?
                     InkWell(
                       onTap: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(
-                            loginRoute, (route) => false);
+                            registerRoute, (route) => false);
                       },
                       child: Ink(
                         child: DualColorText(
-                          text1: "Already have an account? ",
-                          text2: "Login",
+                          text1: "Don't have an account? ",
+                          text2: "Sign up",
                           weight: FontWeight.w400,
                           size: width10 * 1.6,
                           color: AppColors.slateGrey,

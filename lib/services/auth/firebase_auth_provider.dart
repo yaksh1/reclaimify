@@ -11,7 +11,7 @@ import 'package:reclaimify/services/auth/auth_exceptions.dart';
 import 'package:reclaimify/services/auth/auth_provider.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/services/auth/auth_user.dart';
-import 'package:reclaimify/views/login/login_view.dart';
+import 'package:reclaimify/views/authentication/login/login_view.dart';
 
 class FirebaseAuthProvider implements AuthProvider {
 //! <---- variables -----> //
@@ -20,7 +20,7 @@ class FirebaseAuthProvider implements AuthProvider {
   User? userForGoogle;
   var verificationId = ''.obs;
   var newPassword = '';
-  
+
   //! <---- create user -----> //
   @override
   Future<AuthUser> createUser({
@@ -211,6 +211,14 @@ class FirebaseAuthProvider implements AuthProvider {
     });
   }
 
+  //! <---- save post data -----> //
+  ui(String email, String username) {
+    FirebaseFirestore.instance.collection("users").doc(email).set({
+      'email': email,
+      'name': username,
+    });
+  }
+
   //! <---- password reset email -----> //
   @override
   Future passwordReset({required String email}) async {
@@ -229,7 +237,7 @@ class FirebaseAuthProvider implements AuthProvider {
           content: e.code,
           bgColor: Colors.red.shade100,
           borderColor: Colors.red);
-    } catch (e){
+    } catch (e) {
       MySnackBar().mySnackBar(
           header: "Error",
           content: e.toString(),
@@ -256,6 +264,16 @@ class FirebaseAuthProvider implements AuthProvider {
         bgColor: Colors.red.shade100,
         borderColor: Colors.red,
       );
+    }
+  }
+
+  @override
+  User? getCurrentUser() {
+    final user = auth.currentUser;
+    if (user != null) {
+      return user;
+    } else {
+      return null;
     }
   }
 }

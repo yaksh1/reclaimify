@@ -15,8 +15,9 @@ import 'package:reclaimify/components/square_tile.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
-import 'package:reclaimify/views/forget_password/forgot_password_phone/forgot_password-phone.dart';
-import 'package:reclaimify/views/forget_password/forgot_password_reset/reset_password.dart';
+import 'package:reclaimify/views/authentication/forget_password/forgot_password_phone/forgot_password-phone.dart';
+import 'package:reclaimify/views/authentication/forget_password/forgot_password_reset/reset_password.dart';
+
 
 class ForgotPasswordOtp extends StatefulWidget {
   const ForgotPasswordOtp({super.key});

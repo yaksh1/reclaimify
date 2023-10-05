@@ -7,9 +7,10 @@ import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/text_strings.dart';
-import 'package:reclaimify/views/forget_password/forgot_password_btn_widget.dart';
-import 'package:reclaimify/views/forget_password/forgot_password_mail/forgot_password_mail.dart';
-import 'package:reclaimify/views/forget_password/forgot_password_phone/forgot_password-phone.dart';
+import 'package:reclaimify/views/authentication/forget_password/forgot_password_btn_widget.dart';
+import 'package:reclaimify/views/authentication/forget_password/forgot_password_mail/forgot_password_mail.dart';
+import 'package:reclaimify/views/authentication/forget_password/forgot_password_phone/forgot_password-phone.dart';
+
 
 class ForgotPasswordScreen {
   static Future<dynamic> ForgotPasswordBottomSheet(BuildContext context) {

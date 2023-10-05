@@ -15,7 +15,7 @@ import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
 import 'package:reclaimify/views/advert_view/advert_view.dart';
-import 'package:reclaimify/views/login/login_view.dart';
+import 'package:reclaimify/views/authentication/login/login_view.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -25,6 +25,9 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  //! <---- current user -----> //
+  final currentUser = AuthService.firebase().getCurrentUser();
+
   double width10 = Dimensions.width10;
   double height10 = Dimensions.height10;
   double radius10 = Dimensions.radius10;
@@ -32,9 +35,10 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SvgPicture.asset(
-          'assets/images/profile.svg',
-          height: height10 * 4,
+        title: CircleAvatar(
+          backgroundImage: NetworkImage(
+            currentUser!.photoURL!, 
+          ),
         ),
         actions: [
           // Padding(
@@ -94,7 +98,7 @@ class _LandingPageState extends State<LandingPage> {
                           alignment: TextAlign.start,
                         ),
                         SmallText(
-                          text: "Yaksh",
+                          text: currentUser!.displayName!,
                           color: AppColors.darkGrey,
                           size: width10 * 2.5,
                           alignment: TextAlign.start,

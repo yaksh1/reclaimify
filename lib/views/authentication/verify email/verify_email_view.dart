@@ -12,7 +12,8 @@ import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
-import 'package:reclaimify/views/login/login_view.dart';
+import 'package:reclaimify/views/authentication/login/login_view.dart';
+
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
