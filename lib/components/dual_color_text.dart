@@ -8,7 +8,10 @@ class DualColorText extends StatelessWidget {
     required this.text2,
     this.size = 30,
     this.align = TextAlign.center,
-    this.color = AppColors.grey, required this.weight,
+    this.color = AppColors.grey,
+    this.weight1 = FontWeight.normal,
+    required this.color2,
+    this.weight2 = FontWeight.normal,
   });
 
   final String text1;
@@ -16,7 +19,9 @@ class DualColorText extends StatelessWidget {
   final double size;
   final TextAlign align;
   final Color color;
-  final FontWeight weight;
+  final Color color2;
+  final FontWeight weight1;
+  final FontWeight weight2;
   @override
   Widget build(BuildContext context) {
     return RichText(
@@ -26,15 +31,15 @@ class DualColorText extends StatelessWidget {
         style: TextStyle(
           fontSize: size,
           color: color,
-          fontWeight: weight,
+          fontWeight: weight1,
         ),
         children: <TextSpan>[
           TextSpan(
             text: text2,
             style: TextStyle(
               fontSize: size,
-              color: AppColors.mainColor,
-              fontWeight: weight,
+              color: color2,
+              fontWeight: weight2,
             ),
           ),
         ],

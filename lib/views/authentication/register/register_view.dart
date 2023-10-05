@@ -261,9 +261,11 @@ class _RegisterState extends State<Register> {
                         child: DualColorText(
                           text1: "Already have an account? ",
                           text2: "Login",
-                          weight: FontWeight.w400,
+                          weight1: FontWeight.w400,
+                          weight2: FontWeight.w400,
                           size: width10 * 1.6,
                           color: AppColors.slateGrey,
+                          color2: AppColors.mainColor,
                         ),
                       ),
                     ),

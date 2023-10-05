@@ -41,12 +41,17 @@ dependencies:
   firebase_storage: ^11.2.7
   pinput: ^3.0.1
   firebase_messaging: ^14.6.8
+  path_provider: ^2.1.1
+  image_picker: ^1.0.4
+  font_awesome_flutter: ^10.5.0
+  cached_network_image: ^3.3.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
+  test: ^1.24.3
 
 flutter_launcher_icons:
   android: 'launcher_icon'

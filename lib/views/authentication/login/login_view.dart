@@ -280,9 +280,11 @@ class _LoginViewState extends State<LoginView> {
                         child: DualColorText(
                           text1: "Don't have an account? ",
                           text2: "Sign up",
-                          weight: FontWeight.w400,
+                          weight1: FontWeight.w400,
+                          weight2: FontWeight.w400,
                           size: width10 * 1.6,
                           color: AppColors.slateGrey,
+                          color2: AppColors.mainColor,
                         ),
                       ),
                     ),
