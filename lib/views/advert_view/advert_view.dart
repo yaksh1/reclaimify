@@ -169,9 +169,15 @@ class _AdvertViewState extends State<AdvertView> {
                     children: [
                       blueButton(
                           onPressed: () {
-                            savePostOfUser(_desc.text, _title.text,
-                                _currentItemSelected, postType, _location.text);
-                            Get.off(() => ImageOptions());
+                            // savePostOfUser(_desc.text, _title.text,
+                            //     _currentItemSelected, postType, _location.text);
+                            Get.to(() => ImageOptions(
+                              category: _currentItemSelected,
+                              desc: _desc.text ,
+                              location:  _location.text,
+                              postType: postType ,
+                              title: _title.text,
+                            ));
                           },
                           text: "Continue ->",
                           width: 150.w,

@@ -11,14 +11,25 @@ import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/views/post%20revise%20view/post_revise.dart';
 
 class ImageOptions extends StatefulWidget {
-  const ImageOptions({super.key});
-
+  const ImageOptions(
+      {super.key,
+      required this.desc,
+      required this.title,
+      required this.category,
+      required this.postType,
+      required this.location});
+  final String desc;
+  final String title;
+  final String? category;
+  final String postType;
+  final String location;
   @override
   State<ImageOptions> createState() => _ImageOptionsState();
 }
 
 class _ImageOptionsState extends State<ImageOptions> {
   Uint8List? _file;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +49,14 @@ class _ImageOptionsState extends State<ImageOptions> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PostReviseView(file: _file!,)),
+                            builder: (context) => PostReviseView(
+                                  category: widget.category,
+                                  desc: widget.desc,
+                                  location: widget.location,
+                                  postType: widget.postType,
+                                  title: widget.title,
+                                  file: _file!,
+                                )),
                       );
                       setState(() {
                         _file = image;
@@ -54,11 +72,16 @@ class _ImageOptionsState extends State<ImageOptions> {
                   ),
                   PlusCard(
                     onPressed: () async {
-                      Uint8List image =await  pickImage(ImageSource.gallery);
+                      Uint8List image = await pickImage(ImageSource.gallery);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => PostReviseView(
+                                  category: widget.category,
+                                  desc: widget.desc,
+                                  location: widget.location,
+                                  postType: widget.postType,
+                                  title: widget.title,
                                   file: _file!,
                                 )),
                       );

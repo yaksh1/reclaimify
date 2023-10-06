@@ -1,17 +1,70 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/dual_color_text.dart';
+import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/components/small_text.dart';
+import 'package:reclaimify/services/auth/auth_service.dart';
+import 'package:reclaimify/services/storage/firebase_frestore_methods.dart';
 import 'package:reclaimify/utils/colors.dart';
 
-class PostReviseView extends StatelessWidget {
-  const PostReviseView({super.key, required this.file});
+class PostReviseView extends StatefulWidget {
+  PostReviseView(
+      {super.key,
+      required this.file,
+      required this.desc,
+      required this.title,
+      required this.category,
+      required this.postType,
+      required this.location});
   final Uint8List file;
+  final String desc;
+  final String title;
+  final String? category;
+  final String postType;
+  final String location;
+
+  @override
+  State<PostReviseView> createState() => _PostReviseViewState();
+}
+
+class _PostReviseViewState extends State<PostReviseView> {
+  final user = AuthService.firebase().getCurrentUser();
+
+  bool _isLoading = false;
+
+  // //! <---- save post data -----> //
+  savePostOfUser(String desc, String title, String? category, String postType,
+      String location, Uint8List file, String uid) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final user = AuthService.firebase().getCurrentUser();
+      String res = await FirestoreMethods().uploadPost(desc, file, uid,
+          user!.displayName!, title, category!, location, postType);
+      if (res == "Success") {
+        setState(() {
+          _isLoading = false;
+        });
+        MySnackBar().mySnackBar(
+            header: "Advert Posted!", content: "post created successfully");
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        MySnackBar().mySnackBar(header: "res", content: "");
+      }
+    } catch (e) {
+      MySnackBar().mySnackBar(header: "Error", content: e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +75,9 @@ class PostReviseView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              _isLoading?CircularProgressIndicator():Container(),
               Card(
+                color: AppColors.grey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -34,7 +89,7 @@ class PostReviseView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: MemoryImage(file),
+                          image: MemoryImage(widget.file),
                         ),
                       ),
                     ),
@@ -44,39 +99,47 @@ class PostReviseView extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          //$ <---- title -----> //
                           BigText(
-                              text: "Cat Found",
+                              text: widget.title,
                               color: AppColors.darkGrey,
                               size: 25),
+                            //$ <---- Description -----> //
                           SmallText(
                             text:
-                                "White air pods found with case near KS building",
+                                widget.desc,
                             weight: FontWeight.w300,
                           ),
                           SizedBox(
                             height: 10.h,
                           ),
+                          //$ <---- post type -----> //
                           postDetails(
                             text1: "Type: ",
-                            text2: "Found",
+                            text2: widget.postType,
                           ),
                           SizedBox(
                             height: 5.h,
                           ),
+                          //$ <---- category -----> //
+
                           postDetails(
                             text1: "Category: ",
-                            text2: "cutie",
+                            text2: widget.category!,
                           ),
                           SizedBox(
                             height: 5.h,
                           ),
+                          //$ <---- location -----> //
+
                           postDetails(
                             text1: "Location: ",
-                            text2: "inside kambal",
+                            text2: widget.location,
                           ),
                           SizedBox(
                             height: 5.h,
                           ),
+                          //$ <---- date -----> //
                           postDetails(
                             text1: "Date Found: ",
                             text2: "today",
@@ -86,23 +149,32 @@ class PostReviseView extends StatelessWidget {
                     ),
                   ],
                 ),
-                margin: EdgeInsets.only(left: 20.0.w, right: 20.0.w, top: 5.0.h),
+                margin:
+                    EdgeInsets.only(left: 20.0.w, right: 20.0.w, top: 5.0.h),
               ),
-                    SizedBox(height: 20.h,),
-                    //! <---- post button -----> //
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:16.0),
-                      child: blueButton(
-                          onPressed: () {
-                            
-                          },
-                          text: "POST",
-                          
-                          fontweight: FontWeight.w600,
-                          height: 40.h,
-                          textColor: AppColors.darkGrey,
-                          color: AppColors.lightMainColor2),
-                    ),
+              SizedBox(
+                height: 20.h,
+              ),
+              //! <---- post button -----> //
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: blueButton(
+                    onPressed: () {
+                      savePostOfUser(
+                          widget.desc,
+                          widget.title,
+                          widget.category,
+                          widget.postType,
+                          widget.location,
+                          widget.file,
+                          user!.uid);
+                    },
+                    text: "POST",
+                    fontweight: FontWeight.w600,
+                    height: 40.h,
+                    textColor: AppColors.darkGrey,
+                    color: AppColors.lightMainColor2),
+              ),
             ],
           ),
         ),
