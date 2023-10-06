@@ -139,11 +139,11 @@ class _PostReviseViewState extends State<PostReviseView> {
                           SizedBox(
                             height: 5.h,
                           ),
-                          //$ <---- date -----> //
-                          postDetails(
-                            text1: "Date Found: ",
-                            text2: "today",
-                          ),
+                          // //$ <---- date -----> //
+                          // postDetails(
+                          //   text1: "Date Found: ",
+                          //   text2: "today",
+                          // ),
                         ],
                       ),
                     ),
