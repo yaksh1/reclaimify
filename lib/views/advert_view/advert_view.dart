@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:reclaimify/components/back_icon.dart';
 import 'package:reclaimify/components/blue_button.dart';
+import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/components/my_text_field.dart';
 import 'package:reclaimify/components/small_text.dart';
+import 'package:reclaimify/components/text_form.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/services/auth/auth_user.dart';
 import 'package:reclaimify/utils/colors.dart';
@@ -22,6 +25,9 @@ class AdvertView extends StatefulWidget {
 class _AdvertViewState extends State<AdvertView> {
   //$ <---- list of categories -----> //
   var _categories = ['Gadgets', 'Books', 'Id-Card', 'Bottle', 'Other Items'];
+
+  //! <---- global key -----> //
+  final _formKey = GlobalKey<FormState>();
 
   //$ <---- my controllers -----> //
   TextEditingController _title = TextEditingController();
@@ -66,13 +72,7 @@ class _AdvertViewState extends State<AdvertView> {
               fontSize: 40),
         ),
         centerTitle: true,
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: Icon(
-            PhosphorIcons.duotone.caretCircleLeft,
-            size: 40,
-          ),
-        ),
+        leading: BackIcon(),
         // centerTitle: true,
       ),
       body: SafeArea(
@@ -81,113 +81,130 @@ class _AdvertViewState extends State<AdvertView> {
           child: Center(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                children: [
-                  //! <---- category -----> //
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  _buildHeader("Category"),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  //! <---- select category -----> //
-                  _selectionCategory(),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    //! <---- category -----> //
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    _buildHeader("Category"),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    //! <---- select category -----> //
+                    _selectionCategory(),
 
-                  SizedBox(
-                    height: 25.h,
-                  ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
 
-                  //* --- post type header --- //
-                  _buildHeader("Post Type"),
+                    //* --- post type header --- //
+                    _buildHeader("Post Type"),
 
-                  SizedBox(
-                    height: 10.h,
-                  ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
 
-                  //! <---- post type selection -----> //
-                  _postTypeSelection(),
+                    //! <---- post type selection -----> //
+                    _postTypeSelection(),
 
-                  SizedBox(
-                    height: 25.h,
-                  ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
 
-                  //* <---- title header -----> //
-                  _buildHeader("Title"),
+                    //* <---- title header -----> //
+                    _buildHeader("Title"),
 
-                  SizedBox(
-                    height: 10.h,
-                  ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
 
-                  //! <---- title field -----> //
-                  MyTextField(
-                    hintText: "Title",
-                    controller: _title,
-                  ),
+                    //! <---- title field -----> //
+                    TextForm(
+                      label: "Title",
+                      hintText: "Enter the title of the Ad",
+                      obscureText: false,
+                      controller: _title,
+                    ),
 
-                  SizedBox(
-                    height: 25.h,
-                  ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
 
-                  //* <---- description header -----> //
-                  _buildHeader("Description"),
+                    //* <---- description header -----> //
+                    _buildHeader("Description"),
 
-                  SizedBox(
-                    height: 10.h,
-                  ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
 
-                  //! <---- description field -----> //
-                  MyTextField(
-                    hintText: "Description",
-                    controller: _desc,
-                  ),
+                    //! <---- description field -----> //
+                    TextForm(
+                      label: "Description",
+                      hintText: "Enter description of the item",
+                      obscureText: false,
+                      controller: _desc,
+                    ),
 
-                  SizedBox(
-                    height: 25.h,
-                  ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
 
-                  //* <---- Location header -----> //
-                  _buildHeader("Location"),
+                    //* <---- Location header -----> //
+                    _buildHeader("Location"),
 
-                  SizedBox(
-                    height: 10.h,
-                  ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
 
-                  //! <---- location field -----> //
-                  MyTextField(
-                    hintText: "Location",
-                    controller: _location,
-                  ),
+                    //! <---- location field -----> //
+                    TextForm(
+                      label: "Location",
+                      hintText: "Enter location",
+                      obscureText: false,
+                      controller: _location,
+                    ),
 
-                  SizedBox(
-                    height: 35.h,
-                  ),
+                    SizedBox(
+                      height: 25.h,
+                    ),
 
-                  //! <---- continue button -----> //
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      blueButton(
-                          onPressed: () {
-                            // savePostOfUser(_desc.text, _title.text,
-                            //     _currentItemSelected, postType, _location.text);
-                            Get.to(() => ImageOptions(
-                              category: _currentItemSelected,
-                              desc: _desc.text ,
-                              location:  _location.text,
-                              postType: postType ,
-                              title: _title.text,
-                            ));
-                          },
-                          text: "Continue ->",
-                          width: 150.w,
-                          fontweight: FontWeight.w600,
-                          height: 40.h,
-                          textColor: AppColors.darkGrey,
-                          color: AppColors.lightMainColor2),
-                    ],
-                  ),
-                ],
+                    //! <---- continue button -----> //
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        blueButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                try {
+                                Get.to(() => ImageOptions(
+                                      category: _currentItemSelected,
+                                      desc: _desc.text,
+                                      location: _location.text,
+                                      postType: postType,
+                                      title: _title.text,
+                                    )
+                                    );
+                                } catch (e) {
+                                  MySnackBar().mySnackBar(
+                                      header: "Error", content: e.toString());
+                                }
+                              }
+                              // savePostOfUser(_desc.text, _title.text,
+                              //     _currentItemSelected, postType, _location.text);
+                            },
+                            text: "Continue ->",
+                            width: 150.w,
+                            fontweight: FontWeight.w600,
+                            height: 40.h,
+                            textColor: AppColors.darkGrey,
+                            color: AppColors.lightMainColor2),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -342,3 +359,5 @@ class _AdvertViewState extends State<AdvertView> {
     });
   }
 }
+
+

@@ -9,6 +9,7 @@ import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/error_dialog.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
+import 'package:reclaimify/components/phone_text_field.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/components/square_tile.dart';
 import 'package:reclaimify/components/text_form.dart';
@@ -92,15 +93,7 @@ class _ForgotPasswordPhoneOptionState extends State<ForgotPasswordPhoneOption> {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: height10),
-                        child: TextForm(
-                          hintText: "Enter your phone number",
-                          label: Text("Phone"),
-                          obscureText: false,
-                          enabledSuggestions: true,
-                          autocorrect: false,
-                          controller: _phone,
-                          icon: PhosphorIcons.duotone.phone,
-                        ),
+                        child:PhoneTextField(controller: _phone)
                       ),
                       SizedBox(
                         height: height10 * 2,

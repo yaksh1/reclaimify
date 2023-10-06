@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:reclaimify/components/input_decoration.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
+import 'package:reclaimify/utils/validators.dart';
 
 class TextForm extends StatelessWidget {
   TextForm({
     super.key,
     required this.label,
     required this.hintText,
-    required this.icon,
     required this.obscureText,
-    required this.autocorrect,
-    required this.enabledSuggestions,
     this.controller,
     this.keyboardType = TextInputType.text,
   });
 
-  final Widget? label;
+  final MyDecoration decor = MyDecoration();
+
+  final String label;
   final String hintText;
-  final IconData icon;
   final bool obscureText;
-  final bool autocorrect;
-  final bool enabledSuggestions;
+
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   double height10 = Dimensions.height10;
@@ -30,35 +30,35 @@ class TextForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: obscureText,
-      enableSuggestions: enabledSuggestions,
-      autocorrect: autocorrect,
-      controller: controller,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        isDense: true,
-        prefixIcon: Icon(
-          icon,
-          size: height10 * 2.5,
-          color: AppColors.mainColor,
-        ),
-        label: label,
-        labelStyle: TextStyle(color: AppColors.textBoxPlaceholder),
+        // The validator receives the text that the user has entered.
+        validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'This field is required.';
+        }
+        return null;
+      },
+        keyboardType: TextInputType.emailAddress,
+        obscureText: obscureText,
+        controller: controller,
+        enableSuggestions: true,
+        autocorrect: false,
+       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(color: AppColors.textBoxPlaceholder),
-        fillColor: AppColors.grey,
-        filled: true,
+        hintStyle: TextStyle(
+          color: AppColors.slateGrey,
+        ),
+        fillColor: Colors.grey.shade100,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(radius10 * 1.6),
-        ),
+            borderRadius: BorderRadius.circular(15.r),
+            borderSide:
+                BorderSide(color: AppColors.slateGrey.withOpacity(0.6))),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15.r),
+            borderSide:
+                BorderSide(color: AppColors.slateGrey.withOpacity(0.6))),
         focusedBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: AppColors.primaryBlack, width: width10 * 0.1),
-          borderRadius: BorderRadius.circular(radius10 * 1.6),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.redAccent),
-        ),
+            borderRadius: BorderRadius.circular(15.r),
+            borderSide: BorderSide(color: AppColors.primaryBlack)),
       ),
     );
   }
