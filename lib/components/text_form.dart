@@ -12,13 +12,14 @@ class TextForm extends StatelessWidget {
     required this.hintText,
     required this.obscureText,
     this.controller,
-    this.keyboardType = TextInputType.text,
+    this.keyboardType = TextInputType.text, required this.helperText,
   });
 
   final MyDecoration decor = MyDecoration();
 
   final String label;
   final String hintText;
+  final String helperText;
   final bool obscureText;
 
   final TextEditingController? controller;
@@ -37,13 +38,19 @@ class TextForm extends StatelessWidget {
         }
         return null;
       },
+      
         keyboardType: TextInputType.emailAddress,
         obscureText: obscureText,
         controller: controller,
         enableSuggestions: true,
         autocorrect: false,
        decoration: InputDecoration(
+        helperText: helperText,
+        helperStyle: TextStyle(
+          color: AppColors.slateGrey,
+        ),
         hintText: hintText,
+        
         hintStyle: TextStyle(
           color: AppColors.slateGrey,
         ),

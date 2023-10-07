@@ -1,18 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/back_icon.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
-import 'package:reclaimify/components/my_text_field.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/components/text_form.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
-import 'package:reclaimify/services/auth/auth_user.dart';
 import 'package:reclaimify/utils/colors.dart';
+
 import 'package:reclaimify/views/take%20image%20view/image_option_view.dart';
 
 class AdvertView extends StatefulWidget {
@@ -25,6 +22,7 @@ class AdvertView extends StatefulWidget {
 class _AdvertViewState extends State<AdvertView> {
   //$ <---- list of categories -----> //
   var _categories = ['Gadgets', 'Books', 'Id-Card', 'Bottle', 'Other Items'];
+  String? _currentItemSelected = "Gadgets";
 
   //! <---- global key -----> //
   final _formKey = GlobalKey<FormState>();
@@ -58,7 +56,6 @@ class _AdvertViewState extends State<AdvertView> {
     super.dispose();
   }
 
-  String? _currentItemSelected = "Gadgets";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,14 +120,15 @@ class _AdvertViewState extends State<AdvertView> {
 
                     //! <---- title field -----> //
                     TextForm(
+                      helperText: "",
                       label: "Title",
                       hintText: "Enter the title of the Ad",
                       obscureText: false,
                       controller: _title,
                     ),
 
-                    SizedBox(
-                      height: 15.h,
+                SizedBox(
+                      height: 10.h,
                     ),
 
                     //* <---- description header -----> //
@@ -142,6 +140,7 @@ class _AdvertViewState extends State<AdvertView> {
 
                     //! <---- description field -----> //
                     TextForm(
+                      helperText: "Eg. color,brand,item name,building/room no.",
                       label: "Description",
                       hintText: "Enter description of the item",
                       obscureText: false,
@@ -161,6 +160,7 @@ class _AdvertViewState extends State<AdvertView> {
 
                     //! <---- location field -----> //
                     TextForm(
+                      helperText: "Area, near by building name",
                       label: "Location",
                       hintText: "Enter location",
                       obscureText: false,
@@ -297,7 +297,7 @@ class _AdvertViewState extends State<AdvertView> {
               color: _shadow2,
               offset: Offset(0, 4),
             ),
-          ]),
+          ],),
           child: blueButton(
               onPressed: () {
                 setState(() {

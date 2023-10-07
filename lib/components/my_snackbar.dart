@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 class MySnackBar{
     void mySnackBar({required String header, required String content,
-      Color bgColor = Colors.white, Color borderColor = Colors.white,double blur =0}) {
+      Color bgColor = Colors.white, Color borderColor = Colors.white,double blur =0,}) {
     Get.snackbar(
       header,
       content,
