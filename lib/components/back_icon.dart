@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:reclaimify/utils/colors.dart';
 
 class BackIcon extends StatelessWidget {
   const BackIcon({
@@ -12,6 +13,7 @@ class BackIcon extends StatelessWidget {
       onPressed: () => Navigator.of(context).pop(),
       icon: Icon(
         PhosphorIcons.duotone.caretCircleLeft,
+        color: AppColors.primaryBlack,
         size: 40,
       ),
     );
