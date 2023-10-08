@@ -1238,7 +1238,7 @@ packages:
     source: hosted
     version: "1.0.0+1"
   uuid:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: uuid
       sha256: b715b8d3858b6fa9f68f87d20d98830283628014750c2b09b6f516c1da4af2a7

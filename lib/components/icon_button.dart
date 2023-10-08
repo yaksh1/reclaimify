@@ -18,9 +18,15 @@ class MyIconButton extends StatelessWidget {
     return FloatingActionButton.extended(
       onPressed: onPressed,
       elevation: 0,
-      label: Text(text), // <-- Text
+      label: Text(
+        text,
+        style: TextStyle(color: AppColors.darkGrey,
+        fontWeight: FontWeight.w600,
+        fontSize: 16),), // <-- Text
       backgroundColor: AppColors.lightMainColor2,
-      icon: Icon(icon),
+      icon: Icon(
+        icon,color: AppColors.mainColor,
+        ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
     );
   }

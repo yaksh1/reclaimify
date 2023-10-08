@@ -45,6 +45,7 @@ dependencies:
   image_picker: ^1.0.4
   font_awesome_flutter: ^10.5.0
   cached_network_image: ^3.3.0
+  uuid: ^4.1.0
 
 
 dev_dependencies:

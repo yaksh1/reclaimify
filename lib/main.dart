@@ -43,7 +43,7 @@ void main() async {
             landingPageRoute:(context) => const LandingPage(),
             otpScreenRoute:(context)=>const ForgotPasswordOtp(),
           }
-          ),
+          ), 
     ),
   );
 }

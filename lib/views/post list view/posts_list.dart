@@ -3,12 +3,15 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/back_icon.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/icon_button.dart';
 import 'package:reclaimify/components/post_card_widget.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:reclaimify/views/post%20detailed%20view/post_detailed_view.dart';
+import 'package:reclaimify/views/post%20list%20view/filters.dart';
 
 class PostsView extends StatefulWidget {
   const PostsView({super.key});
@@ -58,7 +61,7 @@ class _PostsViewState extends State<PostsView> {
                     //! <---- icon button filters -----> //
                     MyIconButton(
                       onPressed: () {
-                        //TODO
+                        Get.to(() => FiltersView());
                       },
                       icon: PhosphorIcons.duotone.faders,
                       text: "Filters",
@@ -84,8 +87,16 @@ class _PostsViewState extends State<PostsView> {
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(vertical:24),
+                          padding: EdgeInsets.symmetric(vertical: 24),
                           child: PostCardWidget(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PostDetailedView(
+                                          snap: snapshot.data!.docs[index]
+                                              .data(),),),);
+                            },
                             snap: snapshot.data!.docs[index].data(),
                           ),
                         );
