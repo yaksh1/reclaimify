@@ -18,6 +18,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:reclaimify/views/Drawer%20view/drawer_view.dart';
 import 'package:reclaimify/views/advert_view/advert_view.dart';
 import 'package:reclaimify/views/authentication/login/login_view.dart';
+import 'package:reclaimify/views/post%20list%20view/posts_list.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -51,14 +52,10 @@ class _LandingPageState extends State<LandingPage> {
           ),
         ),
         actions: [
-          // Padding(
-          //   padding:EdgeInsets.only(left: 100),
-          //   child: SmallText(text: "/Reclaimify")),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: width10),
             child: Icon(Icons.search_sharp, size: height10 * 3.5),
           ),
-          
         ],
         // centerTitle: true,
       ),
@@ -112,11 +109,13 @@ class _LandingPageState extends State<LandingPage> {
                   path: itemsSvg,
                   heading: "Lost & Found Items",
                   subHeading: "Go through the lost and found items list",
-                  onTap: () {}, //!
+                  onTap: () {
+                    Get.to(()=> PostsView());
+                  }, //TODO
                 ),
 
                 GestureDetector(
-                  onTap: () {}, //!
+                  onTap: () {}, //TODO
                   child: Container(
                     padding: EdgeInsets.symmetric(
                         vertical: height10 * 1.7, horizontal: width10 * 1.5),

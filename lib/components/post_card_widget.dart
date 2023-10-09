@@ -13,22 +13,23 @@ class PostCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      child: Hero(
-        tag: 'hello',
-        child: Card(
+      child:  Card(
           color: AppColors.grey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //! <---- image -----> //
-              Container(
-                height: 200,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(snap['postUrl']),
+              Hero(
+                tag: 'hello',
+                child: Container(
+                  height: 200,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(snap['postUrl']),
+                    ),
                   ),
                 ),
               ),
@@ -87,7 +88,7 @@ class PostCardWidget extends StatelessWidget {
           ),
           margin: EdgeInsets.only(left: 20.0.w, right: 20.0.w, top: 5.0.h),
         ),
-      ),
+      
     );
   }
 }
