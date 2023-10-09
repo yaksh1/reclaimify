@@ -7,11 +7,13 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/back_icon.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/icon_and_text.dart';
+import 'package:reclaimify/components/icon_with_circle.dart';
 import 'package:reclaimify/components/post_card_widget.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/views/post%20detailed%20view/post_detailed_view.dart';
+import 'package:reclaimify/views/profile%20view/widgets/profile_post_card.dart';
 
 class ProfileView extends StatelessWidget {
   ProfileView({super.key});
@@ -80,7 +82,7 @@ class ProfileView extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.symmetric(vertical: 24),
-                        child: PostCardWidget(
+                        child: ProfilePostCard(
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -106,6 +108,7 @@ class ProfileView extends StatelessWidget {
   }
 }
 
+//$ <---- user details on card -----> //
 class ProfileCardWidget extends StatelessWidget {
   const ProfileCardWidget({
     super.key,
@@ -154,6 +157,7 @@ class ProfileCardWidget extends StatelessWidget {
   }
 }
 
+//$ <---- items in user details card -----> //
 class ProfileCardItems extends StatelessWidget {
   const ProfileCardItems({
     super.key,
@@ -169,16 +173,7 @@ class ProfileCardItems extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          padding: EdgeInsets.all(6),
-          decoration: BoxDecoration(
-              border: Border.all(color: AppColors.slateGrey),
-              borderRadius: BorderRadiusDirectional.circular(50)),
-          child: Icon(
-            icon,
-            color: AppColors.slateGrey,
-          ),
-        ),
+        IconWithCircle(icon: icon),
         SizedBox(
           width: 10,
         ),
@@ -190,3 +185,5 @@ class ProfileCardItems extends StatelessWidget {
     );
   }
 }
+
+

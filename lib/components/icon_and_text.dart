@@ -11,6 +11,9 @@ class IconAndTextWidget extends StatelessWidget {
   final FontWeight? weight;
   final MainAxisAlignment alignment;
   final double width;
+  final double iconSize;
+  final double fontSize;
+
   const IconAndTextWidget(
       {super.key,
       required this.icon,
@@ -18,7 +21,10 @@ class IconAndTextWidget extends StatelessWidget {
       required this.iconColor,
       required this.textColor,
       this.weight,
-      this.alignment = MainAxisAlignment.center,  this.width=5});
+      this.iconSize = 24,
+      this.fontSize = 18,
+      this.alignment = MainAxisAlignment.center,
+      this.width = 5});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +35,7 @@ class IconAndTextWidget extends StatelessWidget {
         Icon(
           icon,
           color: iconColor,
+          size: iconSize,
         ),
         SizedBox(
           width: width,
@@ -37,6 +44,7 @@ class IconAndTextWidget extends StatelessWidget {
           text: text,
           color: textColor,
           weight: weight,
+          size: fontSize,
         ),
       ],
     );

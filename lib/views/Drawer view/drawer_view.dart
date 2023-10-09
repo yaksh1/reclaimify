@@ -23,6 +23,7 @@ class DrawerView extends StatelessWidget {
         toolbarHeight: 100,
         title: Row(
           children: [
+            //! <---- profile image -----> //
             Hero(
               tag: 'hero',
               child: CircleAvatar(
@@ -34,21 +35,23 @@ class DrawerView extends StatelessWidget {
             SizedBox(
               width: 10,
             ),
-            Column(
-              children: [
-                BigText(
-                  text: currentUser.displayName!,
-                  color: AppColors.primaryBlack,
-                  size: 20,
-                ),
-              ],
-            )
+            //TODO add number too
+            // Column(
+            //   children: [
+            //     BigText(
+            //       text: currentUser.displayName!,
+            //       color: AppColors.primaryBlack,
+            //       size: 20,
+            //     ),
+            //   ],
+            // )
           ],
         ),
         actions: [
           // Padding(
           //   padding:EdgeInsets.only(left: 100),
           //   child: SmallText(text: "/Reclaimify")),
+          //! <---- cross icon -----> //
           InkWell(
             onTap: () {
               Navigator.pop(context);
@@ -71,20 +74,8 @@ class DrawerView extends StatelessWidget {
           child: Column(
             children: [
               //! <---- profile -----> //
-              InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileView(),
-                      ),
-                    );
-                  },
-                  child: BigText(
-                    text: "My Profile",
-                    color: AppColors.darkGrey,
-                    size: 30,
-                  )),
+              UserProfile(),
+              
               SizedBox(
                 height: 10,
               ),
@@ -132,6 +123,30 @@ class DrawerView extends StatelessWidget {
         ),
       )),
     );
+  }
+}
+
+class UserProfile extends StatelessWidget {
+  const UserProfile({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfileView(),
+            ),
+          );
+        },
+        child: BigText(
+          text: "My Profile",
+          color: AppColors.darkGrey,
+          size: 30,
+        ));
   }
 }
 

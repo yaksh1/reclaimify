@@ -9,6 +9,7 @@ class PostCardWidget extends StatelessWidget {
   const PostCardWidget({super.key, required this.snap, required this.onPressed});
   final snap;
   final VoidCallback onPressed;
+  
   @override
   Widget build(BuildContext context) {
     return InkWell(

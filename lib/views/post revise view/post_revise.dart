@@ -3,8 +3,6 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/dual_color_text.dart';
@@ -13,7 +11,6 @@ import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/services/storage/firebase_frestore_methods.dart';
 import 'package:reclaimify/utils/colors.dart';
-import 'package:reclaimify/utils/routes.dart';
 import 'package:reclaimify/views/post%20list%20view/posts_list.dart';
 
 class PostReviseView extends StatefulWidget {
@@ -59,6 +56,7 @@ class _PostReviseViewState extends State<PostReviseView> {
           header: "Advert Posted!",
           content: "post created successfully",
         );
+        //$ <---- navigation -----> //
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => PostsView()),
             (route) => route.isFirst);
