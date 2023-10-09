@@ -14,6 +14,8 @@ import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:reclaimify/views/Drawer%20view/drawer_view.dart';
 import 'package:reclaimify/views/advert_view/advert_view.dart';
 import 'package:reclaimify/views/authentication/login/login_view.dart';
 
@@ -35,9 +37,17 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CircleAvatar(
-          backgroundImage: NetworkImage(
-            currentUser!.photoURL!, 
+        title: InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => DrawerView(),),);
+          },
+          child: Hero(
+            tag: 'hero',
+            child: CircleAvatar(
+                backgroundImage: CachedNetworkImageProvider(
+              currentUser!.photoURL!,
+            )),
           ),
         ),
         actions: [
@@ -48,32 +58,7 @@ class _LandingPageState extends State<LandingPage> {
             padding: EdgeInsets.symmetric(horizontal: width10),
             child: Icon(Icons.search_sharp, size: height10 * 3.5),
           ),
-          PopupMenuButton<MenuAction>(
-            onSelected: (value) async {
-              switch (value) {
-                case MenuAction.logout:
-                  final shouldLogout = await showLogOutDiaglog(context);
-                  if (shouldLogout) {
-                    await AuthService.firebase().logOut();
-                    final snackbar = MySnackBar();
-                    snackbar.mySnackBar(
-                        header: "Logged out!",
-                        content: "see you soon",
-                        bgColor: Colors.green.shade100,
-                        borderColor: Colors.green);
-                    Get.to(() => LoginView());
-                  }
-              }
-            },
-            itemBuilder: (context) {
-              return [
-                const PopupMenuItem(
-                    value: MenuAction.logout, child: Text("Logout")),
-                // const PopupMenuItem(
-                //     value: MenuAction.favorites, child: Text("Favorites")),
-              ];
-            },
-          ),
+          
         ],
         // centerTitle: true,
       ),

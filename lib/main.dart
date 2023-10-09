@@ -13,7 +13,6 @@ import 'package:reclaimify/views/authentication/register/register_view.dart';
 import 'package:reclaimify/views/authentication/verify%20email/verify_email_view.dart';
 import 'package:reclaimify/views/landing%20page/landing_page.dart';
 import 'package:reclaimify/views/post%20list%20view/posts_list.dart';
-import 'package:reclaimify/views/test/one.dart';
 
 
 void main() async {
