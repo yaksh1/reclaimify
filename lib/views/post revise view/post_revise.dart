@@ -13,6 +13,7 @@ import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/services/storage/firebase_frestore_methods.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:reclaimify/utils/routes.dart';
 import 'package:reclaimify/views/post%20list%20view/posts_list.dart';
 
 class PostReviseView extends StatefulWidget {
@@ -58,8 +59,9 @@ class _PostReviseViewState extends State<PostReviseView> {
           header: "Advert Posted!",
           content: "post created successfully",
         );
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PostsView()));
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => PostsView()),
+            (route) => route.isFirst);
       } else {
         setState(() {
           _isLoading = false;
@@ -87,14 +89,13 @@ class _PostReviseViewState extends State<PostReviseView> {
                     )
                   : Container(),
               PostReviseCard(
-                  category: widget.category!,
-                  desc: widget.desc,
+                category: widget.category!,
+                desc: widget.desc,
                 file: widget.file,
-                  title: widget.title,
+                title: widget.title,
                 location: widget.location,
                 postType: widget.postType,
-
-                  ),
+              ),
               SizedBox(
                 height: 20.h,
               ),
@@ -128,7 +129,13 @@ class _PostReviseViewState extends State<PostReviseView> {
 
 class PostReviseCard extends StatelessWidget {
   const PostReviseCard({
-    super.key, required this.file, required this.title, required this.desc, required this.postType, required this.category, required this.location,
+    super.key,
+    required this.file,
+    required this.title,
+    required this.desc,
+    required this.postType,
+    required this.category,
+    required this.location,
   });
   final Uint8List file;
   final String title;

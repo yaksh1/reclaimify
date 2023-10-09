@@ -61,40 +61,43 @@ class ProfileView extends StatelessWidget {
                   ),
                 ],
               ),
-                  FutureBuilder(
-                    future: FirebaseFirestore.instance
-                        .collection('posts')
-                        .where('username', isEqualTo: currentUser.displayName)
-                        .get(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return const Text("No Ads to show.");
-                      }
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemCount: (snapshot.data! as dynamic).docs.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 24),
-                            child: PostCardWidget(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PostDetailedView(
-                                      snap: snapshot.data!.docs[index].data(),
-                                    ),
-                                  ),
-                                );
-                              },
-                              snap: snapshot.data!.docs[index].data(),
-                            ),
-                          );
-                        },);
+              FutureBuilder(
+                future: FirebaseFirestore.instance
+                    .collection('posts')
+                    .where('username', isEqualTo: currentUser.displayName)
+                    .get(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container(
+                      
+                    );
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: (snapshot.data! as dynamic).docs.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24),
+                        child: PostCardWidget(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PostDetailedView(
+                                  snap: snapshot.data!.docs[index].data(),
+                                ),
+                              ),
+                            );
+                          },
+                          snap: snapshot.data!.docs[index].data(),
+                        ),
+                      );
                     },
-                  )
+                  );
+                },
+              )
             ],
           ),
         ),

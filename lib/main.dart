@@ -42,6 +42,7 @@ void main() async {
             verifyEmailRoute: (context) => const VerifyEmailView(),
             landingPageRoute:(context) => const LandingPage(),
             otpScreenRoute:(context)=>const ForgotPasswordOtp(),
+            postsViewRoute: (context) => const PostsView(),
           }
           ), 
     ),
