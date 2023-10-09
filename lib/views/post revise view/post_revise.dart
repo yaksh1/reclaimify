@@ -86,7 +86,7 @@ class _PostReviseViewState extends State<PostReviseView> {
                       color: AppColors.mainColor,
                     )
                   : Container(),
-              PostCardWidget(
+              PostReviseCard(
                   category: widget.category!,
                   desc: widget.desc,
                 file: widget.file,
@@ -126,8 +126,8 @@ class _PostReviseViewState extends State<PostReviseView> {
   }
 }
 
-class PostCardWidget extends StatelessWidget {
-  const PostCardWidget({
+class PostReviseCard extends StatelessWidget {
+  const PostReviseCard({
     super.key, required this.file, required this.title, required this.desc, required this.postType, required this.category, required this.location,
   });
   final Uint8List file;

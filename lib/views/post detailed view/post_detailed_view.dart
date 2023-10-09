@@ -29,9 +29,7 @@ class _PostDetailedViewState extends State<PostDetailedView> {
       body: Stack(
           // alignment: Alignment.topLeft,
           children: [
-            Hero(
-              tag: 'hello',
-              child: Container(
+            Container(
                 height: 510,
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -41,7 +39,7 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                     image: NetworkImage(widget.snap['postUrl']),
                   ),
                 ),
-              ),
+              
             ),
             SafeArea(child: BackIcon()),
             Padding(

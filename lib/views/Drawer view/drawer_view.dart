@@ -18,52 +18,61 @@ class DrawerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-      automaticallyImplyLeading: false,
-      toolbarHeight: 100,
-      title: Row(
-        children: [
-          Hero(
-            tag: 'hero',
-            child: CircleAvatar(
-                radius: 40,
-                backgroundImage: CachedNetworkImageProvider(
-                  currentUser.photoURL!,
-
-                )),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 100,
+        title: Row(
+          children: [
+            Hero(
+              tag: 'hero',
+              child: CircleAvatar(
+                  radius: 40,
+                  backgroundImage: CachedNetworkImageProvider(
+                    currentUser.photoURL!,
+                  )),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Column(
+              children: [
+                BigText(
+                  text: currentUser.displayName!,
+                  color: AppColors.primaryBlack,
+                  size: 20,
+                ),
+              ],
+            )
+          ],
+        ),
+        actions: [
+          // Padding(
+          //   padding:EdgeInsets.only(left: 100),
+          //   child: SmallText(text: "/Reclaimify")),
+          InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: Icon(
+                PhosphorIcons.regular.x,
+                size: 35.r,
+                color: AppColors.slateGrey,
+              ),
+            ),
           ),
-          SizedBox(width: 10,),
-          Column(
-            children: [
-              BigText(text: currentUser.displayName!, color: AppColors.primaryBlack,size: 20,),
-            ],
-          )
         ],
       ),
-      actions: [
-        // Padding(
-        //   padding:EdgeInsets.only(left: 100),
-        //   child: SmallText(text: "/Reclaimify")),
-        InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Icon(PhosphorIcons.regular.x, size: 35.r,color: AppColors.slateGrey,),
-          ),
-        ),
-      ],
-    ),
-    body: SafeArea(child: 
-    Center(
-      child: Padding(
-        padding: EdgeInsets.only(top:100.h),
-        child: Column(
-          children: [
-            //! <---- profile -----> //
-            InkWell(
-              onTap: () {
+      body: SafeArea(
+          child: Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: 100.h),
+          child: Column(
+            children: [
+              //! <---- profile -----> //
+              InkWell(
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -71,49 +80,57 @@ class DrawerView extends StatelessWidget {
                       ),
                     );
                   },
-              child: BigText(text: "My Profile", color: AppColors.darkGrey,size: 30,)),
-            SizedBox(height: 10,),
-            //! <---- messages -----> //
-            BigText(text: "Messages", color: AppColors.darkGrey,size: 30,),
-            SizedBox(
+                  child: BigText(
+                    text: "My Profile",
+                    color: AppColors.darkGrey,
+                    size: 30,
+                  )),
+              SizedBox(
                 height: 10,
               ),
-            //! <---- about us -----> //
-            BigText(
+              //! <---- messages -----> //
+              BigText(
+                text: "Messages",
+                color: AppColors.darkGrey,
+                size: 30,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              //! <---- about us -----> //
+              BigText(
                 text: "About Us",
                 color: AppColors.darkGrey,
                 size: 30,
               ),
-            SizedBox(
+              SizedBox(
                 height: 10,
               ),
-            //! <---- contact us -----> //
+              //! <---- contact us -----> //
               BigText(
                 text: "Contact Us",
                 color: AppColors.darkGrey,
                 size: 30,
               ),
-            SizedBox(
+              SizedBox(
                 height: 10,
               ),
-            //! <---- settings -----> //
+              //! <---- settings -----> //
               BigText(
                 text: "Settings",
                 color: AppColors.darkGrey,
                 size: 30,
               ),
-            SizedBox(
+              SizedBox(
                 height: 10,
               ),
-            
-            //! <---- logout -----> //
-            LogoutFunction(),
-      
-      
-          ],
+
+              //! <---- logout -----> //
+              LogoutFunction(),
+            ],
+          ),
         ),
-      ),
-    )),
+      )),
     );
   }
 }
@@ -126,24 +143,24 @@ class LogoutFunction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()async {
+      onTap: () async {
         final shouldLogout = await showLogOutDiaglog(context);
-          if (shouldLogout) {
-            await AuthService.firebase().logOut();
-            final snackbar = MySnackBar();
-            snackbar.mySnackBar(
-                header: "Logged out!",
-                content: "see you soon",
-                bgColor: Colors.green.shade100,
-                borderColor: Colors.green);
-            Get.to(() => LoginView());
-          }
+        if (shouldLogout) {
+          await AuthService.firebase().logOut();
+          final snackbar = MySnackBar();
+          snackbar.mySnackBar(
+              header: "Logged out!",
+              content: "see you soon",
+              bgColor: Colors.green.shade100,
+              borderColor: Colors.green);
+          Get.to(() => LoginView());
+        }
       },
       child: BigText(
-          text: "Logout",
-          color: AppColors.darkGrey,
-          size: 30,
-        ),
+        text: "Logout",
+        color: AppColors.darkGrey,
+        size: 30,
+      ),
     );
   }
 }

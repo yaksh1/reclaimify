@@ -19,9 +19,7 @@ class PostCardWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //! <---- image -----> //
-              Hero(
-                tag: 'hello',
-                child: Container(
+               Container(
                   height: 200,
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -32,7 +30,7 @@ class PostCardWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
+              
               //! <---- post details -----> //
               Padding(
                 padding: EdgeInsets.all(16.0),
