@@ -75,9 +75,9 @@ class _PostsViewState extends State<PostsView> {
                   decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
-                    hintText: "Search based on title or description",
+                    hintText: "title,description,location or category",
                     hintStyle: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: 14.sp,
                       color: Colors.grey[400],
                       fontWeight: FontWeight.w400,
                     ),
@@ -105,7 +105,7 @@ class _PostsViewState extends State<PostsView> {
                   children: [
                     //* ---category header --- //
                     SmallText(
-                      text: "Post Type ${postType}",
+                      text: "Post Type",
                       color: AppColors.darkGrey,
                       weight: FontWeight.w600,
                       size: 16.sp,
@@ -167,7 +167,15 @@ class _PostsViewState extends State<PostsView> {
                             data['description']
                                 .toString()
                                 .toLowerCase()
-                                .contains(name.toLowerCase()) )) {
+                                .contains(name.toLowerCase()) ||
+                                data['category']
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(name.toLowerCase()) ||
+                                data['location']
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(name.toLowerCase()))) {
                           return Padding(
                             padding: EdgeInsets.symmetric(vertical: 24),
                             child: PostCardWidget(
@@ -267,7 +275,11 @@ class _PostsViewState extends State<PostsView> {
             color: AppColors.lightRed,
             textColor: AppColors.darkGrey,
           ),
-        )
+        ),
+        SizedBox(
+          width: 10.w,
+        ),
+       
       ],
     );
   }
