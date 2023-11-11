@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -20,26 +21,25 @@ class _PostDetailedViewState extends State<PostDetailedView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar:AppBar(
-      //   //! <---- header -----> //
-      //   centerTitle: true,
-      //   leading: BackIcon(),
-      //   // centerTitle: true,
-      // ),
       body: Stack(
           // alignment: Alignment.topLeft,
           children: [
+            //! <---- Image -----> //
             Container(
                 height: 510,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(widget.snap['postUrl']),
-                  ),
                 ),
-              
+              child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: CachedNetworkImage(
+                          imageUrl: widget.snap['postUrl'],
+                          // height: 200,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          ),
+                  ) ,
             ),
             SafeArea(child: BackIcon()),
             Padding(
@@ -54,7 +54,7 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                         topRight: Radius.circular(30))),
                 child: Padding(
                   padding:
-                      EdgeInsets.symmetric(vertical: 16..h, horizontal: 16.w),
+                      EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

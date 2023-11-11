@@ -5,8 +5,8 @@ import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/validators.dart';
 
-class TextForm extends StatelessWidget {
-  TextForm({
+class TextFormTitle extends StatelessWidget {
+  TextFormTitle({
     super.key,
     required this.label,
     required this.hintText,
@@ -36,6 +36,8 @@ class TextForm extends StatelessWidget {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'This field is required.';
+        } else if (value.length > 15) {
+          return "Title must be less than or equal to 15 characters";
         }
         return null;
       },

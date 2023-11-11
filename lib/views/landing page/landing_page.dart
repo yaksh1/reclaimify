@@ -111,7 +111,7 @@ class _LandingPageState extends State<LandingPage> {
                   subHeading: "Go through the lost and found items list",
                   onTap: () {
                     Get.to(()=> PostsView());
-                  }, //TODO
+                  }, 
                 ),
 
                 GestureDetector(

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -35,11 +36,16 @@ class _ProfilePostCardState extends State<ProfilePostCard> {
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(widget.snap['postUrl']),
-                ),
               ),
+              child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: CachedNetworkImage(
+                          imageUrl: widget.snap['postUrl'],
+                          // height: 200,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          ),
+                  ) ,
             ),
 
             //! <---- post details -----> //
@@ -214,13 +220,22 @@ class _bottomSheetState extends State<bottomSheet> {
             ),
             Row(
               children: [
-                IconAndTextWidget(
-                  icon: Icons.verified_user_outlined,
-                  text: "Owner Found",
-                  iconColor: AppColors.darkGrey,
-                  textColor: AppColors.darkGrey,
-                  fontSize: 24,
-                  iconSize: 32,
+                InkWell(
+                  onTap: () async {
+                    setState(() {
+                      isPostDeleted = true;
+                    });
+                    await FirestoreMethods().deletePost(widget.id);
+                    Navigator.of(context).pop();
+                  },
+                  child: IconAndTextWidget(
+                    icon: Icons.verified_user_outlined,
+                    text: "Owner Found",
+                    iconColor: AppColors.darkGrey,
+                    textColor: AppColors.darkGrey,
+                    fontSize: 24,
+                    iconSize: 32,
+                  ),
                 ),
               ],
             ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reclaimify/components/big_tex.dart';
@@ -25,11 +26,17 @@ class PostCardWidget extends StatelessWidget {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(snap['postUrl']),
-                    ),
+                   
                   ),
+                  child:ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: CachedNetworkImage(
+                          imageUrl: snap['postUrl'],
+                          // height: 200,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          ),
+                  ) ,
                 ),
               
               //! <---- post details -----> //

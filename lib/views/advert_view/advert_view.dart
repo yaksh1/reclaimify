@@ -7,6 +7,7 @@ import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/components/text_form.dart';
+import 'package:reclaimify/components/text_form_title.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 
@@ -119,8 +120,8 @@ class _AdvertViewState extends State<AdvertView> {
                     ),
 
                     //! <---- title field -----> //
-                    TextForm(
-                      helperText: "",
+                    TextFormTitle(
+                      helperText: "Title must be less than or equal to 18 characters",
                       label: "Title",
                       hintText: "Enter the title of the Ad",
                       obscureText: false,
@@ -128,7 +129,7 @@ class _AdvertViewState extends State<AdvertView> {
                     ),
 
                 SizedBox(
-                      height: 10.h,
+                      height: 15.h,
                     ),
 
                     //* <---- description header -----> //
