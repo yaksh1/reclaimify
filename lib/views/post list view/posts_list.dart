@@ -10,6 +10,7 @@ import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/icon_button.dart';
 import 'package:reclaimify/components/post_card_widget.dart';
+import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/views/post%20detailed%20view/post_detailed_view.dart';
 import 'package:reclaimify/views/post%20list%20view/filters.dart';
@@ -26,23 +27,30 @@ class _PostsViewState extends State<PostsView> {
   String? _currentItemSelected = "Gadgets";
   var _categories = ['Gadgets', 'Books', 'Id-Card', 'Bottle', 'Other Items'];
   String name = "";
+  //$ <---- my box shadows -----> //
+  Color _shadow1 = Colors.transparent;
+  Color _shadow2 = Colors.transparent;
+  Color _shadow3 = Colors.transparent;
+  Color _shadow4 = Colors.transparent;
+
+  String postType = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         //! <---- header -----> //
-        actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: MyIconButton(
-              onPressed: () {
-                Get.to(() => FiltersView());
-              },
-              icon: PhosphorIcons.duotone.faders,
-              text: "Filters",
-            ),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: EdgeInsets.symmetric(horizontal: 10.w),
+        //     child: MyIconButton(
+        //       onPressed: () {
+        //         Get.to(() => FiltersView());
+        //       },
+        //       icon: PhosphorIcons.duotone.faders,
+        //       text: "Filters",
+        //     ),
+        //   ),
+        // ],
         centerTitle: true,
         leading: BackIcon(),
         // centerTitle: true,
@@ -91,6 +99,24 @@ class _PostsViewState extends State<PostsView> {
                   ),
                 ),
                 SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    //* ---category header --- //
+                    SmallText(
+                      text: "Post Type ${postType}",
+                      color: AppColors.darkGrey,
+                      weight: FontWeight.w600,
+                      size: 16.sp,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                _postTypeSelection(),
+                SizedBox(
                   height: 10,
                 ),
                 StreamBuilder(
@@ -113,7 +139,7 @@ class _PostsViewState extends State<PostsView> {
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         var data = snapshot.data!.docs[index].data();
-                        if (name.isEmpty) {
+                        if (name.isEmpty && postType.isEmpty) {
                           return Padding(
                             padding: EdgeInsets.symmetric(vertical: 24),
                             child: PostCardWidget(
@@ -131,13 +157,17 @@ class _PostsViewState extends State<PostsView> {
                             ),
                           );
                         }
-                        if (data['title']
-                            .toString()
-                            .toLowerCase()
-                            .contains(name.toLowerCase()) || data['description']
+                        if ( data['postType']
                                 .toString()
                                 .toLowerCase()
-                                .contains(name.toLowerCase()))  {
+                                .contains(postType.toLowerCase())&&( data['title']
+                                .toString()
+                                .toLowerCase()
+                                .contains(name.toLowerCase()) ||
+                            data['description']
+                                .toString()
+                                .toLowerCase()
+                                .contains(name.toLowerCase()) )) {
                           return Padding(
                             padding: EdgeInsets.symmetric(vertical: 24),
                             child: PostCardWidget(
@@ -155,6 +185,7 @@ class _PostsViewState extends State<PostsView> {
                             ),
                           );
                         }
+                        
                         return Container();
                       },
                     );
@@ -165,6 +196,79 @@ class _PostsViewState extends State<PostsView> {
           ),
         ),
       )),
+    );
+  }
+
+  Row _postTypeSelection() {
+    return Row(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 20,
+                color: _shadow1,
+                offset: Offset(0, 4),
+              ),
+              BoxShadow(
+                blurRadius: 20,
+                color: _shadow2,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: blueButton(
+              onPressed: () {
+                setState(() {
+                  _shadow1 = Colors.blue.shade200;
+                  _shadow2 = AppColors.lightMainColor2;
+                  _shadow3 = Colors.transparent;
+                  _shadow4 = Colors.transparent;
+                  postType = "Found";
+                });
+              },
+              text: "Found",
+              width: 85.w,
+              fontweight: FontWeight.w600,
+              height: 40.h,
+              textColor: AppColors.darkGrey,
+              color: AppColors.lightMainColor2),
+        ),
+        SizedBox(
+          width: 10.w,
+        ),
+        Container(
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(
+              blurRadius: 20,
+              color: _shadow3,
+              offset: Offset(0, 4),
+            ),
+            BoxShadow(
+              blurRadius: 20,
+              color: _shadow4,
+              offset: Offset(0, 4),
+            ),
+          ]),
+          child: blueButton(
+            onPressed: () {
+              setState(() {
+                _shadow3 = Colors.red.shade200;
+                _shadow4 = AppColors.lightRed;
+                _shadow1 = Colors.transparent;
+                _shadow2 = Colors.transparent;
+                postType = "Lost";
+              });
+            },
+            text: "Lost",
+            width: 85.w,
+            fontweight: FontWeight.w600,
+            height: 40.h,
+            color: AppColors.lightRed,
+            textColor: AppColors.darkGrey,
+          ),
+        )
+      ],
     );
   }
 
