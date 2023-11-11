@@ -42,7 +42,7 @@ class TextFormTitle extends StatelessWidget {
         return null;
       },
 
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       obscureText: obscureText,
       controller: controller,
       enableSuggestions: true,

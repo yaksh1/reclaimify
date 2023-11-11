@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/back_icon.dart';
+import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/icon_button.dart';
 import 'package:reclaimify/components/post_card_widget.dart';
@@ -24,7 +25,7 @@ class _PostsViewState extends State<PostsView> {
   Uint8List? file = null;
   String? _currentItemSelected = "Gadgets";
   var _categories = ['Gadgets', 'Books', 'Id-Card', 'Bottle', 'Other Items'];
-
+  String name = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,13 @@ class _PostsViewState extends State<PostsView> {
         actions: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Icon(Icons.search_sharp, size: 35.h),
+            child: MyIconButton(
+              onPressed: () {
+                Get.to(() => FiltersView());
+              },
+              icon: PhosphorIcons.duotone.faders,
+              text: "Filters",
+            ),
           ),
         ],
         centerTitle: true,
@@ -49,24 +56,42 @@ class _PostsViewState extends State<PostsView> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 16,
+                  height: 10.h,
                 ),
-                Row(
-                  children: [
-                    //! <---- select category -----> //
-                    Expanded(child: _selectionCategory()),
-                    SizedBox(
-                      width: 16,
+                TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      name = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+                    hintText: "Search based on title or description",
+                    hintStyle: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.grey[400],
+                      fontWeight: FontWeight.w400,
                     ),
-                    //! <---- icon button filters -----> //
-                    MyIconButton(
-                      onPressed: () {
-                        Get.to(() => FiltersView());
-                      },
-                      icon: PhosphorIcons.duotone.faders,
-                      text: "Filters",
-                    ),
-                  ],
+
+                    suffixIcon: const Icon(Icons.search),
+                    // prefix: Icon(Icons.search),
+                    fillColor: Colors.grey.shade100,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.r),
+                        borderSide: BorderSide(
+                            color: AppColors.slateGrey.withOpacity(0.6))),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.r),
+                        borderSide: BorderSide(
+                            color: AppColors.slateGrey.withOpacity(0.6))),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.r),
+                        borderSide: BorderSide(color: AppColors.primaryBlack)),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 StreamBuilder(
                   stream: FirebaseFirestore.instance
@@ -80,26 +105,57 @@ class _PostsViewState extends State<PostsView> {
                         child: CircularProgressIndicator(),
                       );
                     }
+
                     return ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       physics: ClampingScrollPhysics(),
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24),
-                          child: PostCardWidget(
-                            onPressed: () {
-                              Navigator.push(
+                        var data = snapshot.data!.docs[index].data();
+                        if (name.isEmpty) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 24),
+                            child: PostCardWidget(
+                              onPressed: () {
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => PostDetailedView(
-                                          snap: snapshot.data!.docs[index]
-                                              .data(),),),);
-                            },
-                            snap: snapshot.data!.docs[index].data(),
-                          ),
-                        );
+                                    builder: (context) => PostDetailedView(
+                                      snap: snapshot.data!.docs[index].data(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              snap: snapshot.data!.docs[index].data(),
+                            ),
+                          );
+                        }
+                        if (data['title']
+                            .toString()
+                            .toLowerCase()
+                            .contains(name.toLowerCase()) || data['description']
+                                .toString()
+                                .toLowerCase()
+                                .contains(name.toLowerCase()))  {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 24),
+                            child: PostCardWidget(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PostDetailedView(
+                                      snap: snapshot.data!.docs[index].data(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              snap: snapshot.data!.docs[index].data(),
+                            ),
+                          );
+                        }
+                        return Container();
                       },
                     );
                   },

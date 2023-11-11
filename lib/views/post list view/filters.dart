@@ -38,7 +38,7 @@ class _FiltersViewState extends State<FiltersView> {
   Color _shadow3 = Colors.transparent;
   Color _shadow4 = Colors.transparent;
 
-  String postType = "found";
+  String postType = "";
 
   @override
   void initState() {

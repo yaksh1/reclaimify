@@ -43,7 +43,7 @@ class TextFormDescription extends StatelessWidget {
         
       },
 
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       obscureText: obscureText,
       controller: controller,
       enableSuggestions: true,
