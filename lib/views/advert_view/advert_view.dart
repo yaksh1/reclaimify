@@ -7,6 +7,7 @@ import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/components/text_form.dart';
+import 'package:reclaimify/components/text_form_description.dart';
 import 'package:reclaimify/components/text_form_title.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
@@ -121,7 +122,7 @@ class _AdvertViewState extends State<AdvertView> {
 
                     //! <---- title field -----> //
                     TextFormTitle(
-                      helperText: "Title must be less than or equal to 18 characters",
+                      helperText: "Title must be less than or equal to 15 characters",
                       label: "Title",
                       hintText: "Enter the title of the Ad",
                       obscureText: false,
@@ -140,7 +141,7 @@ class _AdvertViewState extends State<AdvertView> {
                     ),
 
                     //! <---- description field -----> //
-                    TextForm(
+                    TextFormDescription(
                       helperText: "Eg. color,brand,item name,building/room no.",
                       label: "Description",
                       hintText: "Enter description of the item",

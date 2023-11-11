@@ -15,10 +15,16 @@ import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/views/post%20detailed%20view/post_detailed_view.dart';
 import 'package:reclaimify/views/profile%20view/widgets/profile_post_card.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   ProfileView({super.key});
 
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
   final currentUser = AuthService.firebase().getCurrentUser()!;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

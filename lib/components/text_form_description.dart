@@ -5,8 +5,8 @@ import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/validators.dart';
 
-class TextForm extends StatelessWidget {
-  TextForm({
+class TextFormDescription extends StatelessWidget {
+  TextFormDescription({
     super.key,
     required this.label,
     required this.hintText,
@@ -36,10 +36,11 @@ class TextForm extends StatelessWidget {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'This field is required.';
-        } else if (value.length > 15) {
-          return "Maximum length allowed id 15 characters";
+        }else if(value.length>50){
+          return "Maximum length of description should be 50 characters";
         }
         return null;
+        
       },
 
       keyboardType: TextInputType.emailAddress,

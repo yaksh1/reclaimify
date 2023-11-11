@@ -141,7 +141,7 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                       //! <---- call and message button -----> //
                       Expanded(
                         child: Padding(
-                            padding:  EdgeInsets.only(top: 90.h),
+                            padding:  EdgeInsets.only(top:75.h),
                             child: Row(
                               children: [
                                 //! <---- call button -----> //
