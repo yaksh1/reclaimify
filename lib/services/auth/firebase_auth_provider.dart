@@ -211,13 +211,7 @@ class FirebaseAuthProvider implements AuthProvider {
     });
   }
 
-  //! <---- save post data -----> //
-  ui(String email, String username) {
-    FirebaseFirestore.instance.collection("users").doc(email).set({
-      'email': email,
-      'name': username,
-    });
-  }
+
 
   //! <---- password reset email -----> //
   @override

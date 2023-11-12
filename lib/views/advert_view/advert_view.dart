@@ -215,20 +215,7 @@ class _AdvertViewState extends State<AdvertView> {
     );
   }
 
-  //! <---- save post data -----> //
-  savePostOfUser(String desc, String title, String? category, String postType,
-      String location) {
-    final user = AuthService.firebase().getCurrentUser();
-    FirebaseFirestore.instance.collection("Posts").doc(user!.email).set({
-      'email': user.email,
-      'name': user.displayName,
-      'category': category,
-      'post Type': postType,
-      'description': desc,
-      'title': title,
-      'location': location,
-    });
-  }
+
 
   //! <---- build header method -----> //
   Row _buildHeader(String title) {
