@@ -27,6 +27,9 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
+        var url = currentUser.photoURL ??
+        "https://images.unsplash.com/photo-1543946602-a0fce8117697?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmV0d29ya3xlbnwwfHwwfHx8MA%3D%3D";
+
     return Scaffold(
       appBar: AppBar(
         leading: BackIcon(),
@@ -42,14 +45,14 @@ class _ProfileViewState extends State<ProfileView> {
                 child: CircleAvatar(
                     radius: 60,
                     backgroundImage: CachedNetworkImageProvider(
-                      currentUser.photoURL!,
+                      url,
                     )),
               ),
               SizedBox(
                 height: 12,
               ),
               BigText(
-                text: currentUser.displayName!,
+                text: "currentUser.displayName!",
                 color: AppColors.darkGrey,
                 size: 32,
               ),
@@ -72,7 +75,7 @@ class _ProfileViewState extends State<ProfileView> {
               FutureBuilder(
                 future: FirebaseFirestore.instance
                     .collection('posts')
-                    .where('username', isEqualTo: currentUser.displayName)
+                    .where('username', isEqualTo:"currentUser.displayName")
                     .get(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -144,7 +147,7 @@ class ProfileCardWidget extends StatelessWidget {
             height: 12.h,
           ),
           ProfileCardItems(
-              icon: PhosphorIcons.regular.envelope, text: currentUser.email!),
+              icon: PhosphorIcons.regular.envelope, text: "currentUser.email!"),
           SizedBox(
             height: 12.h,
           ),

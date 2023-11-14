@@ -1,13 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logger/logger.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/back_icon.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/icon_and_text.dart';
 import 'package:reclaimify/components/small_text.dart';
+import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PostDetailedView extends StatefulWidget {
   const PostDetailedView({super.key, required this.snap});
@@ -18,6 +21,12 @@ class PostDetailedView extends StatefulWidget {
 }
 
 class _PostDetailedViewState extends State<PostDetailedView> {
+  void whatsappLauncher({required phone, required message}) async {
+    String url = "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+    Uri urlLink = Uri.parse(url);
+    await canLaunchUrl(urlLink) ? launchUrl(urlLink) : Logger().d("error");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,20 +35,20 @@ class _PostDetailedViewState extends State<PostDetailedView> {
           children: [
             //! <---- Image -----> //
             Container(
-                height: 510,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
+              height: 510,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
               child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: CachedNetworkImage(
-                          imageUrl: widget.snap['postUrl'],
-                          // height: 200,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          ),
-                  ) ,
+                borderRadius: BorderRadius.circular(15.0),
+                child: CachedNetworkImage(
+                  imageUrl: widget.snap['postUrl'],
+                  // height: 200,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              ),
             ),
             SafeArea(child: BackIcon()),
             Padding(
@@ -81,7 +90,9 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 10.h,),
+                      SizedBox(
+                        height: 10.h,
+                      ),
                       //! <---- description -----> //
                       SmallText(
                         text: widget.snap["description"],
@@ -141,19 +152,19 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                       //! <---- call and message button -----> //
                       Expanded(
                         child: Padding(
-                            padding:  EdgeInsets.only(top:75.h),
+                            padding: EdgeInsets.only(top: 75.h),
                             child: Row(
                               children: [
                                 //! <---- call button -----> //
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     //TODO
                                   },
                                   child: Container(
                                     padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: AppColors.mainColor),
+                                      border: Border.all(
+                                          color: AppColors.mainColor),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Icon(
@@ -171,13 +182,16 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                                     child: blueButton(
                                   onPressed: () {
                                     //TODO
+                                    whatsappLauncher(
+                                        phone: AuthService.firebase().getCurrentUser()!.phoneNumber,
+                                        message: "message");
                                   },
                                   text: "Message ->",
                                   color: AppColors.lightMainColor2,
                                   height: 46,
                                   textColor: AppColors.darkGrey,
                                   fontweight: FontWeight.w600,
-                                  fontSize:24 ,
+                                  fontSize: 24,
                                 ))
                               ],
                             )),

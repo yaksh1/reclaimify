@@ -17,6 +17,9 @@ class DrawerView extends StatelessWidget {
   final currentUser = AuthService.firebase().getCurrentUser()!;
   @override
   Widget build(BuildContext context) {
+    var url = currentUser.photoURL ??
+        "https://images.unsplash.com/photo-1543946602-a0fce8117697?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmV0d29ya3xlbnwwfHwwfHx8MA%3D%3D";
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -29,7 +32,7 @@ class DrawerView extends StatelessWidget {
               child: CircleAvatar(
                   radius: 40,
                   backgroundImage: CachedNetworkImageProvider(
-                    currentUser.photoURL!,
+                    url,
                   )),
             ),
             SizedBox(

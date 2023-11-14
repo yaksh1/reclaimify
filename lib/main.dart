@@ -8,6 +8,7 @@ import 'package:reclaimify/services/auth/auth_gate.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/routes.dart';
 import 'package:reclaimify/views/authentication/forget_password/forgot_password_otp/forgot_password_otp.dart';
+import 'package:reclaimify/views/authentication/forget_password/forgot_password_phone/forgot_password-phone.dart';
 import 'package:reclaimify/views/authentication/login/login_view.dart';
 import 'package:reclaimify/views/authentication/register/register_view.dart';
 import 'package:reclaimify/views/authentication/verify%20email/verify_email_view.dart';
@@ -34,7 +35,7 @@ void main() async {
           defaultTransition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
           // home: isViewed!=0? OnBoardingView() : const HomePage(),
-          home: const AuthGate(),
+          home: const LoginView(),
           // home: const Gallery(),
           routes: {
             registerRoute: (context) => const Register(),
@@ -43,6 +44,7 @@ void main() async {
             landingPageRoute:(context) => const LandingPage(),
             otpScreenRoute:(context)=>const ForgotPasswordOtp(),
             postsViewRoute: (context) => const PostsView(),
+            phoneRoute:(context)=>const ForgotPasswordPhoneOption(),
           }
           ), 
     ),

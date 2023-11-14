@@ -168,7 +168,7 @@ class _LoginViewState extends State<LoginView> {
                                   borderColor: Colors.green);
                               Logger().d("Normal signed in using $email");
                               Navigator.of(context).pushNamedAndRemoveUntil(
-                                  landingPageRoute, (route) => false);
+                                  phoneRoute, (route) => false);
                             } else {
                               // user's email is not verified
                               Get.to(() => VerifyEmailView());

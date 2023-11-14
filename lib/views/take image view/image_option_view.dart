@@ -56,6 +56,7 @@ class _ImageOptionsState extends State<ImageOptions> {
                                   postType: widget.postType,
                                   title: widget.title,
                                   file: _file!,
+                                  
                                 )),
                       );
                       setState(() {

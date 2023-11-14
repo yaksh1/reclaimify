@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
+import 'package:reclaimify/views/authentication/phone%20enter%20view/phone_login_verification.dart';
 import 'package:reclaimify/views/landing%20page/landing_page.dart';
 
 class Google {
@@ -18,7 +19,7 @@ class Google {
           bgColor: Colors.green.shade100,
           borderColor: Colors.green);
       Logger().d("Google signed in as " + googleUser.displayName!);
-      Get.offAll(LandingPage());
+      Get.to(()=>PhoneLoginVerification());
     }
     ;
   }

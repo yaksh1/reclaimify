@@ -194,10 +194,12 @@ class FirebaseAuthProvider implements AuthProvider {
 
   //! <---- save google user data -----> //
   saveUser(GoogleSignInAccount? googleUser) {
+    Logger().d("in save user block");
     FirebaseFirestore.instance.collection("users").doc(googleUser!.email).set({
       "email": googleUser.email,
       "name": googleUser.displayName,
-      "profilePic": googleUser.photoUrl
+      "profilePic": googleUser.photoUrl,
+      "phoneNumber": '',
     });
 
     Logger().d("Saved user data");
