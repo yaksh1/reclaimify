@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logger/logger.dart';
@@ -21,10 +22,52 @@ class PostDetailedView extends StatefulWidget {
 }
 
 class _PostDetailedViewState extends State<PostDetailedView> {
+  var phone = '';
+  void getPhone() async {
+    var collection = FirebaseFirestore.instance.collection('phoneNumbers');
+    var querySnapshot = await collection.get();
+    for (var queryDocumentSnapshot in querySnapshot.docs) {
+      Map<String, dynamic> data = queryDocumentSnapshot.data();
+
+      phone = data['phoneNumber'];
+    }
+  }
+
   void whatsappLauncher({required phone, required message}) async {
-    String url = "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
+    String url = "whatsapp://send?phone=91$phone&text=${Uri.parse(message)}";
+    Logger().d(url);
     Uri urlLink = Uri.parse(url);
     await canLaunchUrl(urlLink) ? launchUrl(urlLink) : Logger().d("error");
+  }
+
+  final user = AuthService.firebase().getCurrentUser()!;
+  dynamic data;
+
+  // Future<dynamic> getData() async {
+  //   final Query<Map<String, dynamic>> document = FirebaseFirestore.instance
+  //       .collection("users")
+  //       .where('username', isEqualTo: widget.snap['username']);
+
+  //   await document.get().then<dynamic>((QuerySnapshot snapshot) async {
+  //     setState(() {
+  //       data = snapshot.docs;
+  //       Logger().d(data);
+  //     });
+  //   });
+  // }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // getData();
+    getPhone();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -181,10 +224,15 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                                 Expanded(
                                     child: blueButton(
                                   onPressed: () {
-                                    //TODO
+                                    // getData();
+                                    getPhone();
+                                    // //TODO
                                     whatsappLauncher(
-                                        phone: AuthService.firebase().getCurrentUser()!.phoneNumber,
-                                        message: "message");
+                                        phone: phone,
+                                        message:
+                                            widget.snap['postType'] == "Lost"
+                                                ? "Lost"
+                                                : "Found");
                                   },
                                   text: "Message ->",
                                   color: AppColors.lightMainColor2,

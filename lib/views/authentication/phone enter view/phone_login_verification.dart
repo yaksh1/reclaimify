@@ -22,8 +22,7 @@ class PhoneLoginVerification extends StatefulWidget {
   static String verify = '';
 
   @override
-  State<PhoneLoginVerification> createState() =>
-      _PhoneLoginVerificationState();
+  State<PhoneLoginVerification> createState() => _PhoneLoginVerificationState();
 }
 
 class _PhoneLoginVerificationState extends State<PhoneLoginVerification> {
@@ -90,9 +89,8 @@ class _PhoneLoginVerificationState extends State<PhoneLoginVerification> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: height10),
-                        child:PhoneTextField(controller: _phone)
-                      ),
+                          padding: EdgeInsets.symmetric(vertical: height10),
+                          child: PhoneTextField(controller: _phone)),
                       SizedBox(
                         height: height10 * 2,
                       ),
@@ -111,7 +109,9 @@ class _PhoneLoginVerificationState extends State<PhoneLoginVerification> {
                                     (String verificationId, int? resendToken) {
                                   PhoneLoginVerification.verify =
                                       verificationId;
-                                  Get.to(()=> OtpVerificationView(phoneNum: phoneNo,));
+                                  Get.to(() => OtpVerificationView(
+                                        phoneNum: phoneNo,
+                                      ));
                                 },
                                 codeAutoRetrievalTimeout:
                                     (String verificationId) {},

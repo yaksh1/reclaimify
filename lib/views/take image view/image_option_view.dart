@@ -29,7 +29,6 @@ class ImageOptions extends StatefulWidget {
 
 class _ImageOptionsState extends State<ImageOptions> {
   Uint8List? _file;
-  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {

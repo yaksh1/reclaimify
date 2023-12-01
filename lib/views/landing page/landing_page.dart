@@ -4,13 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/card.dart';
 import 'package:reclaimify/components/plus_button_card.dart';
 import 'package:reclaimify/components/small_text.dart';
-import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
@@ -35,7 +33,6 @@ class _LandingPageState extends State<LandingPage> {
   double radius10 = Dimensions.radius10;
   @override
   Widget build(BuildContext context) {
-    Logger().e(currentUser);
 
     var url = currentUser?.photoURL ??
         "https://images.unsplash.com/photo-1543946602-a0fce8117697?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmV0d29ya3xlbnwwfHwwfHx8MA%3D%3D";

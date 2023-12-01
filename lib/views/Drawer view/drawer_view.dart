@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
-import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/views/authentication/login/login_view.dart';

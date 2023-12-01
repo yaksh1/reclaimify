@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reclaimify/views/authentication/login/login_view.dart';
+import 'package:reclaimify/views/authentication/phone%20enter%20view/phone_login_verification.dart';
 import 'package:reclaimify/views/landing%20page/landing_page.dart';
 
 class AuthGate extends StatelessWidget {
@@ -21,8 +22,7 @@ class AuthGate extends StatelessWidget {
           } else {
             return Scaffold(
               body: Center(
-
-              child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               ),
             );
           }

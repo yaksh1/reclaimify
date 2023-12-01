@@ -37,7 +37,6 @@ class _LoginViewState extends State<LoginView> {
   // TextEditingController? _name;
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
-  var logger = Logger();
   final mySnackbar = MySnackBar();
 
   //! <---- global key -----> //
@@ -166,7 +165,6 @@ class _LoginViewState extends State<LoginView> {
                                   content: "Logged in as ${email}",
                                   bgColor: Colors.green.shade100,
                                   borderColor: Colors.green);
-                              Logger().d("Normal signed in using $email");
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                   phoneRoute, (route) => false);
                             } else {

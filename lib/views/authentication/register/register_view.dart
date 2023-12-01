@@ -139,9 +139,7 @@ class _RegisterState extends State<Register> {
                           // ---- when clicked on sign up button ---- //
                           AuthService.firebase().sendEmailVerification();
                          
-                          //$ --- DEBUG --- //
-
-                          Logger().d("Registered using $email");
+                         
 
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               verifyEmailRoute, (route) => false);

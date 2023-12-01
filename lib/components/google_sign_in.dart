@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
-import 'package:reclaimify/views/authentication/phone%20enter%20view/phone_login_verification.dart';
 import 'package:reclaimify/views/landing%20page/landing_page.dart';
 
 class Google {
@@ -18,8 +16,7 @@ class Google {
           content: "Logged in as ${googleUser.email}",
           bgColor: Colors.green.shade100,
           borderColor: Colors.green);
-      Logger().d("Google signed in as " + googleUser.displayName!);
-      Get.to(()=>PhoneLoginVerification());
+      Get.offAll(LandingPage());
     }
     ;
   }

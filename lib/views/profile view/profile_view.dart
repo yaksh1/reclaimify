@@ -3,15 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/back_icon.dart';
 import 'package:reclaimify/components/big_tex.dart';
-import 'package:reclaimify/components/icon_and_text.dart';
 import 'package:reclaimify/components/icon_with_circle.dart';
-import 'package:reclaimify/components/post_card_widget.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:reclaimify/views/authentication/phone%20enter%20view/phone_login_verification.dart';
 import 'package:reclaimify/views/post%20detailed%20view/post_detailed_view.dart';
 import 'package:reclaimify/views/profile%20view/widgets/profile_post_card.dart';
 
@@ -24,10 +24,28 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   final currentUser = AuthService.firebase().getCurrentUser()!;
+  var phone = '';
+  void getPhone() async {
+    var collection = FirebaseFirestore.instance.collection('phoneNumbers');
+    var querySnapshot = await collection.get();
+    for (var queryDocumentSnapshot in querySnapshot.docs) {
+      Map<String, dynamic> data = queryDocumentSnapshot.data();
+
+      phone = data['phoneNumber'];
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPhone();
+  }
 
   @override
   Widget build(BuildContext context) {
-        var url = currentUser.photoURL ??
+    getPhone();
+    var url = currentUser.photoURL ??
         "https://images.unsplash.com/photo-1543946602-a0fce8117697?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmV0d29ya3xlbnwwfHwwfHx8MA%3D%3D";
 
     return Scaffold(
@@ -52,14 +70,18 @@ class _ProfileViewState extends State<ProfileView> {
                 height: 12,
               ),
               BigText(
-                text: "currentUser.displayName!",
+                text: currentUser.displayName!,
                 color: AppColors.darkGrey,
                 size: 32,
               ),
               SizedBox(
                 height: 24,
               ),
-              ProfileCardWidget(currentUser: currentUser),
+              InkWell(
+                  onTap: () {
+                    Get.to(() => PhoneLoginVerification());
+                  },
+                  child: ProfileCardWidget(currentUser: currentUser, phone: phone,)),
               SizedBox(
                 height: 24,
               ),
@@ -75,13 +97,11 @@ class _ProfileViewState extends State<ProfileView> {
               FutureBuilder(
                 future: FirebaseFirestore.instance
                     .collection('posts')
-                    .where('username', isEqualTo:"currentUser.displayName")
+                    .where('username', isEqualTo: currentUser.displayName)
                     .get(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Container(
-                      
-                    );
+                    return Container();
                   }
                   return ListView.builder(
                     shrinkWrap: true,
@@ -119,23 +139,24 @@ class _ProfileViewState extends State<ProfileView> {
 
 //$ <---- user details on card -----> //
 class ProfileCardWidget extends StatelessWidget {
-  const ProfileCardWidget({
+  ProfileCardWidget({
     super.key,
-    required this.currentUser,
+    required this.currentUser, required this.phone,
   });
 
   final User currentUser;
+  final String phone;
 
   @override
   Widget build(BuildContext context) {
+    String text = phone == '' ? "Click to add phone number" : phone;
     return Card(
       elevation: 6,
       color: AppColors.grey,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          ProfileCardItems(
-              icon: PhosphorIcons.regular.phoneCall, text: "+91xxxxxxxxxx"),
+          ProfileCardItems(icon: PhosphorIcons.regular.phoneCall, text: text),
           SizedBox(
             height: 12.h,
           ),
@@ -147,7 +168,7 @@ class ProfileCardWidget extends StatelessWidget {
             height: 12.h,
           ),
           ProfileCardItems(
-              icon: PhosphorIcons.regular.envelope, text: "currentUser.email!"),
+              icon: PhosphorIcons.regular.envelope, text: currentUser.email!),
           SizedBox(
             height: 12.h,
           ),
@@ -194,5 +215,3 @@ class ProfileCardItems extends StatelessWidget {
     );
   }
 }
-
-

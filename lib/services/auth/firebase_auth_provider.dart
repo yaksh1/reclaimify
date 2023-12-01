@@ -102,11 +102,9 @@ class FirebaseAuthProvider implements AuthProvider {
     // implement logOut
     final currentUser = FirebaseAuth.instance.currentUser;
     if (googleSignIn.currentUser != null) {
-      Logger().d("Sign out using google");
       await googleSignIn.signOut();
     }
     if (currentUser != null) {
-      Logger().d("Sign out using firebaseAuth");
       await FirebaseAuth.instance.signOut();
     }
     try {
@@ -194,7 +192,6 @@ class FirebaseAuthProvider implements AuthProvider {
 
   //! <---- save google user data -----> //
   saveUser(GoogleSignInAccount? googleUser) {
-    Logger().d("in save user block");
     FirebaseFirestore.instance.collection("users").doc(googleUser!.email).set({
       "email": googleUser.email,
       "name": googleUser.displayName,
@@ -202,7 +199,6 @@ class FirebaseAuthProvider implements AuthProvider {
       "phoneNumber": '',
     });
 
-    Logger().d("Saved user data");
   }
 
   //! <---- save email pass data -----> //

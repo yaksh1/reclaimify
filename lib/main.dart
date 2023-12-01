@@ -35,7 +35,7 @@ void main() async {
           defaultTransition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
           // home: isViewed!=0? OnBoardingView() : const HomePage(),
-          home: const LoginView(),
+          home: const AuthGate(),
           // home: const Gallery(),
           routes: {
             registerRoute: (context) => const Register(),

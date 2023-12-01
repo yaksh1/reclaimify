@@ -17,8 +17,10 @@ import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
+import 'package:reclaimify/utils/routes.dart';
 import 'package:reclaimify/views/authentication/forget_password/forgot_password_phone/forgot_password-phone.dart';
 import 'package:reclaimify/views/authentication/forget_password/forgot_password_reset/reset_password.dart';
+import 'package:reclaimify/views/authentication/login/login_view.dart';
 import 'package:reclaimify/views/authentication/phone%20enter%20view/phone_login_verification.dart';
 import 'package:reclaimify/views/landing%20page/landing_page.dart';
 
@@ -31,13 +33,21 @@ class OtpVerificationView extends StatefulWidget {
 
 class _OtpVerificationViewState extends State<OtpVerificationView> {
   var currentUser = AuthService.firebase().getCurrentUser();
-  // Logger().d(currentUser.email);
   //! <---- save user phone Number -----> //
-  savePhoneNumber(String phoneNo) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(currentUser!.email)
-        .update({'phoneNumber': phoneNo});
+  savePhoneNumber(String phoneNo) async {
+    await FirebaseFirestore.instance
+        .collection("phoneNumbers")
+        .doc(currentUser!.uid)
+        .set({
+      
+      "phoneNumber": phoneNo,
+    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginView(),
+      ),
+    );
   }
 
   final auth = FirebaseAuth.instance;
@@ -111,7 +121,7 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                                 smsCode: code);
                         await auth.signInWithCredential(credential);
                         await savePhoneNumber(widget.phoneNum);
-                        Get.offAll(() => AuthGate());
+                        // Get.offAll(() => LandingPage());
                       } catch (e) {
                         Logger().d(code);
                         MySnackBar().mySnackBar(

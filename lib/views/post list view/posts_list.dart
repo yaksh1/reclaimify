@@ -3,17 +3,12 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/back_icon.dart';
-import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/blue_button.dart';
-import 'package:reclaimify/components/icon_button.dart';
 import 'package:reclaimify/components/post_card_widget.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/views/post%20detailed%20view/post_detailed_view.dart';
-import 'package:reclaimify/views/post%20list%20view/filters.dart';
 
 class PostsView extends StatefulWidget {
   const PostsView({super.key});
