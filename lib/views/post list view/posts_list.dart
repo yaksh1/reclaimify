@@ -33,19 +33,7 @@ class _PostsViewState extends State<PostsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //! <---- header -----> //
-        // actions: [
-        //   Padding(
-        //     padding: EdgeInsets.symmetric(horizontal: 10.w),
-        //     child: MyIconButton(
-        //       onPressed: () {
-        //         Get.to(() => FiltersView());
-        //       },
-        //       icon: PhosphorIcons.duotone.faders,
-        //       text: "Filters",
-        //     ),
-        //   ),
-        // ],
+      
         centerTitle: true,
         leading: BackIcon(),
         // centerTitle: true,
