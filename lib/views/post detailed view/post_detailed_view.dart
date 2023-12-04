@@ -22,15 +22,17 @@ class PostDetailedView extends StatefulWidget {
 }
 
 class _PostDetailedViewState extends State<PostDetailedView> {
+  //! <---- get phone number -----> //
   var phone = '';
-  void getPhone() async {
-    var collection = FirebaseFirestore.instance.collection('phoneNumbers');
-    var querySnapshot = await collection.get();
-    for (var queryDocumentSnapshot in querySnapshot.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
+  Future<void> getPhoneUser(String uid) async {
+    final String _phone = await AuthService.firebase().getPhone(uid: uid);
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
+        phone = _phone;
+      });
+    });
 
-      phone = data['phoneNumber'];
-    }
+    Logger().d(phone);
   }
 
   void whatsappLauncher({required phone, required message}) async {
@@ -65,7 +67,7 @@ class _PostDetailedViewState extends State<PostDetailedView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getPhone();
+    getPhoneUser(widget.snap['uid']);
   }
 
   @override

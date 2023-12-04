@@ -36,8 +36,8 @@ class _ProfileViewState extends State<ProfileView> {
 
   //! <---- get phone number -----> //
   var phone = '';
-  Future<void> getPhoneUser() async {
-    final String _phone = await AuthService.firebase().getPhone();
+  Future<void> getPhoneUser(String uid) async {
+    final String _phone = await AuthService.firebase().getPhone(uid: uid);
     Future.delayed(const Duration(milliseconds: 300), () {
       setState(() {
         phone = _phone;
@@ -54,7 +54,7 @@ class _ProfileViewState extends State<ProfileView> {
     Future.delayed(const Duration(milliseconds: 300), () {
       setState(() {
         _isloading = false;
-      name = currentUser.displayName ?? _name;
+        name = currentUser.displayName ?? _name;
       });
     });
   }
@@ -62,7 +62,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   void initState() {
     getUserName();
-    getPhoneUser();
+    getPhoneUser(currentUser.uid);
     super.initState();
   }
 
@@ -84,15 +84,12 @@ class _ProfileViewState extends State<ProfileView> {
                 child: Center(
                   child: Column(
                     children: [
-                      
-                        
-                        CircleAvatar(
-                          radius: 60,
-                          backgroundImage: CachedNetworkImageProvider(
-                            url,
-                          ),
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundImage: CachedNetworkImageProvider(
+                          url,
                         ),
-                    
+                      ),
                       SizedBox(
                         height: 12,
                       ),
@@ -106,10 +103,11 @@ class _ProfileViewState extends State<ProfileView> {
                         height: 24,
                       ),
                       InkWell(
-                          
                           onTap: () {
-                            phone==''?
-                            Get.to(() => PhoneLoginVerification()):();
+                            Get.to(() => PhoneLoginVerification());
+                            // phone == ''
+                            //     ? Get.to(() => PhoneLoginVerification())
+                            //     : ();
                           },
                           child: ProfileCardWidget(
                             currentUser: currentUser,

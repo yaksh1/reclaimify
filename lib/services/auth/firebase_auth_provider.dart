@@ -282,12 +282,12 @@ class FirebaseAuthProvider implements AuthProvider {
   }
 
   @override
-  Future<String> getPhone() async {
+  Future<String> getPhone({required String uid}) async {
     String phone = "";
     final user = auth.currentUser;
     var collection = FirebaseFirestore.instance
         .collection('phoneNumbers')
-        .where('email', isEqualTo: user?.email);
+        .where('uid', isEqualTo: uid);
     var querySnapshot = await collection.get();
     
     for (var queryDocumentSnapshot in querySnapshot.docs) {

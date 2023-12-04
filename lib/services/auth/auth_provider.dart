@@ -13,7 +13,7 @@ abstract class AuthProvider {
 
   User? getCurrentUser();
   Future<String> getName();
-  Future<String> getPhone();
+  Future<String> getPhone({required String uid});
 
   Future<AuthUser> createUser(
       {required String email,

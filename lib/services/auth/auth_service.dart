@@ -50,5 +50,5 @@ class AuthService implements AuthProvider {
   Future<String> getName() => provider.getName();
 
   @override
-  Future<String> getPhone() => provider.getPhone();
+  Future<String> getPhone({required String uid}) => provider.getPhone(uid: uid);
 }
