@@ -7,6 +7,7 @@ import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:reclaimify/views/about%20us%20view/about_us.dart';
 import 'package:reclaimify/views/authentication/login/login_view.dart';
 import 'package:reclaimify/views/profile%20view/profile_view.dart';
 
@@ -37,16 +38,6 @@ class DrawerView extends StatelessWidget {
             SizedBox(
               width: 10,
             ),
-            //TODO add number too
-            // Column(
-            //   children: [
-            //     BigText(
-            //       text: currentUser.displayName!,
-            //       color: AppColors.primaryBlack,
-            //       size: 20,
-            //     ),
-            //   ],
-            // )
           ],
         ),
         actions: [
@@ -81,20 +72,22 @@ class DrawerView extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              //! <---- messages -----> //
-              BigText(
-                text: "Messages",
-                color: AppColors.darkGrey,
-                size: 30,
-              ),
-              SizedBox(
-                height: 10,
-              ),
               //! <---- about us -----> //
-              BigText(
-                text: "About Us",
-                color: AppColors.darkGrey,
-                size: 30,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AboutUs(),
+                    ),
+                  );
+
+                },
+                child: BigText(
+                  text: "About Us",
+                  color: AppColors.darkGrey,
+                  size: 30,
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -108,7 +101,7 @@ class DrawerView extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              //! <---- settings -----> //
+              // //! <---- settings -----> //
               BigText(
                 text: "Settings",
                 color: AppColors.darkGrey,

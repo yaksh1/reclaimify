@@ -53,12 +53,7 @@ class _LandingPageState extends State<LandingPage> {
                 CircleAvatar(backgroundImage: CachedNetworkImageProvider(url)),
           ),
         ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: width10),
-            child: Icon(Icons.search_sharp, size: height10 * 3.5),
-          ),
-        ],
+       
         // centerTitle: true,
       ),
       body: SafeArea(
@@ -82,7 +77,7 @@ class _LandingPageState extends State<LandingPage> {
                           alignment: TextAlign.start,
                         ),
                         SmallText(
-                          text: currentUser?.displayName ?? "default",
+                          text: currentUser?.displayName ?? "User",
                           color: AppColors.darkGrey,
                           size: width10 * 2.5,
                           alignment: TextAlign.start,

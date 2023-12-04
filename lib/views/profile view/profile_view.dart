@@ -169,18 +169,18 @@ class ProfileCardWidget extends StatelessWidget {
           ),
           ProfileCardItems(
               icon: PhosphorIcons.regular.envelope, text: currentUser.email!),
-          SizedBox(
-            height: 12.h,
-          ),
-          Divider(
-            height: 4,
-            color: AppColors.slateGrey,
-          ),
-          SizedBox(
-            height: 12.h,
-          ),
-          ProfileCardItems(
-              icon: PhosphorIcons.regular.instagramLogo, text: "@instagram"),
+          // SizedBox(
+          //   height: 12.h,
+          // ),
+          // Divider(
+          //   height: 4,
+          //   color: AppColors.slateGrey,
+          // ),
+          // SizedBox(
+          //   height: 12.h,
+          // ),
+          // ProfileCardItems(
+          //     icon: PhosphorIcons.regular.instagramLogo, text: "@instagram"),
         ]),
       ),
     );

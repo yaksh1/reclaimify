@@ -161,20 +161,20 @@ class _bottomSheetState extends State<bottomSheet> {
           children: <Widget>[
             //TODO: onPressed for all items
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconWithCircle(
-                  icon: PhosphorIcons.regular.shareNetwork,
-                  color: AppColors.darkGrey,
-                  padding: 12,
-                  iconSize: 28,
-                ),
-                IconWithCircle(
-                  icon: PhosphorIcons.regular.copy,
-                  color: AppColors.darkGrey,
-                  padding: 12,
-                  iconSize: 28,
-                ),
+                // IconWithCircle(
+                //   icon: PhosphorIcons.regular.shareNetwork,
+                //   color: AppColors.darkGrey,
+                //   padding: 12,
+                //   iconSize: 28,
+                // ),
+                // IconWithCircle(
+                //   icon: PhosphorIcons.regular.copy,
+                //   color: AppColors.darkGrey,
+                //   padding: 12,
+                //   iconSize: 28,
+                // ),
                 InkWell(
                   onTap: () async {
                     setState(() {

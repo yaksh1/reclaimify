@@ -125,12 +125,12 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                           BigText(
                               text: widget.snap['title'],
                               color: AppColors.darkGrey),
-                          //! <---- share option -----> //
-                          Icon(
-                            PhosphorIcons.duotone.shareNetwork,
-                            color: AppColors.darkGrey,
-                            size: 30,
-                          ),
+                          // //! <---- share option -----> //
+                          // Icon(
+                          //   PhosphorIcons.duotone.shareNetwork,
+                          //   color: AppColors.darkGrey,
+                          //   size: 30,
+                          // ),
                         ],
                       ),
                       SizedBox(
