@@ -42,7 +42,10 @@ class AuthService implements AuthProvider {
 
   @override
   Future changePassword() => provider.changePassword();
-  
+
   @override
   User? getCurrentUser() => provider.getCurrentUser();
+
+  @override
+  Future<String> getName() => provider.getName();
 }

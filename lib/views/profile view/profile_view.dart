@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/back_icon.dart';
 import 'package:reclaimify/components/big_tex.dart';
@@ -32,6 +33,7 @@ class _ProfileViewState extends State<ProfileView> {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
 
       phone = data['phoneNumber'];
+      Logger().d(phone);
     }
   }
 
@@ -45,6 +47,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     getPhone();
+    Logger().d(currentUser);
     var url = currentUser.photoURL ??
         "https://images.unsplash.com/photo-1543946602-a0fce8117697?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmV0d29ya3xlbnwwfHwwfHx8MA%3D%3D";
 
@@ -56,80 +59,86 @@ class _ProfileViewState extends State<ProfileView> {
         physics: BouncingScrollPhysics(),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              Hero(
-                tag: 'hero',
-                child: CircleAvatar(
+          child: Center(
+            child: Column(
+              children: [
+                Hero(
+                  tag: 'hero',
+                  child: CircleAvatar(
                     radius: 60,
                     backgroundImage: CachedNetworkImageProvider(
                       url,
-                    )),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              BigText(
-                text: currentUser.displayName!,
-                color: AppColors.darkGrey,
-                size: 32,
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              InkWell(
-                  onTap: () {
-                    Get.to(() => PhoneLoginVerification());
-                  },
-                  child: ProfileCardWidget(currentUser: currentUser, phone: phone,)),
-              SizedBox(
-                height: 24,
-              ),
-              Row(
-                children: [
-                  BigText(
-                    text: "Your Posts",
-                    color: AppColors.darkGrey,
-                    size: 32,
+                    ),
                   ),
-                ],
-              ),
-              FutureBuilder(
-                future: FirebaseFirestore.instance
-                    .collection('posts')
-                    .where('username', isEqualTo: currentUser.displayName)
-                    .get(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Container();
-                  }
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemCount: (snapshot.data! as dynamic).docs.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 24),
-                        child: ProfilePostCard(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PostDetailedView(
-                                  snap: snapshot.data!.docs[index].data(),
-                                ),
-                              ),
-                            );
-                          },
-                          snap: snapshot.data!.docs[index].data(),
-                        ),
-                      );
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                BigText(
+                  text: currentUser.displayName ?? "User",
+                  color: AppColors.darkGrey,
+                  size: 32,
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                InkWell(
+                    onTap: () {
+                      Get.to(() => PhoneLoginVerification());
                     },
-                  );
-                },
-              )
-            ],
+                    child: ProfileCardWidget(
+                      currentUser: currentUser,
+                      phone: phone,
+                    )),
+                SizedBox(
+                  height: 24,
+                ),
+                Row(
+                  children: [
+                    BigText(
+                      text: "Your Posts",
+                      color: AppColors.darkGrey,
+                      size: 32,
+                    ),
+                  ],
+                ),
+                FutureBuilder(
+                  future: FirebaseFirestore.instance
+                      .collection('posts')
+                      .where('username', isEqualTo: currentUser.displayName)
+                      .get(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Container();
+                    }
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      itemCount: (snapshot.data! as dynamic).docs.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 24),
+                          child: ProfilePostCard(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PostDetailedView(
+                                    snap: snapshot.data!.docs[index].data(),
+                                  ),
+                                ),
+                              );
+                            },
+                            snap: snapshot.data!.docs[index].data(),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -141,7 +150,8 @@ class _ProfileViewState extends State<ProfileView> {
 class ProfileCardWidget extends StatelessWidget {
   ProfileCardWidget({
     super.key,
-    required this.currentUser, required this.phone,
+    required this.currentUser,
+    required this.phone,
   });
 
   final User currentUser;

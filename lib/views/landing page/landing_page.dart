@@ -1,14 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/card.dart';
 import 'package:reclaimify/components/plus_button_card.dart';
 import 'package:reclaimify/components/small_text.dart';
+import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
@@ -18,22 +21,38 @@ import 'package:reclaimify/views/advert_view/advert_view.dart';
 import 'package:reclaimify/views/post%20list%20view/posts_list.dart';
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
+  const LandingPage({
+    super.key,
+  });
 
   @override
   State<LandingPage> createState() => _LandingPageState();
 }
 
 class _LandingPageState extends State<LandingPage> {
-  //! <---- current user -----> //
-  final currentUser = FirebaseAuth.instance.currentUser;
+  final currentUser = AuthService.firebase().getCurrentUser();
+
+  //! <---- getuser name -----> //
+  String name = "";
+  Future<void> getUserName() async {
+    final String _name = await AuthService.firebase().getName();
+    setState(() {
+      name = _name;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserName();
+  }
 
   double width10 = Dimensions.width10;
   double height10 = Dimensions.height10;
   double radius10 = Dimensions.radius10;
   @override
   Widget build(BuildContext context) {
-
     var url = currentUser?.photoURL ??
         "https://images.unsplash.com/photo-1543946602-a0fce8117697?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmV0d29ya3xlbnwwfHwwfHx8MA%3D%3D";
     return Scaffold(
@@ -53,7 +72,7 @@ class _LandingPageState extends State<LandingPage> {
                 CircleAvatar(backgroundImage: CachedNetworkImageProvider(url)),
           ),
         ),
-       
+
         // centerTitle: true,
       ),
       body: SafeArea(
@@ -77,7 +96,7 @@ class _LandingPageState extends State<LandingPage> {
                           alignment: TextAlign.start,
                         ),
                         SmallText(
-                          text: currentUser?.displayName ?? "User",
+                          text: currentUser?.displayName ?? name,
                           color: AppColors.darkGrey,
                           size: width10 * 2.5,
                           alignment: TextAlign.start,

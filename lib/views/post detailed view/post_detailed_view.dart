@@ -72,6 +72,7 @@ class _PostDetailedViewState extends State<PostDetailedView> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Stack(
           // alignment: Alignment.topLeft,
@@ -226,6 +227,7 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                                   onPressed: () {
                                     // getData();
                                     getPhone();
+                                    Logger().d(phone);
                                     // //TODO
                                     whatsappLauncher(
                                         phone: phone,

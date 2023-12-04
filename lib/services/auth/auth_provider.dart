@@ -12,7 +12,7 @@ abstract class AuthProvider {
   });
 
   User? getCurrentUser();
-  
+   Future<String> getName();
 
   Future<AuthUser> createUser(
       {required String email,

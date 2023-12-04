@@ -166,7 +166,7 @@ class _LoginViewState extends State<LoginView> {
                                   bgColor: Colors.green.shade100,
                                   borderColor: Colors.green);
                               Navigator.of(context).pushNamedAndRemoveUntil(
-                                  phoneRoute, (route) => false);
+                                  landingPageRoute, (route) => false);
                             } else {
                               // user's email is not verified
                               Get.to(() => VerifyEmailView());

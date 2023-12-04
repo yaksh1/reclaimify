@@ -198,7 +198,6 @@ class FirebaseAuthProvider implements AuthProvider {
       "profilePic": googleUser.photoUrl,
       "phoneNumber": '',
     });
-
   }
 
   //! <---- save email pass data -----> //
@@ -208,8 +207,6 @@ class FirebaseAuthProvider implements AuthProvider {
       'name': username,
     });
   }
-
-
 
   //! <---- password reset email -----> //
   @override
@@ -267,5 +264,21 @@ class FirebaseAuthProvider implements AuthProvider {
     } else {
       return null;
     }
+  }
+
+  @override
+  Future<String> getName() async {
+    String username = "";
+    final user = auth.currentUser;
+    var collection = FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: user?.email);
+    var querySnapshot = await collection.get();
+    for (var queryDocumentSnapshot in querySnapshot.docs) {
+      Map<String, dynamic> data = queryDocumentSnapshot.data();
+
+      username = data['name'];
+    }
+    return username;
   }
 }
