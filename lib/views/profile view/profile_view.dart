@@ -25,17 +25,26 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  //! <---- current user -----> //
   final currentUser = AuthService.firebase().getCurrentUser()!;
-  var phone = '';
-  
+
   double width10 = Dimensions.width10;
 
+  //! <---- loading -----> //
+  var _isloading = true;
+
   //! <---- get phone number -----> //
+  var phone = '';
   Future<void> getPhoneUser() async {
+    
     final String _phone = await AuthService.firebase().getPhone();
+    Future.delayed(const Duration(milliseconds:300 ),(){
     setState(() {
       phone = _phone;
+      _isloading = false;
     });
+    });
+
     Logger().d(phone);
   }
 
@@ -50,10 +59,9 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     getUserName();
     getPhoneUser();
+    super.initState();
   }
 
   @override
@@ -65,96 +73,101 @@ class _ProfileViewState extends State<ProfileView> {
       appBar: AppBar(
         leading: BackIcon(),
       ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Center(
-            child: Column(
-              children: [
-                Hero(
-                  tag: 'hero',
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundImage: CachedNetworkImageProvider(
-                      url,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                SmallText(
-                  text: name,
-                  color: AppColors.darkGrey,
-                  size: width10 * 2.5,
-                  alignment: TextAlign.start,
-                ),
-               
-                SizedBox(
-                  height: 24,
-                ),
-                InkWell(
-                    onTap: () {
-                      Get.to(() => PhoneLoginVerification());
-                    },
-                    child: ProfileCardWidget(
-                      currentUser: currentUser,
-                      phone: phone,
-                    )),
-                SizedBox(
-                  height: 24,
-                ),
-                Row(
-                  children: [
-                    BigText(
-                      text: "Your Posts",
-                      color: AppColors.darkGrey,
-                      size: 32,
-                    ),
-                  ],
-                ),
-                FutureBuilder(
-                  future: FirebaseFirestore.instance
-                      .collection('posts')
-                      .where('username',
-                          isEqualTo: currentUser.displayName ?? name)
-                      .get(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Container();
-                    }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemCount: (snapshot.data! as dynamic).docs.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24),
-                          child: ProfilePostCard(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PostDetailedView(
-                                    snap: snapshot.data!.docs[index].data(),
-                                  ),
+      body: _isloading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : 
+      SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Hero(
+                        tag: 'hero',
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundImage: CachedNetworkImageProvider(
+                            url,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      SmallText(
+                        text: name,
+                        color: AppColors.darkGrey,
+                        size: width10 * 2.5,
+                        alignment: TextAlign.start,
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      InkWell(
+                          onTap: () {
+                            Get.to(() => PhoneLoginVerification());
+                          },
+                          child: ProfileCardWidget(
+                            currentUser: currentUser,
+                            phone: phone,
+                          )),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Row(
+                        children: [
+                          BigText(
+                            text: "Your Posts",
+                            color: AppColors.darkGrey,
+                            size: 32,
+                          ),
+                        ],
+                      ),
+                      FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection('posts')
+                            .where('username',
+                                isEqualTo: currentUser.displayName ?? name)
+                            .get(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Container();
+                          }
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: (snapshot.data! as dynamic).docs.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(vertical: 24),
+                                child: ProfilePostCard(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => PostDetailedView(
+                                          snap:
+                                              snapshot.data!.docs[index].data(),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  snap: snapshot.data!.docs[index].data(),
                                 ),
                               );
                             },
-                            snap: snapshot.data!.docs[index].data(),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                )
-              ],
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

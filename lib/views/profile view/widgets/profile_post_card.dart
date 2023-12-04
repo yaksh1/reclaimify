@@ -62,7 +62,7 @@ class _ProfilePostCardState extends State<ProfilePostCard> {
                           text: widget.snap["title"],
                           color: AppColors.darkGrey,
                           size: 25),
-                      //$ <---- dot icon -----> //
+                      //$ <---- kebab icon -----> //
                       InkWell(
                         onTap: () {
                           showModalBottomSheet<void>(
@@ -177,11 +177,12 @@ class _bottomSheetState extends State<bottomSheet> {
                 // ),
                 InkWell(
                   onTap: () async {
+                    
+                    await FirestoreMethods().deletePost(widget.id);
+                    Navigator.of(context).pop();
                     setState(() {
                       isPostDeleted = true;
                     });
-                    await FirestoreMethods().deletePost(widget.id);
-                    Navigator.of(context).pop();
                   },
                   child: IconWithCircle(
                     icon: PhosphorIcons.regular.trash,
@@ -202,7 +203,6 @@ class _bottomSheetState extends State<bottomSheet> {
             SizedBox(
               height: 16.h,
             ),
-
             Row(
               children: [
                 IconAndTextWidget(
