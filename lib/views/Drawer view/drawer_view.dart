@@ -7,6 +7,7 @@ import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:reclaimify/utils/text_strings.dart';
 import 'package:reclaimify/views/about%20us%20view/about_us.dart';
 import 'package:reclaimify/views/authentication/login/login_view.dart';
 import 'package:reclaimify/views/contact%20us%20view/contact_us.dart';
@@ -18,9 +19,7 @@ class DrawerView extends StatelessWidget {
   final currentUser = AuthService.firebase().getCurrentUser()!;
   @override
   Widget build(BuildContext context) {
-    var url = currentUser.photoURL ??
-        "https://images.unsplash.com/photo-1543946602-a0fce8117697?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmV0d29ya3xlbnwwfHwwfHx8MA%3D%3D";
-
+    var url = currentUser.photoURL ?? defaultUser;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -69,7 +68,7 @@ class DrawerView extends StatelessWidget {
             children: [
               //! <---- profile -----> //
               UserProfile(),
-              
+
               SizedBox(
                 height: 10,
               ),
@@ -82,7 +81,6 @@ class DrawerView extends StatelessWidget {
                       builder: (context) => AboutUs(),
                     ),
                   );
-
                 },
                 child: BigText(
                   text: "About Us",
@@ -95,14 +93,13 @@ class DrawerView extends StatelessWidget {
               ),
               //! <---- contact us -----> //
               InkWell(
-                onTap:  () {
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ContactUs(),
                     ),
                   );
-
                 },
                 child: BigText(
                   text: "Contact Us",

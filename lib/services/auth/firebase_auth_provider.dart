@@ -289,6 +289,7 @@ class FirebaseAuthProvider implements AuthProvider {
         .collection('phoneNumbers')
         .where('email', isEqualTo: user?.email);
     var querySnapshot = await collection.get();
+    
     for (var queryDocumentSnapshot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
         phone = data['phoneNumber'];

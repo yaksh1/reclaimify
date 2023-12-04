@@ -13,6 +13,7 @@ import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
+import 'package:reclaimify/utils/text_strings.dart';
 import 'package:reclaimify/views/authentication/phone%20enter%20view/phone_login_verification.dart';
 import 'package:reclaimify/views/post%20detailed%20view/post_detailed_view.dart';
 import 'package:reclaimify/views/profile%20view/widgets/profile_post_card.dart';
@@ -36,13 +37,11 @@ class _ProfileViewState extends State<ProfileView> {
   //! <---- get phone number -----> //
   var phone = '';
   Future<void> getPhoneUser() async {
-    
     final String _phone = await AuthService.firebase().getPhone();
-    Future.delayed(const Duration(milliseconds:300 ),(){
-    setState(() {
-      phone = _phone;
-      _isloading = false;
-    });
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
+        phone = _phone;
+      });
     });
 
     Logger().d(phone);
@@ -52,8 +51,11 @@ class _ProfileViewState extends State<ProfileView> {
   String name = "";
   Future<void> getUserName() async {
     final String _name = await AuthService.firebase().getName();
-    setState(() {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
+        _isloading = false;
       name = currentUser.displayName ?? _name;
+      });
     });
   }
 
@@ -66,9 +68,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    var url = currentUser.photoURL ??
-        "https://images.unsplash.com/photo-1543946602-a0fce8117697?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmV0d29ya3xlbnwwfHwwfHx8MA%3D%3D";
-
+    var url = currentUser.photoURL ?? defaultUser;
     return Scaffold(
       appBar: AppBar(
         leading: BackIcon(),
@@ -77,8 +77,7 @@ class _ProfileViewState extends State<ProfileView> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : 
-      SingleChildScrollView(
+          : SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 24),

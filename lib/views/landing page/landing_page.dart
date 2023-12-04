@@ -16,6 +16,7 @@ import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/utils/image_strings.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:reclaimify/utils/text_strings.dart';
 import 'package:reclaimify/views/Drawer%20view/drawer_view.dart';
 import 'package:reclaimify/views/advert_view/advert_view.dart';
 import 'package:reclaimify/views/post%20list%20view/posts_list.dart';
@@ -53,8 +54,7 @@ class _LandingPageState extends State<LandingPage> {
   double radius10 = Dimensions.radius10;
   @override
   Widget build(BuildContext context) {
-    var url = currentUser?.photoURL ??
-        "https://images.unsplash.com/photo-1543946602-a0fce8117697?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmV0d29ya3xlbnwwfHwwfHx8MA%3D%3D";
+    var url = currentUser?.photoURL ?? defaultUser;
     return Scaffold(
       appBar: AppBar(
         title: InkWell(
@@ -116,7 +116,7 @@ class _LandingPageState extends State<LandingPage> {
                     size: height10 * 4,
                   ),
                   onPressed: () {
-                    Get.to(() => AdvertView());
+                    Get.to(() => AdvertView(isEdit: false,));
                   },
                 ),
                 //

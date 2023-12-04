@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/icon_and_text.dart';
@@ -8,7 +9,9 @@ import 'package:reclaimify/components/icon_with_circle.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/services/storage/firebase_frestore_methods.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:reclaimify/views/advert_view/advert_view.dart';
 import 'package:reclaimify/views/post%20revise%20view/post_revise.dart';
+import 'package:reclaimify/views/profile%20view/profile_view.dart';
 
 class ProfilePostCard extends StatefulWidget {
   const ProfilePostCard(
@@ -38,14 +41,14 @@ class _ProfilePostCardState extends State<ProfilePostCard> {
                 borderRadius: BorderRadius.circular(15.0),
               ),
               child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: CachedNetworkImage(
-                          imageUrl: widget.snap['postUrl'],
-                          // height: 200,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          ),
-                  ) ,
+                borderRadius: BorderRadius.circular(15.0),
+                child: CachedNetworkImage(
+                  imageUrl: widget.snap['postUrl'],
+                  // height: 200,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              ),
             ),
 
             //! <---- post details -----> //
@@ -69,7 +72,7 @@ class _ProfilePostCardState extends State<ProfilePostCard> {
                             context: context,
                             builder: (BuildContext context) {
                               //$ <---- bottom sheet -----> //
-                              return bottomSheet(id: widget.snap['postId']);
+                              return bottomSheet(id: widget.snap['postId'],snap: widget.snap,);
                             },
                           );
                         },
@@ -134,9 +137,10 @@ class _ProfilePostCardState extends State<ProfilePostCard> {
 class bottomSheet extends StatefulWidget {
   const bottomSheet({
     super.key,
-    required this.id,
+    required this.id, this.snap,
   });
   final String id;
+  final snap;
 
   @override
   State<bottomSheet> createState() => _bottomSheetState();
@@ -175,9 +179,9 @@ class _bottomSheetState extends State<bottomSheet> {
                 //   padding: 12,
                 //   iconSize: 28,
                 // ),
+                //! <---- delete post -----> //
                 InkWell(
                   onTap: () async {
-                    
                     await FirestoreMethods().deletePost(widget.id);
                     Navigator.of(context).pop();
                     setState(() {
@@ -203,30 +207,47 @@ class _bottomSheetState extends State<bottomSheet> {
             SizedBox(
               height: 16.h,
             ),
-            Row(
-              children: [
-                IconAndTextWidget(
-                  icon: PhosphorIcons.regular.pen,
-                  text: "Edit",
-                  iconColor: AppColors.darkGrey,
-                  textColor: AppColors.darkGrey,
-                  fontSize: 24,
-                  iconSize: 32,
-                ),
-              ],
+            //! <---- edit post -----> //
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+                Get.to(() => AdvertView(
+                      isEdit: true,
+                      snap: widget.snap,
+                    ));
+              },
+              child: Row(
+                children: [
+                  IconAndTextWidget(
+                    icon: PhosphorIcons.regular.pen,
+                    text: "Edit",
+                    iconColor: AppColors.darkGrey,
+                    textColor: AppColors.darkGrey,
+                    fontSize: 24,
+                    iconSize: 32,
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 8.h,
             ),
+            //! <---- owner found -----> //
             Row(
               children: [
                 InkWell(
                   onTap: () async {
+                    Navigator.of(context).pop();
+                    await FirestoreMethods().deletePost(widget.id);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileView(),
+                      ),
+                    );
                     setState(() {
                       isPostDeleted = true;
                     });
-                    await FirestoreMethods().deletePost(widget.id);
-                    Navigator.of(context).pop();
                   },
                   child: IconAndTextWidget(
                     icon: Icons.verified_user_outlined,

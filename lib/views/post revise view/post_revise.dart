@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logger/logger.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/dual_color_text.dart';
@@ -20,13 +21,17 @@ class PostReviseView extends StatefulWidget {
       required this.title,
       required this.category,
       required this.postType,
-      required this.location});
+      required this.location,
+      required this.isEdit,
+      this.snap});
   final Uint8List file;
   final String desc;
   final String title;
   final String? category;
   final String postType;
   final String location;
+  final bool isEdit;
+  final snap;
 
   @override
   State<PostReviseView> createState() => _PostReviseViewState();
@@ -36,7 +41,7 @@ class _PostReviseViewState extends State<PostReviseView> {
   final user = AuthService.firebase().getCurrentUser();
 
   bool _isLoading = false;
-  //! <---- getuser name -----> //
+  // //! <---- getuser name -----> //
   String name = "";
   Future<void> getUserName() async {
     final String _name = await AuthService.firebase().getName();
@@ -54,14 +59,30 @@ class _PostReviseViewState extends State<PostReviseView> {
 
   // //! <---- save post data -----> //
   savePostOfUser(String desc, String title, String? category, String postType,
-      String location, Uint8List file, String uid) async {
+      String location, Uint8List file, String uid, bool isEdit) async {
     setState(() {
       _isLoading = true;
     });
     try {
       final user = AuthService.firebase().getCurrentUser();
-      String res = await FirestoreMethods().uploadPost(desc, file, uid,
-          user?.displayName?? name, title, category!, location, postType);
+      String res = '';
+
+      if (!widget.isEdit) {
+        res = await FirestoreMethods().uploadPost(desc, file, uid,
+            user?.displayName ?? name, title, category!, location, postType);
+      } else {
+        res = await FirestoreMethods().updatePost(
+            desc,
+            file,
+            uid,
+            user?.displayName ?? name,
+            title,
+            category!,
+            location,
+            postType,
+            widget.snap['postId']);
+      }
+
       if (res == "Success") {
         setState(() {
           _isLoading = false;
@@ -123,9 +144,10 @@ class _PostReviseViewState extends State<PostReviseView> {
                           widget.postType,
                           widget.location,
                           widget.file,
-                          user!.uid);
+                          user!.uid,
+                          widget.isEdit);
                     },
-                    text: "POST",
+                    text: widget.isEdit ? "UPDATE" : "POST",
                     fontweight: FontWeight.w600,
                     height: 40.h,
                     textColor: AppColors.darkGrey,

@@ -11,14 +11,15 @@ class FirestoreMethods {
 
   //!upload post
   Future<String> uploadPost(
-      String description,
-      Uint8List file,
-      String uid,
-      String username,
-      String title,
-      String category,
-      String location,
-      String postType) async {
+    String description,
+    Uint8List file,
+    String uid,
+    String username,
+    String title,
+    String category,
+    String location,
+    String postType,
+  ) async {
     String res = "some error occurred";
 
     try {
@@ -38,6 +39,44 @@ class FirestoreMethods {
           postType: postType,
           title: title);
       _firestore.collection('posts').doc(postId).set(post.toJson());
+
+      res = "Success";
+    } catch (e) {
+      MySnackBar().mySnackBar(header: "Error", content: e.toString());
+    }
+    return res;
+  }
+
+  //! <---- update post -----> //
+  Future<String> updatePost(
+      String description,
+      Uint8List file,
+      String uid,
+      String username,
+      String title,
+      String category,
+      String location,
+      String postType,
+      String postID) async {
+    String res = "some error occurred";
+
+    try {
+      String photoUrl =
+          await StorageMethods().updateImageToStorage('posts', file, true);
+
+      
+      Post post = Post(
+          description: description,
+          uid: uid,
+          username: username,
+          postId: postID,
+          datePublished: DateTime.now(),
+          postUrl: photoUrl,
+          category: category,
+          location: location,
+          postType: postType,
+          title: title);
+      _firestore.collection('posts').doc(postID).update(post.toJson());
 
       res = "Success";
     } catch (e) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:reclaimify/components/back_icon.dart';
 import 'package:reclaimify/components/blue_button.dart';
 import 'package:reclaimify/components/my_snackbar.dart';
@@ -13,8 +14,9 @@ import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/views/take%20image%20view/image_option_view.dart';
 
 class AdvertView extends StatefulWidget {
-  const AdvertView({super.key});
-
+  const AdvertView({super.key, required this.isEdit, this.snap});
+  final bool isEdit;
+  final snap;
   @override
   State<AdvertView> createState() => _AdvertViewState();
 }
@@ -42,10 +44,34 @@ class _AdvertViewState extends State<AdvertView> {
 
   @override
   void initState() {
+    super.initState();
     _title = TextEditingController();
     _desc = TextEditingController();
     _location = TextEditingController();
-    super.initState();
+
+    bool isEdit = widget.isEdit;
+    if (isEdit) {
+      final title = widget.snap['title'];
+      final desc = widget.snap['description'];
+      final location = widget.snap['location'];
+      final oldPostType = widget.snap['postType'];
+      final category = widget.snap['category'];
+      _title.text = title;
+      _desc.text = desc;
+      _location.text = location;
+      if (oldPostType == "Lost") {
+        _shadow3 = Colors.red.shade200;
+        _shadow4 = AppColors.lightRed;
+        _shadow1 = Colors.transparent;
+        _shadow2 = Colors.transparent;
+      } else {
+        _shadow1 = Colors.blue.shade200;
+        _shadow2 = AppColors.lightMainColor2;
+        _shadow3 = Colors.transparent;
+        _shadow4 = Colors.transparent;
+      }
+      _currentItemSelected = category;
+    }
   }
 
   @override
@@ -62,7 +88,7 @@ class _AdvertViewState extends State<AdvertView> {
       appBar: AppBar(
         //! <---- header -----> //
         title: Text(
-          "Create a Post",
+          widget.isEdit ? "Edit Post" : "Create a Post",
           style: TextStyle(
               color: AppColors.darkGrey,
               fontWeight: FontWeight.w800,
@@ -120,14 +146,15 @@ class _AdvertViewState extends State<AdvertView> {
 
                     //! <---- title field -----> //
                     TextFormTitle(
-                      helperText: "Title must be less than or equal to 15 characters",
+                      helperText:
+                          "Title must be less than or equal to 15 characters",
                       label: "Title",
                       hintText: "Enter the title of the Ad",
                       obscureText: false,
                       controller: _title,
                     ),
 
-                SizedBox(
+                    SizedBox(
                       height: 15.h,
                     ),
 
@@ -179,14 +206,16 @@ class _AdvertViewState extends State<AdvertView> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 try {
-                                Get.to(() => ImageOptions(
-                                      category: _currentItemSelected,
-                                      desc: _desc.text,
-                                      location: _location.text,
-                                      postType: postType,
-                                      title: _title.text,
-                                    )
-                                    );
+                                 
+                                  Get.to(() => ImageOptions(
+                                        category: _currentItemSelected,
+                                        desc: _desc.text,
+                                        location: _location.text,
+                                        postType: postType,
+                                        title: _title.text,
+                                        isEdit: widget.isEdit,
+                                        snap: widget.snap,
+                                      ));
                                 } catch (e) {
                                   MySnackBar().mySnackBar(
                                       header: "Error", content: e.toString());
@@ -212,8 +241,6 @@ class _AdvertViewState extends State<AdvertView> {
       ),
     );
   }
-
-
 
   //! <---- build header method -----> //
   Row _buildHeader(String title) {
@@ -273,18 +300,20 @@ class _AdvertViewState extends State<AdvertView> {
     return Row(
       children: [
         Container(
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-              blurRadius: 20,
-              color: _shadow1,
-              offset: Offset(0, 4),
-            ),
-            BoxShadow(
-              blurRadius: 20,
-              color: _shadow2,
-              offset: Offset(0, 4),
-            ),
-          ],),
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 20,
+                color: _shadow1,
+                offset: Offset(0, 4),
+              ),
+              BoxShadow(
+                blurRadius: 20,
+                color: _shadow2,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
           child: blueButton(
               onPressed: () {
                 setState(() {
@@ -346,5 +375,3 @@ class _AdvertViewState extends State<AdvertView> {
     });
   }
 }
-
-

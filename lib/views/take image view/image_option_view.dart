@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/pick_image.dart';
@@ -17,12 +18,16 @@ class ImageOptions extends StatefulWidget {
       required this.title,
       required this.category,
       required this.postType,
-      required this.location});
+      required this.location,
+      required this.isEdit,
+      this.snap});
   final String desc;
   final String title;
   final String? category;
   final String postType;
   final String location;
+  final bool isEdit;
+  final snap;
   @override
   State<ImageOptions> createState() => _ImageOptionsState();
 }
@@ -41,9 +46,10 @@ class _ImageOptionsState extends State<ImageOptions> {
               padding: EdgeInsets.symmetric(vertical: 130.h),
               child: Column(
                 children: [
-                  //! upload an image
+                  //! take an image
                   PlusCard(
                     onPressed: () async {
+                      
                       Uint8List image = await pickImage(ImageSource.camera);
                       Navigator.push(
                         context,
@@ -55,9 +61,11 @@ class _ImageOptionsState extends State<ImageOptions> {
                                   postType: widget.postType,
                                   title: widget.title,
                                   file: _file!,
-                                  
+                                  isEdit: widget.isEdit,
+                                  snap: widget.snap,
                                 )),
                       );
+                     
                       setState(() {
                         _file = image;
                       });
@@ -70,6 +78,7 @@ class _ImageOptionsState extends State<ImageOptions> {
                   SizedBox(
                     height: 30.h,
                   ),
+                  //! <---- upload an image -----> //
                   PlusCard(
                     onPressed: () async {
                       Uint8List image = await pickImage(ImageSource.gallery);
@@ -83,6 +92,8 @@ class _ImageOptionsState extends State<ImageOptions> {
                                   postType: widget.postType,
                                   title: widget.title,
                                   file: _file!,
+                                  isEdit: widget.isEdit,
+                                  snap: widget.snap,
                                 )),
                       );
                       setState(() {
