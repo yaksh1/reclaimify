@@ -19,7 +19,7 @@ import 'package:reclaimify/views/post%20detailed%20view/post_detailed_view.dart'
 import 'package:reclaimify/views/profile%20view/widgets/profile_post_card.dart';
 
 class ProfileView extends StatefulWidget {
-  ProfileView({super.key});
+  const ProfileView({super.key});
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -84,15 +84,15 @@ class _ProfileViewState extends State<ProfileView> {
                 child: Center(
                   child: Column(
                     children: [
-                      Hero(
-                        tag: 'hero',
-                        child: CircleAvatar(
+                      
+                        
+                        CircleAvatar(
                           radius: 60,
                           backgroundImage: CachedNetworkImageProvider(
                             url,
                           ),
                         ),
-                      ),
+                    
                       SizedBox(
                         height: 12,
                       ),
@@ -106,8 +106,10 @@ class _ProfileViewState extends State<ProfileView> {
                         height: 24,
                       ),
                       InkWell(
+                          
                           onTap: () {
-                            Get.to(() => PhoneLoginVerification());
+                            phone==''?
+                            Get.to(() => PhoneLoginVerification()):();
                           },
                           child: ProfileCardWidget(
                             currentUser: currentUser,

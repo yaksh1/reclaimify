@@ -9,6 +9,7 @@ import 'package:reclaimify/components/icon_with_circle.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/services/storage/firebase_frestore_methods.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:reclaimify/utils/routes.dart';
 import 'package:reclaimify/views/advert_view/advert_view.dart';
 import 'package:reclaimify/views/post%20revise%20view/post_revise.dart';
 import 'package:reclaimify/views/profile%20view/profile_view.dart';
@@ -147,7 +148,6 @@ class bottomSheet extends StatefulWidget {
 }
 
 class _bottomSheetState extends State<bottomSheet> {
-  bool isPostDeleted = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -182,11 +182,17 @@ class _bottomSheetState extends State<bottomSheet> {
                 //! <---- delete post -----> //
                 InkWell(
                   onTap: () async {
-                    await FirestoreMethods().deletePost(widget.id);
+                    Navigator.of(context).pop(); // pop
+                    await FirestoreMethods().deletePost(widget.id); //delete
                     Navigator.of(context).pop();
-                    setState(() {
-                      isPostDeleted = true;
-                    });
+                    //push
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileView(),
+                      ),
+                    );
+                    
                   },
                   child: IconWithCircle(
                     icon: PhosphorIcons.regular.trash,
@@ -211,6 +217,7 @@ class _bottomSheetState extends State<bottomSheet> {
             InkWell(
               onTap: () {
                 Navigator.of(context).pop();
+
                 Get.to(() => AdvertView(
                       isEdit: true,
                       snap: widget.snap,
@@ -237,17 +244,15 @@ class _bottomSheetState extends State<bottomSheet> {
               children: [
                 InkWell(
                   onTap: () async {
-                    Navigator.of(context).pop();
+                    Navigator.pop(context); // pop current page
+                    
                     await FirestoreMethods().deletePost(widget.id);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileView(),
-                      ),
-                    );
-                    setState(() {
-                      isPostDeleted = true;
-                    });
+
+                    Navigator.pop(context); 
+                    Navigator.pushNamed(context, userProfileRoute);
+                    
+                    
+                   
                   },
                   child: IconAndTextWidget(
                     icon: Icons.verified_user_outlined,

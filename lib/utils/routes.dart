@@ -5,3 +5,4 @@ const landingPageRoute = '/home/';
 const otpScreenRoute = '/otpScreen/';
 const postsViewRoute = '/postsView/';
 const phoneRoute = '/phoneInput/';
+const userProfileRoute = '/userProfile/';

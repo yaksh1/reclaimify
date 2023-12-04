@@ -35,7 +35,12 @@ class _PostDetailedViewState extends State<PostDetailedView> {
 
   void whatsappLauncher({required phone, required message}) async {
     String url = "whatsapp://send?phone=91$phone&text=${Uri.parse(message)}";
-    Logger().d(url);
+    Uri urlLink = Uri.parse(url);
+    await canLaunchUrl(urlLink) ? launchUrl(urlLink) : Logger().d("error");
+  }
+
+  void callLauncher({required phone}) async {
+    String url = "tel:+91${phone}";
     Uri urlLink = Uri.parse(url);
     await canLaunchUrl(urlLink) ? launchUrl(urlLink) : Logger().d("error");
   }
@@ -60,7 +65,6 @@ class _PostDetailedViewState extends State<PostDetailedView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // getData();
     getPhone();
   }
 
@@ -72,7 +76,6 @@ class _PostDetailedViewState extends State<PostDetailedView> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: Stack(
           // alignment: Alignment.topLeft,
@@ -202,7 +205,7 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                                 //! <---- call button -----> //
                                 InkWell(
                                   onTap: () {
-                                    //TODO
+                                    callLauncher(phone: phone);
                                   },
                                   child: Container(
                                     padding: EdgeInsets.all(10),
@@ -223,12 +226,9 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                                 ),
                                 //! <---- message button -----> //
                                 Expanded(
-                                    child: blueButton(
+                                  child: blueButton(
                                   onPressed: () {
-                                    // getData();
-                                    getPhone();
-                                    Logger().d(phone);
-                                    // //TODO
+                                    
                                     whatsappLauncher(
                                         phone: phone,
                                         message:

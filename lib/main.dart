@@ -16,6 +16,7 @@ import 'package:reclaimify/views/authentication/verify%20email/verify_email_view
 import 'package:reclaimify/views/contact%20us%20view/contact_us.dart';
 import 'package:reclaimify/views/landing%20page/landing_page.dart';
 import 'package:reclaimify/views/post%20list%20view/posts_list.dart';
+import 'package:reclaimify/views/profile%20view/profile_view.dart';
 
 
 void main() async {
@@ -46,6 +47,8 @@ void main() async {
             otpScreenRoute:(context)=>const ForgotPasswordOtp(),
             postsViewRoute: (context) => const PostsView(),
             phoneRoute:(context)=>const ForgotPasswordPhoneOption(),
+            userProfileRoute: (context) => const ProfileView(),
+
           }
           ), 
     ),

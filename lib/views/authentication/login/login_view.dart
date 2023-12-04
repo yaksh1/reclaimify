@@ -249,14 +249,15 @@ class _LoginViewState extends State<LoginView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SquareTile(
-                          imagePath: facebookLogo,
-                          onTap: () {},
-                          height: height10 * 4,
-                        ),
-                        SizedBox(
-                          width: width10 * 2,
-                        ),
+                        //TODO add facebook login
+                        // SquareTile(
+                        //   imagePath: facebookLogo,
+                        //   onTap: () {},
+                        //   height: height10 * 4,
+                        // ),
+                        // SizedBox(
+                        //   width: width10 * 2,
+                        // ),
                         SquareTile(
                           imagePath: googleLogo,
                           onTap: Google().googleLogIn,

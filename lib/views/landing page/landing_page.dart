@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:reclaimify/components/big_tex.dart';
 import 'package:reclaimify/components/card.dart';
+import 'package:reclaimify/components/my_snackbar.dart';
 import 'package:reclaimify/components/plus_button_card.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
@@ -116,13 +117,16 @@ class _LandingPageState extends State<LandingPage> {
                     size: height10 * 4,
                   ),
                   onPressed: () {
-                    Get.to(() => AdvertView(isEdit: false,));
+                    Get.to(() => AdvertView(
+                          isEdit: false,
+                        ));
                   },
                 ),
                 //
                 card(
                   cardColor: AppColors.lightYellow,
                   path: itemsSvg,
+                  isSvg: false,
                   heading: "Lost & Found Items",
                   subHeading: "Go through the lost and found items list",
                   onTap: () {
@@ -130,41 +134,19 @@ class _LandingPageState extends State<LandingPage> {
                   },
                 ),
 
-                GestureDetector(
-                  onTap: () {}, //TODO
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: height10 * 1.7, horizontal: width10 * 1.5),
-                    height: height10 * 19,
-                    width: width10 * 35,
-                    decoration: BoxDecoration(
-                      color: AppColors.mapColor,
-                      borderRadius: BorderRadius.circular(radius10 * 1.9),
-                    ),
-                    child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset(
-                          mapSvg,
-                          height: height10 * 5,
-                        ),
-                        SizedBox(
-                          height: height10 * 1.5,
-                        ),
-                        BigText(
-                          text: "Find on map",
-                          color: AppColors.darkGrey,
-                          size: width10 * 2.5,
-                        ),
-                        SmallText(
-                          text: "Search for items on nearby locations",
-                          size: width10 * 1.5,
-                          color: AppColors.smallText,
-                        )
-                      ],
-                    ),
-                  ),
+                card(
+                  cardColor: AppColors.mapColor,
+                  isSvg: true,
+                  svgPath: mapSvg,
+                  heading: "Find on map",
+                  subHeading: "Search for items on nearby locations",
+                  onTap: () {
+                    //TODO map integration
+                    MySnackBar().mySnackBar(
+                        header: "Dead End!", 
+                        content: "Feature coming soon..",
+                        );
+                  },
                 ),
               ],
             ),
