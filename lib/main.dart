@@ -36,9 +36,8 @@ void main() async {
               fontFamily: 'Inter'),
           defaultTransition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
-          // home: isViewed!=0? OnBoardingView() : const HomePage(),
-          // home: const AuthGate(),
-          home: const ContactUs(),
+          home: const AuthGate(),
+          // home: const ContactUs(),
           routes: {
             registerRoute: (context) => const Register(),
             loginRoute: (context) => const LoginView(),

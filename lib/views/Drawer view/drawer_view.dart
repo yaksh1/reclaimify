@@ -9,6 +9,7 @@ import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
 import 'package:reclaimify/views/about%20us%20view/about_us.dart';
 import 'package:reclaimify/views/authentication/login/login_view.dart';
+import 'package:reclaimify/views/contact%20us%20view/contact_us.dart';
 import 'package:reclaimify/views/profile%20view/profile_view.dart';
 
 class DrawerView extends StatelessWidget {
@@ -93,10 +94,21 @@ class DrawerView extends StatelessWidget {
                 height: 10,
               ),
               //! <---- contact us -----> //
-              BigText(
-                text: "Contact Us",
-                color: AppColors.darkGrey,
-                size: 30,
+              InkWell(
+                onTap:  () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ContactUs(),
+                    ),
+                  );
+
+                },
+                child: BigText(
+                  text: "Contact Us",
+                  color: AppColors.darkGrey,
+                  size: 30,
+                ),
               ),
               SizedBox(
                 height: 10,
