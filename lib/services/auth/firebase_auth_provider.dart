@@ -196,7 +196,6 @@ class FirebaseAuthProvider implements AuthProvider {
       "email": googleUser.email,
       "name": googleUser.displayName,
       "profilePic": googleUser.photoUrl,
-      "phoneNumber": '',
     });
   }
 
@@ -280,5 +279,20 @@ class FirebaseAuthProvider implements AuthProvider {
       username = data['name'];
     }
     return username;
+  }
+
+  @override
+  Future<String> getPhone() async {
+    String phone = "";
+    final user = auth.currentUser;
+    var collection = FirebaseFirestore.instance
+        .collection('phoneNumbers')
+        .where('email', isEqualTo: user?.email);
+    var querySnapshot = await collection.get();
+    for (var queryDocumentSnapshot in querySnapshot.docs) {
+      Map<String, dynamic> data = queryDocumentSnapshot.data();
+        phone = data['phoneNumber'];
+    }
+    return phone;
   }
 }

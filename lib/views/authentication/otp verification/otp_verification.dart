@@ -39,7 +39,7 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
         .collection("phoneNumbers")
         .doc(currentUser!.uid)
         .set({
-      
+      "email":currentUser!.email,
       "phoneNumber": phoneNo,
     });
     Navigator.push(

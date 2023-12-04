@@ -37,7 +37,7 @@ class _LandingPageState extends State<LandingPage> {
   Future<void> getUserName() async {
     final String _name = await AuthService.firebase().getName();
     setState(() {
-      name = _name;
+      name = currentUser?.displayName ?? _name;
     });
   }
 
@@ -96,7 +96,7 @@ class _LandingPageState extends State<LandingPage> {
                           alignment: TextAlign.start,
                         ),
                         SmallText(
-                          text: currentUser?.displayName ?? name,
+                          text: name,
                           color: AppColors.darkGrey,
                           size: width10 * 2.5,
                           alignment: TextAlign.start,

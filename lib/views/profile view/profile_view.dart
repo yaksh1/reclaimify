@@ -12,6 +12,7 @@ import 'package:reclaimify/components/icon_with_circle.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:reclaimify/utils/dimensions.dart';
 import 'package:reclaimify/views/authentication/phone%20enter%20view/phone_login_verification.dart';
 import 'package:reclaimify/views/post%20detailed%20view/post_detailed_view.dart';
 import 'package:reclaimify/views/profile%20view/widgets/profile_post_card.dart';
@@ -26,28 +27,37 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   final currentUser = AuthService.firebase().getCurrentUser()!;
   var phone = '';
-  void getPhone() async {
-    var collection = FirebaseFirestore.instance.collection('phoneNumbers');
-    var querySnapshot = await collection.get();
-    for (var queryDocumentSnapshot in querySnapshot.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
+  
+  double width10 = Dimensions.width10;
 
-      phone = data['phoneNumber'];
-      Logger().d(phone);
-    }
+  //! <---- get phone number -----> //
+  Future<void> getPhoneUser() async {
+    final String _phone = await AuthService.firebase().getPhone();
+    setState(() {
+      phone = _phone;
+    });
+    Logger().d(phone);
+  }
+
+  //! <---- getuser name -----> //
+  String name = "";
+  Future<void> getUserName() async {
+    final String _name = await AuthService.firebase().getName();
+    setState(() {
+      name = currentUser.displayName ?? _name;
+    });
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getPhone();
+    getUserName();
+    getPhoneUser();
   }
 
   @override
   Widget build(BuildContext context) {
-    getPhone();
-    Logger().d(currentUser);
     var url = currentUser.photoURL ??
         "https://images.unsplash.com/photo-1543946602-a0fce8117697?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmV0d29ya3xlbnwwfHwwfHx8MA%3D%3D";
 
@@ -74,11 +84,13 @@ class _ProfileViewState extends State<ProfileView> {
                 SizedBox(
                   height: 12,
                 ),
-                BigText(
-                  text: currentUser.displayName ?? "User",
+                SmallText(
+                  text: name,
                   color: AppColors.darkGrey,
-                  size: 32,
+                  size: width10 * 2.5,
+                  alignment: TextAlign.start,
                 ),
+               
                 SizedBox(
                   height: 24,
                 ),
@@ -105,7 +117,8 @@ class _ProfileViewState extends State<ProfileView> {
                 FutureBuilder(
                   future: FirebaseFirestore.instance
                       .collection('posts')
-                      .where('username', isEqualTo: currentUser.displayName)
+                      .where('username',
+                          isEqualTo: currentUser.displayName ?? name)
                       .get(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {

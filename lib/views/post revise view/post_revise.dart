@@ -36,6 +36,21 @@ class _PostReviseViewState extends State<PostReviseView> {
   final user = AuthService.firebase().getCurrentUser();
 
   bool _isLoading = false;
+  //! <---- getuser name -----> //
+  String name = "";
+  Future<void> getUserName() async {
+    final String _name = await AuthService.firebase().getName();
+    setState(() {
+      name = _name;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserName();
+  }
 
   // //! <---- save post data -----> //
   savePostOfUser(String desc, String title, String? category, String postType,
@@ -46,7 +61,7 @@ class _PostReviseViewState extends State<PostReviseView> {
     try {
       final user = AuthService.firebase().getCurrentUser();
       String res = await FirestoreMethods().uploadPost(desc, file, uid,
-          user!.displayName!, title, category!, location, postType);
+          user?.displayName?? name, title, category!, location, postType);
       if (res == "Success") {
         setState(() {
           _isLoading = false;
