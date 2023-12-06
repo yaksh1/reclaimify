@@ -11,6 +11,7 @@ import 'package:reclaimify/components/icon_and_text.dart';
 import 'package:reclaimify/components/small_text.dart';
 import 'package:reclaimify/services/auth/auth_service.dart';
 import 'package:reclaimify/utils/colors.dart';
+import 'package:reclaimify/utils/text_strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PostDetailedView extends StatefulWidget {
@@ -36,8 +37,10 @@ class _PostDetailedViewState extends State<PostDetailedView> {
   }
 
   void whatsappLauncher({required phone, required message}) async {
-    String url = "whatsapp://send?phone=91$phone&text=${Uri.parse(message)}";
+    phone = Uri.encodeComponent(phone);
+    String url = "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
     Uri urlLink = Uri.parse(url);
+    Logger().d(phone);
     await canLaunchUrl(urlLink) ? launchUrl(urlLink) : Logger().d("error");
   }
 
@@ -228,15 +231,14 @@ class _PostDetailedViewState extends State<PostDetailedView> {
                                 ),
                                 //! <---- message button -----> //
                                 Expanded(
-                                  child: blueButton(
+                                    child: blueButton(
                                   onPressed: () {
-                                    
                                     whatsappLauncher(
                                         phone: phone,
                                         message:
                                             widget.snap['postType'] == "Lost"
-                                                ? "Lost"
-                                                : "Found");
+                                                ? lostString
+                                                : foundString);
                                   },
                                   text: "Message ->",
                                   color: AppColors.lightMainColor2,
