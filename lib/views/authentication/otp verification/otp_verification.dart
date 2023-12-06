@@ -152,7 +152,11 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                 ),
 
                 InkWell(
-                  onTap: () async {},
+                  //TODO resend otp
+                  onTap: () async {
+                      
+                    
+                  },
                   child: IconAndTextWidget(
                     icon: Icons.replay_outlined,
                     text: "Resend",
